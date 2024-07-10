@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+}
+
+.App {
+  width: 700px;
+  height: 700px;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+}
+
+.nav-link {
+  padding: 10px;
+  text-decoration: none;
+  font-size: 17px;
+  display: inline-block;
+  color: #1e6a97;
+}
+
+.nav-link.active {
+  font-weight: 500;
+  color: black;
+  border-bottom: 2px solid black;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+}

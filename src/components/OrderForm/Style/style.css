@@ -1,0 +1,166 @@
+.App {
+  margin-top: 100px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.order-form,
+.cargo-form {
+  padding: 30px;
+  margin-top: 10px;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 60px;
+}
+
+.form-group label {
+  width: 200px;
+  font-size: 15px;
+  color: #171717;
+}
+
+.form-control {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.form-control.error {
+  border-color: red;
+}
+button.btn,
+button.next {
+  height: 49px;
+  width: 140px;
+  display: block;
+  background-color: #a4bd06;
+  color: #ffffff;
+  border: 1px solid silver;
+  border-radius: 10px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+button.next {
+  background-color: #f5f6f5;
+  color: black;
+}
+
+.buttons {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.cash-on-delivery {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+  box-shadow: 0 0 1px #2196f3;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+input:checked + .slider {
+  background-color: #a4bd06;
+}
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.add-cargo {
+  height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+}
+.cargo-block{
+  margin-bottom: 15px;
+}
+.cargo-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border-bottom: 3px solid #ccc; 
+  padding-bottom: 20px;
+
+}
+
+.cargo-icon {
+  margin-right: 10px;
+}
+
+.cargo-icon.box {
+  color: brown;
+}
+.cargo-text {
+  margin: 0;
+  flex: 1;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.cargo-info{
+  margin: 7px;
+  font-size: 15px;
+}
+.cargo-action-icon {
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.cargo-action-icon.delete {
+  color: rgb(245, 105, 105);
+}
+
+.cargo-action-icon.edit,
+.cargo-action-icon.copy {
+  color: green;
+}
