@@ -21,13 +21,6 @@ const validationSchema = Yup.object({
   address: Yup.string().required("Адрес обязателен"),
 });
 
-const Button = ({ type, onClick, className, children }) => {
-  return (
-    <button type={type} onClick={onClick} className={className}>
-      {children}
-    </button>
-  );
-};
 const OrderForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -63,7 +56,7 @@ const OrderForm = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="recipientName">Имя получателя:</label>
+              <label htmlFor="recipientName">* Имя получателя:</label>
               <Field
                 type="text"
                 id="recipientName"
@@ -80,7 +73,7 @@ const OrderForm = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="phoneNumber">Номер телефона:</label>
+              <label htmlFor="phoneNumber">* Номер телефона:</label>
               <Field
                 type="text"
                 id="phoneNumber"
@@ -97,7 +90,7 @@ const OrderForm = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="city">Город получателя:</label>
+              <label htmlFor="city">* Город получателя:</label>
               <Field
                 type="text"
                 id="city"
@@ -110,7 +103,7 @@ const OrderForm = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="address">Адрес получателя:</label>
+              <label htmlFor="address">* Адрес получателя:</label>
               <Field
                 type="text"
                 id="address"

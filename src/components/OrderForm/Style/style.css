@@ -15,12 +15,33 @@
   margin-bottom: 60px;
 }
 
+.form-group.cargo {
+  margin-bottom: 10px;
+}
+
+.form-group.cargo label {
+  width: 80px;
+}
+
+.form-group.cargo input {
+  width: 170px;
+}
+
+.form-group select {
+  width: 250px;
+  height: 40px;;
+}
+
 .form-group label {
-  width: 200px;
+  width: 170px;
   font-size: 15px;
   color: #171717;
 }
 
+
+.form-group input {
+height: 14px;
+}
 .form-control {
   flex: 1;
   padding: 10px;
@@ -34,16 +55,17 @@
 }
 button.btn,
 button.next {
-  height: 49px;
-  width: 140px;
+  height: 50px;
+  width: 300px;
   display: block;
-  background-color: #a4bd06;
+  background-color: #1ab248;
   color: #ffffff;
   border: 1px solid silver;
   border-radius: 10px;
   font-size: 22px;
   cursor: pointer;
 }
+
 
 button.next {
   background-color: #f5f6f5;
@@ -52,14 +74,15 @@ button.next {
 
 .buttons {
   display: flex;
-  gap: 20px;
+  gap: 80px;
   margin-top: 20px;
 }
 
 .cash-on-delivery {
+  margin-top: 15px;
   display: flex;
-  align-items: center;
-  gap: 20px;
+  text-align: center;
+  gap: 15px;
 }
 
 .switch {
@@ -67,12 +90,6 @@ button.next {
   display: inline-block;
   width: 60px;
   height: 34px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
 }
 
 .slider {
@@ -102,7 +119,7 @@ button.next {
 }
 
 input:checked + .slider {
-  background-color: #a4bd06;
+  background-color: #1ab248;
 }
 input:checked + .slider:before {
   transform: translateX(26px);
@@ -117,28 +134,25 @@ input:checked + .slider:before {
 }
 
 .add-cargo {
-  height: 300px;
+  height: 375px;
   overflow-y: auto;
   padding: 10px;
 }
-.cargo-block{
+.cargo-block {
   margin-bottom: 15px;
 }
 .cargo-container {
   width: 100%;
   display: flex;
   align-items: center;
-  border-bottom: 3px solid #ccc; 
-  padding-bottom: 20px;
-
-}
-
-.cargo-icon {
-  margin-right: 10px;
+  border-bottom: 4px solid #e7eaee;
+  padding-bottom: 5px;
 }
 
 .cargo-icon.box {
-  color: brown;
+  margin-right: 20px;
+  color: #9c6125;
+  font-size: 40px;
 }
 .cargo-text {
   margin: 0;
@@ -147,20 +161,57 @@ input:checked + .slider:before {
   font-weight: 500;
 }
 
-.cargo-info{
-  margin: 7px;
+.cargo-info {
+  margin-top: 13px;
   font-size: 15px;
+  color: rgb(129, 128, 128);
+  font-weight: 500;
 }
 .cargo-action-icon {
   cursor: pointer;
-  margin-right: 10px;
+  margin-right: 25px;
 }
 
 .cargo-action-icon.delete {
   color: rgb(245, 105, 105);
+  font-size: 33px;
 }
 
 .cargo-action-icon.edit,
 .cargo-action-icon.copy {
   color: green;
+  font-size: 30px;
+}
+
+.cargo-edit {
+  display: flex;
+  gap: 20px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  margin-top: 10px;
+}
+
+.cargo-edit input,
+.cargo-edit select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.cargo-edit button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background-color: #1ab248;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cargo-edit button:last-child {
+  background-color: rgb(236, 120, 120);
+  color: black;
+  border: 1px solid silver;
 }
