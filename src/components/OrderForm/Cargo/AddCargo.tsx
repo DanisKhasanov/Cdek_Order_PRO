@@ -4,6 +4,8 @@ import EditIcon from "@mui/icons-material/EditOutlined";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DeleteIcon from "@mui/icons-material/DeleteForeverOutlined";
 import BoxIcon from "@mui/icons-material/ArchiveTwoTone";
+import ExpandLessTwoToneIcon from '@mui/icons-material/ExpandLessTwoTone';
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import { RootState } from "../../../store/store";
 import {
   removeCargoSpace,
@@ -18,6 +20,7 @@ const AddCargo = () => {
     (state: RootState) => state.cargoSpace.cargoSpaces
   );
   const [editId, setEditId] = useState<number | null>(null);
+  const [showItemInfoId, setShowItemInfoId] = useState<number | null>(null);
 
   const handleEdit = (id: number) => {
     setEditId(id);
@@ -27,10 +30,14 @@ const AddCargo = () => {
     setEditId(null);
   };
 
+  const handleToggleItemInfo = (id: number) => {
+    setShowItemInfoId(showItemInfoId === id ? null : id);
+  };
+
   return (
     <div className="add-cargo">
       {cargoSpaces.length > 0 ? (
-        cargoSpaces.map((cargo) => (
+        cargoSpaces.map((cargo, index) => (
           <div key={cargo.id} className="cargo-block">
             <div className="cargo-container">
               <BoxIcon className="cargo-icon box" />
@@ -56,12 +63,40 @@ const AddCargo = () => {
                 onCancel={handleCancelEdit}
               />
             ) : (
-              <div style={{ display: "flex", gap: "40px" }}>
-                <p className="cargo-info">Вес: {cargo.weight} кг. </p>
-                <p className="cargo-info">Размер коробки: {cargo.size} </p>
-              </div>
+              <>
+                <CashOnDelivery />
+                <div>
+                  <div style={{ display: "flex", gap: "75px" }}>
+                    <p className="cargo-info">Вес: {cargo.weight} кг. </p>
+                    <p className="cargo-info">Размер коробки: {cargo.size} </p>
+                    <div
+                      className="cargo-info item"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleToggleItemInfo(cargo.id)}
+                    >
+                      <p>Информацию о товаре</p>
+                      {showItemInfoId === cargo.id ? (
+                        <ExpandLessTwoToneIcon style={{ fontSize: "35px" }} />
+                      ) : (
+                        <ExpandMoreTwoToneIcon style={{ fontSize: "35px" }} />
+                      )}
+                    </div>
+                  </div>
+                  {showItemInfoId === cargo.id && (
+                    <div className="item-info">
+                      <p>Наименование товара – стеклянные флаконы</p>
+                      <p>Код товара/артикул – {cargo.id}</p>
+                      <p>Физический вес ед. товара – {cargo.weight} кг</p>
+                      <p>Количество – 1</p>
+                      <p>
+                        Объявленная стоимость за ед. товара -{" "}
+                        {index === 0 ? 100 : 0}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </>
             )}
-              
           </div>
         ))
       ) : (

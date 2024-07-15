@@ -4,7 +4,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface OrderFormState {
   contract: string;
   recipientName: string;
-  phoneNumber: number;
+  phoneNumber: string;
   city: string;
   address: string;
 }
@@ -12,7 +12,7 @@ interface OrderFormState {
 const initialState: OrderFormState = {
   contract: '',
   recipientName: '',
-  phoneNumber: 0,
+  phoneNumber: '',
   city: '',
   address: '',
 };

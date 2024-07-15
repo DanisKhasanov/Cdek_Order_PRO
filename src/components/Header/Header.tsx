@@ -11,6 +11,7 @@ const Navigation = () => {
     <div className="container">
       <div className="App">
         <nav className="header">
+      
           <NavLink to="/order" className="nav-link">
             Данные заказа
           </NavLink>

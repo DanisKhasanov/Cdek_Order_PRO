@@ -1,18 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik, Form, Field } from "formik";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateOrderForm } from "../../../store/reducers/OrderReducer";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import "../Style/style.css";
-
-const initialValues = {
-  contract: "ГРМ",
-  recipientName: "",
-  phoneNumber: "",
-  city: "",
-  address: "",
-};
+// import { fetchOrderData } from "../../../api/fetchOrderData";
+import Order from "../../../api/testData";
+import { RootState } from "../../../store/store";
 
 const validationSchema = Yup.object({
   recipientName: Yup.string().required("Имя получателя обязательно"),
@@ -24,6 +19,33 @@ const validationSchema = Yup.object({
 const OrderForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const orderData = useSelector((state: RootState) => state.orderForm);
+
+  useEffect(() => {
+    if (!orderData.recipientName) {
+      const getOrderData = async () => {
+        try {
+          // TODO: ТУТ будет запрос на получение данных и далее записываем все в store (либо в Api сразу пишу slice на получение данных)
+
+          const order = Order;
+
+          dispatch(
+            updateOrderForm({
+              contract: "ГРМ",
+              recipientName: order.recipient.name,
+              phoneNumber: order.recipient.phones[0].number,
+              city: order.to_location.city,
+              address: order.to_location.address,
+            })
+          );
+        } catch (error) {
+          console.error("Ошибка при загрузке данных заказа", error);
+        }
+      };
+
+      getOrderData();
+    }
+  }, [dispatch, orderData]);
 
   const onSubmit = (values: any) => {
     dispatch(updateOrderForm(values));
@@ -31,10 +53,13 @@ const OrderForm = () => {
     navigate("/cargo");
   };
 
+  //TODO : Проверить ТЗ на "Город получателя"
+
   return (
     <div className="order-form">
       <Formik
-        initialValues={initialValues}
+        enableReinitialize
+        initialValues={orderData}
         validationSchema={validationSchema}
         onSubmit={onSubmit}
       >
@@ -50,8 +75,8 @@ const OrderForm = () => {
                   errors.contract && touched.contract ? "error" : ""
                 }`}
               >
-                <option value="GRM" label="ГРМ" />
-                <option value="ZAR" label="ЗАР" />
+                <option value="ГРМ" label="ГРМ" />
+                <option value="ЗАР" label="ЗАР" />
               </Field>
             </div>
 

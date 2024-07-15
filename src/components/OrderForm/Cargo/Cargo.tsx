@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import AddCargo from "./AddCargo";
 import { addCargoSpace } from "../../../store/reducers/CargoReducer";
 import { RootState } from "../../../store/store";
-import CashOnDelivery from "./CashOnDelivery";
 
 const initialValues = {
   weight: "",
@@ -59,9 +58,10 @@ const Cargo = () => {
           >
             {({ errors, touched }) => (
               <Form>
-                <div style={{ display: "flex", gap: 40 }}>
+                {/* TODO: возможно убрать MT */}
+                <div style={{ display: "flex", gap: 40, marginTop: 5}}>
                   <div className="form-group cargo">
-                    <label htmlFor="weight">Вес (кг):</label>
+                    <label htmlFor="weight">* Вес (кг):</label>
                     <Field
                       type="text"
                       id="weight"
@@ -84,7 +84,9 @@ const Cargo = () => {
                       className={`form-control ${
                         errors.size && touched.size ? "error" : ""
                       }`}
-                    >
+                      
+                   
+                   >
                       <option value="20x20x10" label="до 2 кг 20х20х10" />
                       <option value="30x30x15" label="от 2-5 кг 30х30х15" />
                       <option value="30x30x17" label="от 5-10 кг 30х30х17" />
@@ -92,8 +94,6 @@ const Cargo = () => {
                     </Field>
                   </div>
                 </div>
-
-                <CashOnDelivery />
 
                 <div className="buttons ">
                   <ButtonCustom type="submit" className="btn">
