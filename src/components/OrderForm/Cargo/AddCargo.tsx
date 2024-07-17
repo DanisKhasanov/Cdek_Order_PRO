@@ -4,14 +4,14 @@ import EditIcon from "@mui/icons-material/EditOutlined";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DeleteIcon from "@mui/icons-material/DeleteForeverOutlined";
 import BoxIcon from "@mui/icons-material/ArchiveTwoTone";
-import ExpandLessTwoToneIcon from '@mui/icons-material/ExpandLessTwoTone';
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
+import ExpandLessTwoToneIcon from "@mui/icons-material/ExpandLessTwoTone";
+import ExpandMoreTwoToneIcon from "@mui/icons-material/ExpandMoreTwoTone";
 import { RootState } from "../../../store/store";
 import {
   removeCargoSpace,
   copyCargoSpace,
 } from "../../../store/reducers/CargoReducer";
-import CargoEdit from "./EditCardo";
+import EditCargo from "./EditCardo";
 import CashOnDelivery from "./CashOnDelivery";
 
 const AddCargo = () => {
@@ -56,7 +56,7 @@ const AddCargo = () => {
               />
             </div>
             {editId === cargo.id ? (
-              <CargoEdit
+              <EditCargo
                 id={cargo.id}
                 initialWeight={cargo.weight.toString()}
                 initialSize={cargo.size}
@@ -64,7 +64,12 @@ const AddCargo = () => {
               />
             ) : (
               <>
+
+
+                {/*Добавить в Store о наложенном платеже */}
                 <CashOnDelivery />
+
+
                 <div>
                   <div style={{ display: "flex", gap: "75px" }}>
                     <p className="cargo-info">Вес: {cargo.weight} кг. </p>

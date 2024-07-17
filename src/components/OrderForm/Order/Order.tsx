@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import "../Style/style.css";
 // import { fetchOrderData } from "../../../api/fetchOrderData";
-import Order from "../../../api/testData";
+import Order from "../../../api/testData"; // фейк данные
 import { RootState } from "../../../store/store";
 
 const validationSchema = Yup.object({
@@ -140,6 +140,10 @@ const OrderForm = () => {
                   touched.address && errors.address ? errors.address : ""
                 }
               />
+            </div>
+
+            <div style={{marginBottom: 55, color: "red"}}>
+              <p>* - обязательные поля</p>
             </div>
 
             <button className="btn" type="submit">

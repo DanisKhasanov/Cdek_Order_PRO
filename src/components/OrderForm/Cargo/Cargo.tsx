@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
@@ -58,8 +58,7 @@ const Cargo = () => {
           >
             {({ errors, touched }) => (
               <Form>
-                {/* TODO: возможно убрать MT */}
-                <div style={{ display: "flex", gap: 40, marginTop: 5}}>
+                <div style={{ display: "flex", gap: 40, marginTop: 5 }}>
                   <div className="form-group cargo">
                     <label htmlFor="weight">* Вес (кг):</label>
                     <Field
@@ -84,9 +83,7 @@ const Cargo = () => {
                       className={`form-control ${
                         errors.size && touched.size ? "error" : ""
                       }`}
-                      
-                   
-                   >
+                    >
                       <option value="20x20x10" label="до 2 кг 20х20х10" />
                       <option value="30x30x15" label="от 2-5 кг 30х30х15" />
                       <option value="30x30x17" label="от 5-10 кг 30х30х17" />

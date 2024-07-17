@@ -15,9 +15,9 @@ const order = {
       address: 'ул. Лебедева, 1, к8'
     },
     to_location: {
-      code: 424,
-      city: 'Казань',
-      address: 'ул. Пушкина, 3'
+      code: 270,
+      city: 'Новосибирск',
+      address: 'Гоголя ул., 1'
     },
     packages: [
       {
