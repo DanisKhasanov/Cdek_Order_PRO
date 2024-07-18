@@ -71,6 +71,10 @@ button.next {
   color: black;
 }
 
+.button-disabled {
+  opacity: 0.5;
+}
+
 .buttons {
   display: flex;
   gap: 80px;
@@ -305,7 +309,7 @@ input:checked + .slider:before {
 .tariff-description {
   display: flex;
   flex-direction: column;
-margin-top: 5px;
+  margin-top: 5px;
 }
 
 .tariff-title {
@@ -326,7 +330,7 @@ margin-top: 5px;
   width: 200px;
   text-decoration: underline;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 18px;
 }
 .tariff-button:hover {
   color: blue;
@@ -363,7 +367,7 @@ margin-top: 5px;
 .address-input {
   margin-bottom: 5px;
   padding: 8px;
-  width: 390px;
+  width: 300px;
   height: 17px;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -379,10 +383,22 @@ margin-top: 5px;
   background-color: #ffffff;
   color: black;
   margin-top: 5px;
-  margin-bottom:9px;
+  margin-bottom: 9px;
   font-weight: 560;
 }
 
 .address-button:hover {
   color: blue;
+}
+
+.save-btn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background-color: #1ab248;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  height: 35px;
 }

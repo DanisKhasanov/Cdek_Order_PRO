@@ -16,7 +16,7 @@ const order = {
     },
     to_location: {
       code: 270,
-      city: 'Новосибирск',
+      city: 'Ульяновск',
       address: 'Гоголя ул., 1'
     },
     packages: [
@@ -34,7 +34,7 @@ const order = {
             amount: 1,
             cost: 100,
             payment: {
-              value: 0
+              value: 1
             }
           }
         ]

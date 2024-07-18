@@ -7,6 +7,8 @@ interface OrderFormState {
   phoneNumber: string;
   city: string;
   address: string;
+  payment: number;
+  weight: number;
 }
 
 const initialState: OrderFormState = {
@@ -15,6 +17,8 @@ const initialState: OrderFormState = {
   phoneNumber: '',
   city: '',
   address: '',
+  payment: 0,
+  weight: 0,
 };
 
 const orderFormSlice = createSlice({

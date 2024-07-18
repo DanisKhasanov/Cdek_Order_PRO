@@ -11,10 +11,9 @@ const initialValues = {
   weight: "",
   size: "20х20х10",
 };
-
+// TODO: додумать валидацию и вынести в отдельный компонент 
 const validationSchema = Yup.object().shape({
-  weight: Yup.number().required("Введите вес грузового места"),
-  size: Yup.string().required("Выберите размеры коробки"),
+  weight: Yup.number().required("Введите вес"),
 });
 
 //TODO: вынести в компонент????
@@ -23,10 +22,22 @@ type ButtonProps = {
   onClick?: any;
   className: string;
   children: any;
+  disabled?: boolean;
 };
-const ButtonCustom = ({ type, onClick, className, children }: ButtonProps) => {
+const ButtonCustom = ({
+  type,
+  onClick,
+  className,
+  children,
+  disabled,
+}: ButtonProps) => {
   return (
-    <button type={type} onClick={onClick} className={className}>
+    <button
+      type={type}
+      onClick={onClick}
+      className={`${className} ${disabled ? 'button-disabled' : ''}`} 
+      disabled={disabled}
+    >
       {children}
     </button>
   );
@@ -100,6 +111,7 @@ const Cargo = () => {
                     type="button"
                     className="next"
                     onClick={() => navigate("/tariffs")}
+                    disabled={cargoSpaces.length === 0}
                   >
                     Далее
                   </ButtonCustom>

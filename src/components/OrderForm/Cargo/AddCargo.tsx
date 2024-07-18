@@ -19,6 +19,8 @@ const AddCargo = () => {
   const cargoSpaces = useSelector(
     (state: RootState) => state.cargoSpace.cargoSpaces
   );
+
+  
   const [editId, setEditId] = useState<number | null>(null);
   const [showItemInfoId, setShowItemInfoId] = useState<number | null>(null);
 
@@ -55,6 +57,9 @@ const AddCargo = () => {
                 onClick={() => dispatch(removeCargoSpace(cargo.id))}
               />
             </div>
+
+
+
             {editId === cargo.id ? (
               <EditCargo
                 id={cargo.id}
@@ -64,11 +69,7 @@ const AddCargo = () => {
               />
             ) : (
               <>
-
-
-                {/*Добавить в Store о наложенном платеже */}
                 <CashOnDelivery />
-
 
                 <div>
                   <div style={{ display: "flex", gap: "75px" }}>
@@ -106,7 +107,7 @@ const AddCargo = () => {
         ))
       ) : (
         <p style={{ textAlign: "center", fontSize: "20px" }}>
-          Добавьте грузовое место
+          Добавьте грузовое место 
         </p>
       )}
     </div>

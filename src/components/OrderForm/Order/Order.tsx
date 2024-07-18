@@ -36,6 +36,8 @@ const OrderForm = () => {
               phoneNumber: order.recipient.phones[0].number,
               city: order.to_location.city,
               address: order.to_location.address,
+              payment: order.packages[0].items[0].payment.value,
+              weight: order.packages[0].weight,
             })
           );
         } catch (error) {

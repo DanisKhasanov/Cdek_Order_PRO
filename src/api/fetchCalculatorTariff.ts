@@ -63,7 +63,7 @@ const fakeResponse = {
     // },
     {
       tariff_code: 10,
-      tariff_name: "До Двери",
+      tariff_name: "До двери",
       tariff_description:
         "Отправитель самостоятельно доставляет груз/документы в офис СД «Экспресс-курьер», получатель самостоятельно забирает груз/документы в офисе СД «Экспресс-курьер»",
       delivery_mode: 4,
@@ -73,7 +73,7 @@ const fakeResponse = {
     },
     {
       tariff_code: 485,
-      tariff_name: "Экспресс До Двери",
+      tariff_name: "Экспресс До двери",
       tariff_description: "Экспресс-доставка",
       delivery_mode: 6,
       delivery_sum: 1080.0,

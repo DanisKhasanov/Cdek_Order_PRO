@@ -1,11 +1,21 @@
-import React, { useState } from "react";
-import Order from '../../../api/testData'
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/store";
+
 const CashOnDelivery = () => {
-
-  const order = Order; // буду получать тут сумму из МС и данные о Нал. Платеже
-
+  const orderData = useSelector((state: RootState) => state.orderForm);
   const [isEnabled, setIsEnabled] = useState(false);
   const [isAvailable, setIsAvailable] = useState(true);
+
+  useEffect(() => {
+    if (orderData.payment > 0) {
+      setIsAvailable(true);
+      setIsEnabled(true);
+    } else {
+      setIsAvailable(false);
+      setIsEnabled(false); 
+    }
+  }, [orderData.payment]);
 
   const toggleSwitch = () => {
     if (isAvailable) {
@@ -32,7 +42,7 @@ const CashOnDelivery = () => {
           <div className="cash-on-delivery-form">
             <div className="cash-on-delivery-form-group">
               <label>Оплата за ед. товара</label>
-              <input placeholder="Сумма из МС" readOnly/>
+              <input placeholder={orderData.weight.toString()} readOnly/>
             </div>
             <div className="cash-on-delivery-form-group">
               <label>Ставка НДС</label>
