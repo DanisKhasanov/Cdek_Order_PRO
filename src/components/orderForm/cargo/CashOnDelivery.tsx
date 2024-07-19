@@ -8,14 +8,14 @@ const CashOnDelivery = () => {
   const [isAvailable, setIsAvailable] = useState(true);
 
   useEffect(() => {
-    if (orderData.payment > 0) {
+    if (orderData.cod===true) {
       setIsAvailable(true);
       setIsEnabled(true);
     } else {
       setIsAvailable(false);
       setIsEnabled(false); 
     }
-  }, [orderData.payment]);
+  }, [orderData.cod]);
 
   const toggleSwitch = () => {
     if (isAvailable) {
@@ -42,7 +42,7 @@ const CashOnDelivery = () => {
           <div className="cash-on-delivery-form">
             <div className="cash-on-delivery-form-group">
               <label>Оплата за ед. товара</label>
-              <input placeholder={orderData.weight.toString()} readOnly/>
+              <input placeholder={orderData.sum.toString()} readOnly/>
             </div>
             <div className="cash-on-delivery-form-group">
               <label>Ставка НДС</label>

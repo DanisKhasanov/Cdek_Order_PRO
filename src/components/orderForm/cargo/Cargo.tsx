@@ -1,47 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field } from "formik";
-import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import AddCargo from "./AddCargo";
+import AddedCargo from "./AddedCargo";
 import { addCargoSpace } from "../../../store/reducers/CargoReducer";
 import { RootState } from "../../../store/store";
-
-const initialValues = {
-  weight: "",
-  size: "20х20х10",
-};
-// TODO: додумать валидацию и вынести в отдельный компонент 
-const validationSchema = Yup.object().shape({
-  weight: Yup.number().required("Введите вес"),
-});
-
-//TODO: вынести в компонент????
-type ButtonProps = {
-  type: any;
-  onClick?: any;
-  className: string;
-  children: any;
-  disabled?: boolean;
-};
-const ButtonCustom = ({
-  type,
-  onClick,
-  className,
-  children,
-  disabled,
-}: ButtonProps) => {
-  return (
-    <button
-      type={type}
-      onClick={onClick}
-      className={`${className} ${disabled ? 'button-disabled' : ''}`} 
-      disabled={disabled}
-    >
-      {children}
-    </button>
-  );
-};
+import ButtonCustom from "./ButtonCustom";
+import { validationSchema, initialValues } from "./Validation";
+import { CargoSizeOptions } from "../../../enum/CargoSize";
 
 const Cargo = () => {
   const dispatch = useDispatch();
@@ -54,12 +20,11 @@ const Cargo = () => {
     const newId =
       cargoSpaces.length > 0 ? cargoSpaces[cargoSpaces.length - 1].id + 1 : 1;
     dispatch(addCargoSpace({ ...values, id: newId }));
-    console.log("Form data", values);
   };
   return (
     <>
       <div className="cargo-form">
-        <AddCargo />
+        <AddedCargo />
 
         <div className="form-container">
           <Formik
@@ -95,10 +60,11 @@ const Cargo = () => {
                         errors.size && touched.size ? "error" : ""
                       }`}
                     >
-                      <option value="20x20x10" label="до 2 кг 20х20х10" />
-                      <option value="30x30x15" label="от 2-5 кг 30х30х15" />
-                      <option value="30x30x17" label="от 5-10 кг 30х30х17" />
-                      <option value="45x30x30" label="7 и более 45х30х30" />
+                      {CargoSizeOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
                     </Field>
                   </div>
                 </div>

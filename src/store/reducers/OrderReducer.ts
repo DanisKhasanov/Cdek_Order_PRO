@@ -2,23 +2,35 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface OrderFormState {
-  contract: string;
-  recipientName: string;
-  phoneNumber: string;
-  city: string;
-  address: string;
-  payment: number;
-  weight: number;
+  number: string;
+  recipient: {
+    name: string;
+    phones: { number: string }[];
+  };
+  to_location: {
+    code: number;
+    city: string;
+    address: string;
+  };
+  comment: string;
+  cod: boolean;
+  sum: number;
 }
 
 const initialState: OrderFormState = {
-  contract: '',
-  recipientName: '',
-  phoneNumber: '',
-  city: '',
-  address: '',
-  payment: 0,
-  weight: 0,
+  number: '',
+  recipient: {
+    name: '',
+    phones: [{ number: '' }],
+  },
+  to_location: {
+    code: 0,
+    city: '',
+    address: '',
+  },
+  comment: '',
+  cod: false,
+  sum: 0,
 };
 
 const orderFormSlice = createSlice({

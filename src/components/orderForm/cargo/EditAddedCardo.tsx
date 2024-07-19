@@ -1,33 +1,28 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { editCargoSpace } from "../../../store/reducers/CargoReducer";
+import { EditAddedCargoProps } from '../../../props/EditAddedCargoProps'
+import { CargoSizeOptions } from "../../../enum/CargoSize";
 
-interface CargoEditProps {
-  id: number;
-  initialWeight: string;
-  initialSize: string;
-  onCancel: () => void;
-}
 
-const CargoEdit = ({
+const EditAddedACargo = ({
   id,
-  initialWeight,
-  initialSize,
+  Weight,
+  Size,
   onCancel,
-}: CargoEditProps) => {
+}: EditAddedCargoProps) => {
 
   const dispatch = useDispatch();
-  
   const [editValues, setEditValues] = useState({
-    weight: initialWeight,
-    size: initialSize,
+    weight: Weight,
+    size: Size,
   });
 
   const handleSave = () => {
     dispatch(
       editCargoSpace({
         id,
-        weight: parseFloat(editValues.weight),
+        weight:editValues.weight,
         size: editValues.size,
       })
     );
@@ -40,17 +35,18 @@ const CargoEdit = ({
         type="number"
         value={editValues.weight}
         onChange={(e) =>
-          setEditValues({ ...editValues, weight: e.target.value })
+          setEditValues({ ...editValues, weight: Number(e.target.value) })
         }
       />
       <select
         value={editValues.size}
         onChange={(e) => setEditValues({ ...editValues, size: e.target.value })}
       >
-        <option value="20x20x10">до 2 кг 20х20х10</option>
-        <option value="30x30x15">от 2-5 кг 30х30х15</option>
-        <option value="30x30x17">от 5-10 кг 30х30х17</option>
-        <option value="45x30x30">7 и более 45х30х30</option>
+           {CargoSizeOptions.map(option => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
       </select>
       <button onClick={handleSave}>Сохранить</button>
       <button onClick={onCancel}>Отмена</button>
@@ -58,4 +54,4 @@ const CargoEdit = ({
   );
 };
 
-export default CargoEdit;
+export default EditAddedACargo;

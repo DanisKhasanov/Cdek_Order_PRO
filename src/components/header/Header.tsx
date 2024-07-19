@@ -1,10 +1,10 @@
 import React from "react";
 import { Route, Routes, NavLink } from "react-router-dom";
-import OrderForm from "../OrderForm/Order/Order";
-import Tariffs from "../OrderForm/Tariffs/Tariffs";
-import Waybill from "../OrderForm/Waybill/Waybill";
+import Tariffs from "../orderForm/tariffs/Tariffs";
+import Waybill from "../orderForm/waybill/Waybill";
 import "./Header.css";
-import Cargo from "../OrderForm/Cargo/Cargo";
+import Cargo from "../orderForm/cargo/Cargo";
+import OrderForm from '../orderForm/order/Order'
 
 const Navigation = () => {
   return (
@@ -27,7 +27,7 @@ const Navigation = () => {
         </nav>
         <Routes>
           <Route path="/" element={<OrderForm />} />
-          <Route path="/order" element={<OrderForm />} />
+          <Route path="/order" element={<OrderForm  />} />
           <Route path="/cargo" element={<Cargo />} />
           <Route path="/tariffs" element={<Tariffs />} />
           <Route path="/waybill" element={<Waybill />} />

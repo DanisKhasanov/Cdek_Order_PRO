@@ -11,16 +11,14 @@ import {
   removeCargoSpace,
   copyCargoSpace,
 } from "../../../store/reducers/CargoReducer";
-import EditCargo from "./EditCardo";
+import EditAddedACargo from "./EditAddedCardo";
 import CashOnDelivery from "./CashOnDelivery";
 
-const AddCargo = () => {
+const AddedCargo = () => {
   const dispatch = useDispatch();
   const cargoSpaces = useSelector(
     (state: RootState) => state.cargoSpace.cargoSpaces
   );
-
-  
   const [editId, setEditId] = useState<number | null>(null);
   const [showItemInfoId, setShowItemInfoId] = useState<number | null>(null);
 
@@ -61,10 +59,10 @@ const AddCargo = () => {
 
 
             {editId === cargo.id ? (
-              <EditCargo
+              <EditAddedACargo
                 id={cargo.id}
-                initialWeight={cargo.weight.toString()}
-                initialSize={cargo.size}
+                Weight={cargo.weight}
+                Size={cargo.size}
                 onCancel={handleCancelEdit}
               />
             ) : (
@@ -114,4 +112,4 @@ const AddCargo = () => {
   );
 };
 
-export default AddCargo;
+export default AddedCargo;
