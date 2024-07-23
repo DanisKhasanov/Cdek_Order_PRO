@@ -1,28 +1,26 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { editCargoSpace } from "../../../store/reducers/CargoReducer";
-import { EditAddedCargoProps } from '../../../props/EditAddedCargoProps'
+import { editCargoSpace } from "../../../store/reducers/OrderReducer";
+import { EditAddedCargoProps } from '../../../props/EditAddedCargoProps';
 import { CargoSizeOptions } from "../../../enum/CargoSize";
-
 
 const EditAddedACargo = ({
   id,
-  Weight,
-  Size,
+  weight,
+  size,
   onCancel,
 }: EditAddedCargoProps) => {
-
   const dispatch = useDispatch();
   const [editValues, setEditValues] = useState({
-    weight: Weight,
-    size: Size,
+    weight: weight,
+    size: size,
   });
 
   const handleSave = () => {
     dispatch(
       editCargoSpace({
-        id,
-        weight:editValues.weight,
+        index: id,
+        weight: editValues.weight,
         size: editValues.size,
       })
     );
@@ -42,7 +40,7 @@ const EditAddedACargo = ({
         value={editValues.size}
         onChange={(e) => setEditValues({ ...editValues, size: e.target.value })}
       >
-           {CargoSizeOptions.map(option => (
+        {CargoSizeOptions.map(option => (
           <option key={option.value} value={option.value}>
             {option.label}
           </option>

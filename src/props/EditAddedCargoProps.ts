@@ -1,6 +1,6 @@
 export interface EditAddedCargoProps {
   id: number;
-  Weight: number;
-  Size: string;
+  weight: number;
+  size: string;
   onCancel: () => void;
 }

@@ -288,6 +288,10 @@ input:checked + .slider:before {
   /* padding: 30px; */
   height: 545px;
   overflow-y: auto;
+  transition: background-color 0.3s;
+}
+.tariff-option.dimmed {
+  background-color: #ecebeb; /* Светло-серый цвет для затемнения */
 }
 
 .tariff-option {
@@ -390,7 +394,9 @@ input:checked + .slider:before {
 .address-button:hover {
   color: blue;
 }
-
+.address-button.dimmed {
+  background-color: #ecebeb; /* Светло-серый цвет для затемнения */
+}
 .save-btn {
   padding: 8px 12px;
   border: none;
@@ -401,4 +407,26 @@ input:checked + .slider:before {
   cursor: pointer;
   transition: background-color 0.3s;
   height: 35px;
+}
+
+
+.waybill-container {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  max-width: 600px;
+  margin: 20px auto;
+  background-color:  #ffffff;
+}
+
+.waybill-item {
+  margin-bottom: 15px;
+}
+
+.waybill-item span {
+  font-size: 20px;
+}
+
+.waybill-item span:first-child {
+  color: #333;
 }

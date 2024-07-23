@@ -1,32 +1,46 @@
-import React, { useRef, useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import "../styles/style.css";
-// import $ from "jquery";
 import fakeResponse from "../../../api/fetchCalculatorTariff";
 import { updateOrderForm } from "../../../store/reducers/OrderReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
-import { all } from "axios";
+import useCdekWidget from "./useWidgetCdek";
+import ButtonCustom from "../cargo/ButtonCustom";
+import { useNavigate } from "react-router-dom";
+interface Tariff {
+  tariff_code: number;
+  tariff_name: string;
+  tariff_description: string;
+  delivery_mode: number;
+  delivery_sum: number;
+  period_min: number;
+  period_max: number;
+}
 const Tariffs = () => {
-  const [tariff, setTariff] = useState<
-    {
-      tariff_code: number;
-      tariff_name: string;
-      tariff_description: string;
-      delivery_mode: number;
-      delivery_sum: number;
-      period_min: number;
-      period_max: number;
-    }[]
-  >([]);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const orderData = useSelector((state: RootState) => state.orderForm);
+  const [tariff, setTariff] = useState<Tariff[]>([]);
   const [loading, setLoading] = useState(true);
   const [address, setAddress] = useState("");
   const [showAddressInput, setShowAddressInput] = useState(false);
   const [selectedTariff, setSelectedTariff] = useState<number | null>(null);
-  const [selectedPickupPoint, setSelectedPickupPoint] = useState(false);
-  const [showWarning, setShowWarning] = useState(false);
-  const dispatch = useDispatch();
-  const orderData = useSelector((state: RootState) => state.orderForm);
-  const widgetRef = useRef<any>();
+  const [selectedPickupPoint, setSelectedPickupPoint] = useState<{
+    delivery?: any;
+    rate?: any;
+    address?: any;
+    type?: string;
+  }>({});
+  const [showWarningAddress, setShowWarningAddress] = useState(false);
+  const selectedTariffType = tariff
+    .find((t) => t.tariff_code === selectedTariff)
+    ?.tariff_name.includes("До Постамата")
+    ? "POSTAMAT"
+    : "PVZ";
+  const {  handleOpenWidget } = useCdekWidget(
+    (selected:any) => setSelectedPickupPoint(selected),
+    selectedTariffType
+  );
 
   const getCalculatorTariff = async () => {
     //TODO: Здесь будет запрос fetchCalculatorTariff.ts который вернет тариф и сроки доставки
@@ -42,91 +56,14 @@ const Tariffs = () => {
       setLoading(false);
     }
   };
-  const initializeWidget = async () => {
-    try {
-      if ((window as any).CDEKWidget) {
-        widgetRef.current = new (window as any).CDEKWidget({
-          apiKey: "f4e034c2-8c37-4168-8b97-99b6b3b268d7",
-          servicePath: "http://127.0.0.1:8000/service.php",
-          popup: true,
-          from: "Казань",
-          defaultLocation: orderData.to_location.city,
-          hideFilters: {
-            have_cashless: true, // скрывать кассовые операции
-            have_cash: true, // скрывать наличные
-            is_dressing_room: true, // скрывать способ примерки
-            type: true, // скрывать типы  доставки
-          },
-          forceFilters: {
-            // type: "PVZ", // показывать  ПВЗ
-            type: "POSTAMAT", // показывать ПОСТАМАТ
-          },
-
-          hideDeliveryOptions: {
-            door: true,
-          },
-
-          //TODO: возможно нужен для отображения конкретных тарифов
-          // tariffs: {
-          //   // Список тарифов "до ПВЗ"
-          //   office: [234, 136, 138],
-          //   // Список тарифов "до постамата"
-          //   pickup: [235, 138, 137],
-          // },
-
-          // TODO: возможно нужен для обрабочика события, что была выбрана доставка
-          // onReady: function () {},
-
-          onChoose(delivery, rate, address) {
-            try {
-              setSelectedPickupPoint(true);
-              console.log(delivery, rate, address);
-            } catch (error) {
-              console.error("Ошибка при выборе:", error);
-            }
-          },
-          onError: function (error) {
-            console.error("Ошибка виджета:", error);
-          },
-        });
-      } else {
-        console.error("CDEKWidget не загружен");
-      }
-    } catch (error) {
-      console.error("Ошибка инициализации виджета:", error);
-    }
-  };
 
   useEffect(() => {
-    initializeWidget();
     getCalculatorTariff();
   }, []);
 
-  const handleOpenWidget = () => {
-    if (widgetRef.current) {
-      widgetRef.current.open();
-    }
-  };
-  const handleShowAddressInput = (tariffName) => {
+  const handleShowAddressInput = (tariffName: string) => {
     if (tariffName === "До двери" || tariffName === "Экспресс До двери") {
       setShowAddressInput(!showAddressInput);
-    }
-  };
-
-  const handleRefreshTariffs = () => {
-    setLoading(true);
-    getCalculatorTariff();
-  };
-
-  const submit = () => {
-    if (selectedTariff) {
-      const selected = tariff.find((t) => t.tariff_code === selectedTariff);
-      if (!selectedPickupPoint) {
-        setShowWarning(true);
-        return;
-      }
-      setShowWarning(false);
-      console.log(selected);
     }
   };
 
@@ -139,6 +76,27 @@ const Tariffs = () => {
     );
     setShowAddressInput(false);
   };
+  const handleRefreshTariffs = () => {
+    setLoading(true);
+    getCalculatorTariff();
+  };
+
+  const submit = () => {
+    if (selectedTariff) {
+      const selected = tariff.find((t) => t.tariff_code === selectedTariff);
+      if (!selectedPickupPoint) {
+        setShowWarningAddress(true);
+        return;
+      }
+      setShowWarningAddress(false);
+      navigate ("/waybill");
+      dispatch(
+        // updateOrderForm({...orderData, delivery_point })
+      )
+      console.log("Selected Tariff:", selected);
+      console.log("Selected Pickup Point Details:", selectedPickupPoint);
+    }
+  };
 
   return (
     <div style={{ padding: 30 }}>
@@ -150,7 +108,7 @@ const Tariffs = () => {
             <div
               className={`tariff-option ${
                 selectedTariff === tariff.tariff_code ? "selected" : ""
-              }`}
+              } ${selectedTariff !== null && selectedTariff !== tariff.tariff_code ? "dimmed" : ""}`}
               key={tariff.tariff_code}
               onClick={() => setSelectedTariff(tariff.tariff_code)}
             >
@@ -158,10 +116,9 @@ const Tariffs = () => {
                 <input
                   type="radio"
                   name="tariff"
-                  value={tariff.tariff_code}
                   className="tariff-radio"
                   checked={selectedTariff === tariff.tariff_code}
-                  onChange={() => setSelectedTariff(tariff.tariff_code)}
+                  readOnly
                 />
               </div>
 
@@ -180,13 +137,15 @@ const Tariffs = () => {
                         className="tariff-button"
                         onClick={handleOpenWidget}
                       >
-                        {selectedPickupPoint ? (
+                        {/*TODO: Додумать логику чтобы при нажатии менялось состояние кнопки */}
+                        {/* {selectedPickupPoint === selectedTariffType ? (
                           <span style={{ color: "green" }}>Выбрано</span>
                         ) : (
                           "Выбрать на карте"
-                        )}
+                        )} */}
+                        Выбрать на карте
                       </button>
-                      {showWarning && !selectedPickupPoint && (
+                      { !selectedPickupPoint.type && (
                         <div
                           style={{
                             color: "red",
@@ -205,21 +164,23 @@ const Tariffs = () => {
                     <p>
                       <b>Адрес: </b> {orderData.to_location.address}
                     </p>
-                    {/* Узнать как можно выяснить есть ли прием наложенного платежа */}
-                    <p style={{ color: "red", fontSize: 13 }}>
+                    {/* TODO:Узнать как можно выяснить есть ли прием наложенного платежа */}
+                    {/* <p style={{ color: "red", fontSize: 13 }}>
                       В данном регионе отсутствует прием наложенного платежа
-                    </p>
+                    </p> */}
 
                     <div style={{ display: "flex", gap: "10px" }}>
                       <button
-                        className="address-button"
+                        className={`address-button  ${selectedTariff !== null && selectedTariff !== tariff.tariff_code ? "dimmed" : ""}`}
                         onClick={() =>
                           handleShowAddressInput(tariff.tariff_name)
                         }
                       >
                         Изменить адрес
                       </button>
-                      <button className="address-button">
+                      <button 
+                      className={`address-button  ${selectedTariff !== null && selectedTariff !== tariff.tariff_code ? "dimmed" : ""}`}
+                      >
                         Добавить комментарий
                       </button>
                     </div>
@@ -261,14 +222,13 @@ const Tariffs = () => {
           ))
         )}
       </div>
-
       <div className="buttons-tariffs">
-        <button className="btn" onClick={submit}>
+        <ButtonCustom className="btn" onClick={submit}>
           Отправить
-        </button>
-        <button className="next" onClick={handleRefreshTariffs}>
+        </ButtonCustom>
+        <ButtonCustom className="next" onClick={handleRefreshTariffs}>
           Пересчитать
-        </button>
+        </ButtonCustom>
       </div>
     </div>
   );

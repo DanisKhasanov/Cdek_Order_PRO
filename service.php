@@ -66,8 +66,8 @@ class service
         switch ($this->requestData['action']) {
             case 'offices':
                 $this->sendResponse($this->getOffices());
-            case 'calculate':
-                $this->sendResponse($this->calculate());
+            // case 'calculate':
+            //     $this->sendResponse($this->calculate());
             default:
                 $this->sendValidationError('Unknown action');
         }
@@ -295,8 +295,8 @@ class service
         return $this->httpRequest('deliverypoints', $this->requestData);
     }
 
-    protected function calculate()
-    {
-        return $this->httpRequest('calculator/tarifflist', $this->requestData, false, true);
-    }
+    // protected function calculate()
+    // {
+    //     return $this->httpRequest('calculator/tarifflist', $this->requestData, false, true);
+    // }
 }

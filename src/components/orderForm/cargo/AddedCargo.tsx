@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EditIcon from "@mui/icons-material/EditOutlined";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
@@ -10,15 +10,13 @@ import { RootState } from "../../../store/store";
 import {
   removeCargoSpace,
   copyCargoSpace,
-} from "../../../store/reducers/CargoReducer";
+} from "../../../store/reducers/OrderReducer";
 import EditAddedACargo from "./EditAddedCardo";
 import CashOnDelivery from "./CashOnDelivery";
 
 const AddedCargo = () => {
   const dispatch = useDispatch();
-  const cargoSpaces = useSelector(
-    (state: RootState) => state.cargoSpace.cargoSpaces
-  );
+  const packages = useSelector((state: RootState) => state.orderForm.packages);
   const [editId, setEditId] = useState<number | null>(null);
   const [showItemInfoId, setShowItemInfoId] = useState<number | null>(null);
 
@@ -36,35 +34,28 @@ const AddedCargo = () => {
 
   return (
     <div className="add-cargo">
-      {cargoSpaces.length > 0 ? (
-        cargoSpaces.map((cargo, index) => (
-          <div key={cargo.id} className="cargo-block">
+      {packages.length > 0 ? (
+        packages.map((cargo, index) => (
+          <div key={index} className="cargo-block">
             <div className="cargo-container">
               <BoxIcon className="cargo-icon box" />
-              <p className="cargo-text">Грузовое место №{cargo.id}</p>
+              <p className="cargo-text">Грузовое место №{index + 1}</p>
               <EditIcon
                 className="cargo-action-icon edit"
-                onClick={() => handleEdit(cargo.id)}
+                onClick={() => handleEdit(index)}
               />
               <ContentCopyIcon
                 className="cargo-action-icon copy"
-                onClick={() => dispatch(copyCargoSpace(cargo.id))}
+                onClick={() => dispatch(copyCargoSpace(index))}
               />
               <DeleteIcon
                 className="cargo-action-icon delete"
-                onClick={() => dispatch(removeCargoSpace(cargo.id))}
+                onClick={() => dispatch(removeCargoSpace(index))}
               />
             </div>
 
-
-
-            {editId === cargo.id ? (
-              <EditAddedACargo
-                id={cargo.id}
-                Weight={cargo.weight}
-                Size={cargo.size}
-                onCancel={handleCancelEdit}
-              />
+            {editId === index ? (
+            <EditAddedACargo id={index} weight={cargo.weight} size={`${cargo.length}x${cargo.width}x${cargo.height}`} onCancel={handleCancelEdit} />
             ) : (
               <>
                 <CashOnDelivery />
@@ -72,29 +63,31 @@ const AddedCargo = () => {
                 <div>
                   <div style={{ display: "flex", gap: "75px" }}>
                     <p className="cargo-info">Вес: {cargo.weight} кг. </p>
-                    <p className="cargo-info">Размер коробки: {cargo.size} </p>
+                    <p className="cargo-info">Размер коробки: {cargo.length}x{cargo.width}x{cargo.height} </p>
                     <div
                       className="cargo-info item"
                       style={{ cursor: "pointer" }}
-                      onClick={() => handleToggleItemInfo(cargo.id)}
+                      onClick={() => handleToggleItemInfo(index)}
                     >
                       <p>Информацию о товаре</p>
-                      {showItemInfoId === cargo.id ? (
+                      {showItemInfoId === index ? (
                         <ExpandLessTwoToneIcon style={{ fontSize: "35px" }} />
                       ) : (
                         <ExpandMoreTwoToneIcon style={{ fontSize: "35px" }} />
                       )}
                     </div>
                   </div>
-                  {showItemInfoId === cargo.id && (
+
+                  {/*TODO: Стоймость делить на все Грузовые места  */}
+                  {showItemInfoId === index && (
                     <div className="item-info">
                       <p>Наименование товара – стеклянные флаконы</p>
-                      <p>Код товара/артикул – {cargo.id}</p>
+                      <p>Код товара/артикул – {index+1}</p>
                       <p>Физический вес ед. товара – {cargo.weight} кг</p>
                       <p>Количество – 1</p>
                       <p>
                         Объявленная стоимость за ед. товара -{" "}
-                        {index === 0 ? 100 : 0}
+                        {(100 / packages.length).toFixed(2)} руб.
                       </p>
                     </div>
                   )}
@@ -105,7 +98,7 @@ const AddedCargo = () => {
         ))
       ) : (
         <p style={{ textAlign: "center", fontSize: "20px" }}>
-          Добавьте грузовое место 
+          Добавьте грузовое место
         </p>
       )}
     </div>

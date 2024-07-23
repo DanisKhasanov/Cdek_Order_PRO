@@ -1,8 +1,7 @@
-import React from "react";
 import { ButtonProps } from "../../../props/ButtonProps";
 
 const ButtonCustom = ({
-  type,
+  type = "button",
   onClick,
   className,
   children,

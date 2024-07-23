@@ -1,11 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import orderFormReducer from "./reducers/OrderReducer";
-import cargoSpaceReducer from "./reducers/CargoReducer";
 
 const store = configureStore({
   reducer: {
     orderForm: orderFormReducer,
-    cargoSpace: cargoSpaceReducer,
   },
 });
 

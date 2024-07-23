@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import  { useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { updateOrderForm } from "../../../store/reducers/OrderReducer";
@@ -61,16 +61,6 @@ const OrderForm = () => {
       >
         {({ errors, touched }) => (
           <Form>
-            {/* <div className="form-group">
-              <label htmlFor="number">Номер заказа:</label>
-              <Field
-                type="text"
-                id="number"
-                name="number"
-                className="form-control"
-                disabled
-              />
-            </div> */}
             <div className="form-group">
               <label htmlFor="contract">* Договор СДЕК:</label>
               <Field
@@ -102,7 +92,7 @@ const OrderForm = () => {
                 }
               />
             </div>
-
+                  {/*TODO: Решить вопрос с [object Object] */}
             <div className="form-group">
               <label htmlFor="recipient.phones[0].number">
                 * Номер телефона:

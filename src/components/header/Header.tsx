@@ -1,4 +1,3 @@
-import React from "react";
 import { Route, Routes, NavLink } from "react-router-dom";
 import Tariffs from "../orderForm/tariffs/Tariffs";
 import Waybill from "../orderForm/waybill/Waybill";

@@ -1,26 +1,30 @@
-// try {
-//     const response = await axios.post(
-//       "https://api.edu.cdek.ru/v2/calculator/tariff",
-//       payload,
-//       {
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     );
-//     console.log("Ответ сервера:", response.data);
-//     navigate("/tariffs"); // Переход на следующую страницу после успешного запроса
+// import axios from "axios";
+
+// export const fetchCalculatorTariff = async (payload: any) => {
+//   try {
+//     const response = await axios.post("https://jsonplaceholder.typicode.com/posts", payload, {
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//     });
+
+//     console.log("Ответ от сервера:", response.data);
+//     return response.data;
 //   } catch (error) {
-//     console.error("Ошибка при отправке запроса:", error);
+//     console.error("Ошибка при отправке данных на сервер:", error);
+//     throw error;
 //   }
 // };
 
-//TODO: запрос либо в бэкенд либо по API cdek для калькулятора тарифа. При этом надо отфильтровать по Режимы доставки = delivery_mode (склад-ПВЗ, склад-дверь, склад-постомат)
+
+
+
+
 
 const fakeResponse = {
   tariff_codes: [
     {
-      tariff_code: 1,
+      tariff_code: 136,
       tariff_name: "До ПВЗ",
       tariff_description:
       "Классическая экспресс-доставка документов и грузов по всей территории России по принципу «от двери до двери» со стандартными сроками доставки",
