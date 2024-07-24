@@ -1,4 +1,4 @@
-import  { useEffect } from "react";
+import { useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { updateOrderForm } from "../../../store/reducers/OrderReducer";
@@ -7,44 +7,44 @@ import "../styles/style.css";
 import Order from "../../../api/testData"; // фейковые данные
 import { RootState } from "../../../store/store";
 import { validationSchema } from "./Validation";
+import { GetOrderData } from "../../../api/GetOrderData";
 
 const OrderForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const orderData = useSelector((state: RootState) => state.orderForm);
+  const getOrderData = async () => {
+    try {
+      //TODO: получать данные буду от бекенда
+      const order = await GetOrderData(Order);
+
+      dispatch(
+        updateOrderForm({
+          number: order.number,
+          recipient: {
+            name: order.recipient.name,
+            phones: order.recipient.phones,
+          },
+          to_location: {
+            code: order.to_location.code,
+            city: order.to_location.city,
+            address: order.to_location.address,
+          },
+          comment: order.comment,
+          cod: order.cod,
+          sum: order.sum,
+        })
+      );
+    } catch (error) {
+      console.error("Ошибка при загрузке данных заказа", error);
+    }
+  };
 
   useEffect(() => {
     if (!orderData.recipient.name) {
-      const getOrderData = async () => {
-        try {
-          //TODO: Здесь будет запрос fetchOrderData.ts
-          const order = Order;
-
-          dispatch(
-            updateOrderForm({
-              number: order.number,
-              recipient: {
-                name: order.recipient.name,
-                phones: order.recipient.phones,
-              },
-              to_location: {
-                code: order.to_location.code,
-                city: order.to_location.city,
-                address: order.to_location.address,
-              },
-              comment: order.comment,
-              cod: order.cod,
-              sum: order.sum,
-            })
-          );
-        } catch (error) {
-          console.error("Ошибка при загрузке данных заказа", error);
-        }
-      };
-
       getOrderData();
     }
-  }, [dispatch, orderData]);
+  }, []);
 
   const onSubmit = (values: any) => {
     dispatch(updateOrderForm(values));
@@ -69,6 +69,8 @@ const OrderForm = () => {
                 name="contract"
                 className={"form-control"}
               >
+
+                {/*Предостлять данные с выбором */}
                 <option value="ГРМ" label="ГРМ" />
                 <option value="ЗАР" label="ЗАР" />
               </Field>
@@ -92,7 +94,7 @@ const OrderForm = () => {
                 }
               />
             </div>
-                  {/*TODO: Решить вопрос с [object Object] */}
+            {/*TODO: Решить вопрос с [object Object] */}
             <div className="form-group">
               <label htmlFor="recipient.phones[0].number">
                 * Номер телефона:

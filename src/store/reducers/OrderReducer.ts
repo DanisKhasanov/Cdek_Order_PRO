@@ -21,7 +21,6 @@ interface OrderFormState {
   packages: Package[];
   comment: string;
   delivery_point: string; // код до какого ПВЗ или постамата
-  shipment_point: string; // код с какого ПВЗ
   tariff_code: number; // код тарифа 
   cod: boolean;
   sum: number;
@@ -41,7 +40,6 @@ const initialState: OrderFormState = {
   packages: [],
   comment: "",
   delivery_point: "",
-  shipment_point: "",
   tariff_code: 0,
   cod: false,
   sum: 0,

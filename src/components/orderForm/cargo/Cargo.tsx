@@ -7,13 +7,11 @@ import { RootState } from "../../../store/store";
 import ButtonCustom from "./ButtonCustom";
 import { validationSchema, initialValues } from "./Validation";
 import { CargoSizeOptions } from "../../../enum/CargoSize";
-// import { fetchCalculatorTariff } from "../../../api/fetchCalculatorTariff";
 
 const Cargo = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const packages = useSelector((state: RootState) => state.orderForm.packages);
-  // const orderForm = useSelector((state: RootState) => state.orderForm);
 
   const addCargo = (values: any) => {
     const newId = packages.length;
@@ -23,10 +21,7 @@ const Cargo = () => {
   };
 
   const submit = async () => {
-    //TODO: будет запрос на бэкенд с отправкой грузовых место
     try {
-      // const data = await fetchCalculatorTariff(orderForm); 
-
       navigate("/tariffs");
     } catch (error) {
       console.error("Ошибка:", error);
@@ -48,7 +43,7 @@ const Cargo = () => {
                 <div className="form-group cargo">
                   <label htmlFor="weight">* Вес (кг):</label>
                   <Field
-                    type="text"
+                    type="number"
                     id="weight"
                     name="weight"
                     className={`form-control ${

@@ -291,7 +291,7 @@ input:checked + .slider:before {
   transition: background-color 0.3s;
 }
 .tariff-option.dimmed {
-  background-color: #ecebeb; /* Светло-серый цвет для затемнения */
+  background-color: #F4F4F4; /* Светло-серый цвет для затемнения */
 }
 
 .tariff-option {
@@ -324,7 +324,7 @@ input:checked + .slider:before {
   margin: 10px 4px 4px 0;
 }
 .tariff-button {
-  margin-top: 10px;
+  margin-top: 7px;
   margin-bottom: 10px;
   color: blalck;
   border: none;
@@ -395,7 +395,7 @@ input:checked + .slider:before {
   color: blue;
 }
 .address-button.dimmed {
-  background-color: #ecebeb; /* Светло-серый цвет для затемнения */
+  background-color: #F4F4F4; /* Светло-серый цвет для затемнения */
 }
 .save-btn {
   padding: 8px 12px;
@@ -409,14 +409,13 @@ input:checked + .slider:before {
   height: 35px;
 }
 
-
 .waybill-container {
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 10px;
   max-width: 600px;
   margin: 20px auto;
-  background-color:  #ffffff;
+  background-color: #ffffff;
 }
 
 .waybill-item {
@@ -429,4 +428,48 @@ input:checked + .slider:before {
 
 .waybill-item span:first-child {
   color: #333;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+}
+
+.loading-container p {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #333;
+}
+
+.order-check {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.success-message {
+  font-size: 18px;
+  font-weight: bold;
+  color: #4caf50;
+}
+.fail-message {
+  font-size: 18px;
+  font-weight: bold;
+  color: #f44336;
+}
+.waybill-content {
+  padding: 20px;
+}
+
+.waybill-item {
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.waybill-item b {
+  font-weight: bold;
 }

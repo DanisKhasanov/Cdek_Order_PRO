@@ -2,7 +2,7 @@ import { useRef, useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 
-const useCdekWidget = (
+const UseCdekWidget = (
   setSelectedPickupPoint: any,
   selectedTariffType: any
 ) => {
@@ -76,4 +76,4 @@ const useCdekWidget = (
   return { initializeWidget, handleOpenWidget };
 };
 
-export default useCdekWidget;
+export default UseCdekWidget;
