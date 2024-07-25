@@ -20,8 +20,10 @@ interface OrderFormState {
   };
   packages: Package[];
   comment: string;
-  delivery_point: string; // код до какого ПВЗ или постамата
-  tariff_code: number; // код тарифа 
+  delivery_point: string;
+  delivery_point_address: any;
+  tariff_code: number;
+  services: { code: string; parameter: string; }[] | [];
   cod: boolean;
   sum: number;
 }
@@ -40,7 +42,9 @@ const initialState: OrderFormState = {
   packages: [],
   comment: "",
   delivery_point: "",
+  delivery_point_address: {},
   tariff_code: 0,
+  services: [],
   cod: false,
   sum: 0,
 };
@@ -88,6 +92,14 @@ const orderFormSlice = createSlice({
         state.packages.push({ ...packageToCopy });
       }
     },
+
+    updateServices: (
+      state,
+      action: PayloadAction<{ code: string; parameter: string }>
+    ) => {
+      const { code, parameter } = action.payload;
+      state.services = [{ code, parameter }];
+    },
   },
 });
 
@@ -97,5 +109,6 @@ export const {
   removeCargoSpace,
   editCargoSpace,
   copyCargoSpace,
+  updateServices,
 } = orderFormSlice.actions;
 export default orderFormSlice.reducer;

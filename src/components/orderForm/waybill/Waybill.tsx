@@ -60,14 +60,26 @@ const Waybill = () => {
                 </span>
               </div>
               <div className="waybill-item">
-                <span>Накладная в город: </span>
-                <span>
-                  <u>
-                    {" "}
-                    <b>{orderData.to_location.city}</b>,{" "}
-                    {orderData.to_location.address}
-                  </u>
-                </span>
+              {orderData.to_location?.city ? (
+                  <>
+                    <span>Накладная в город: </span>
+                    <span>
+                      <u>
+                        <b>{orderData.to_location.city}</b>,{" "}
+                        {orderData.to_location.address}
+                      </u>
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span>Накладная в {orderData.delivery_point_address?.type}: </span>
+                    <span>
+                      <u>
+                        <b>{orderData.delivery_point_address?.city || ""}</b>,{" "} {orderData.delivery_point_address.address}
+                      </u>
+                    </span>
+                  </>
+                )}
               </div>
               <div className="waybill-item">
                 <span>Последний статус по накладной: </span>
@@ -80,14 +92,14 @@ const Waybill = () => {
               </div>
 
               <div className="waybill-item">
-                <a href="">
+                <a href="#">
                   <span>Переход в СДЕК к заказу</span>
                 </a>
               </div>
 
               {packages.length > 1 && (
                 <div className="waybill-item">
-                  <a href="">
+                  <a href="#">
                     <span>Печати на штрихкоды</span>
                   </a>
                 </div>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { updateOrderForm } from "../../../store/reducers/OrderReducer";
 import { TariffActionsProps } from "../../../props/TariffActionsProps";
 import { DELIVERY_MODE } from "../../../enum/DeliveryMode";
+import DoorDelivery from "./DoorDelivery";
 
 const TariffActions = ({
   selectedTariff,
@@ -35,7 +36,13 @@ const TariffActions = ({
   };
   return (
     <div>
+
       {selectedTariff === tariffCode && (
+        <div>
+      <DoorDelivery />
+
+
+
         <div style={{ display: "flex", gap: "10px", marginTop: 3 }}>
           <button
             className={`address-button ${
@@ -57,6 +64,7 @@ const TariffActions = ({
           >
             Показать комментарий
           </button>
+        </div>
         </div>
       )}
 

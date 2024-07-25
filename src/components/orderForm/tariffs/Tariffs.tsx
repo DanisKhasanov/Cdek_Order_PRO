@@ -31,15 +31,13 @@ const Tariffs = () => {
     (selected: any) => setSelectedPickupPoint(selected),
     selectedTariffType
   );
-
   const getTariffData = async () => {
     try {
       //TODO: отправлять надо будет данные о коробках и весе
       const data = await GetTariffData(fakeResponse);
       //TODO: возможно потребуется другая обработка данных
-      const filterTariffs = data.tariff_codes.filter(
-        (tariff: any) =>
-          Object.values(DELIVERY_MODE).includes(tariff.delivery_mode)
+      const filterTariffs = data.tariff_codes.filter((tariff: any) =>
+        Object.values(DELIVERY_MODE).includes(tariff.delivery_mode)
       );
       setTariff(filterTariffs);
     } catch (error) {
@@ -64,7 +62,16 @@ const Tariffs = () => {
           ...orderData,
           tariff_code: selected?.tariff_code,
           //TODO: условие, что если до двери то to_location, если нет то delivry_point
-          delivery_point: selectedPickupPoint.address.code,
+          to_location:
+            selected?.delivery_mode === DELIVERY_MODE.DOOR
+              ? orderData.to_location
+              : undefined,
+          delivery_point:
+            selected?.delivery_mode === DELIVERY_MODE.POSTAMAT ||
+            selected?.delivery_mode === DELIVERY_MODE.PVZ
+              ? selectedPickupPoint.address.code
+              : undefined,
+          delivery_point_address: selectedPickupPoint.address,
         })
       );
 
@@ -105,19 +112,16 @@ const Tariffs = () => {
 
               <div className="tariff-description">
                 <span className="tariff-title">{tariff.tariff_name}</span>
-
                 <div>
                   <p>
                     <b>Сроки: </b>
-                    <u>
-                      {tariff.period_min}-{tariff.period_max} раб. дн.
-                    </u>
+                    {tariff.period_min}-{tariff.period_max} раб. дн.
                   </p>
                 </div>
 
                 <div>
                   {tariff.delivery_mode !== DELIVERY_MODE.DOOR && (
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <div style={{ display: "flex", alignItems: "center",  }}>
                       <button
                         className="tariff-button"
                         onClick={handleOpenWidget}

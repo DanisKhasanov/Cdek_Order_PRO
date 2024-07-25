@@ -91,7 +91,10 @@ button.next {
   text-align: center;
   border-bottom: 2px solid #d3d3d3;
 }
-
+.cash-on-delivery.tariff {
+  border-bottom: none;
+  display: block;
+}
 .cash-on-delivery-container {
   display: flex;
   align-items: center;
@@ -146,8 +149,7 @@ button.next {
   bottom: 0;
   background-color: #ccc;
   transition: 0.4s;
-  border-radius: 280px; /* Make the slider round */
-  box-shadow: 0 0 1px #2196f3;
+  border-radius: 20px;
 }
 
 .slider:before {
@@ -285,13 +287,12 @@ input:checked + .slider:before {
 }
 
 .tariffs-container {
-  /* padding: 30px; */
   height: 545px;
   overflow-y: auto;
   transition: background-color 0.3s;
 }
 .tariff-option.dimmed {
-  background-color: #F4F4F4; /* Светло-серый цвет для затемнения */
+  background-color: #f4f4f4;
 }
 
 .tariff-option {
@@ -317,7 +318,9 @@ input:checked + .slider:before {
 }
 
 .tariff-title {
-  font-weight: bold;
+  font-weight: 800;
+  font-size: 21px;
+  margin-bottom: 7px;
 }
 
 .tariff-description p {
@@ -343,9 +346,7 @@ input:checked + .slider:before {
 .tariff-cost {
   text-align: right;
 }
-.tariff-title {
-  font-size: 20px;
-}
+
 .tariff-cost span {
   font-size: 20px;
   font-weight: bold;
@@ -395,7 +396,7 @@ input:checked + .slider:before {
   color: blue;
 }
 .address-button.dimmed {
-  background-color: #F4F4F4; /* Светло-серый цвет для затемнения */
+  background-color: #f4f4f4; /* Светло-серый цвет для затемнения */
 }
 .save-btn {
   padding: 8px 12px;
@@ -472,4 +473,63 @@ input:checked + .slider:before {
 
 .waybill-item b {
   font-weight: bold;
+}
+
+.switch-container {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.buttons-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 11px;
+}
+
+.lift,
+.manual {
+  width: 200px;
+  height: 30px;
+  border: 1px solid silver;
+  border-radius: 6px;
+  color: black;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #ffffff;
+  color: black;
+
+  font-weight: 560;
+}
+.lift:hover,
+.manual:hover {
+  color: blue;
+}
+
+.manual.active,
+.lift.active {
+  background-color: #1ab248;
+  color: white;
+}
+.manual-input-container {
+  margin-top: 10px;
+}
+
+.manual-input-container input {
+  margin-left: 205px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 200px;
+  max-width: 300px;
+  box-sizing: border-box;
+}
+.manual-input.error {
+  border: 1px solid red;
 }

@@ -1,0 +1,4 @@
+export enum DOOR_DELIVERY {
+  LIFT = "GET_UP_FLOOR_BY_ELEVATOR ",
+  MANUAL = "GET_UP_FLOOR_BY_HAND ",
+}
