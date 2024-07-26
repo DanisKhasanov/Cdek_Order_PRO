@@ -8,7 +8,7 @@ const order = {
   to_location: {
     code: 424,
     city: 'Казань',
-    address: 'ул. Пушкина, 3',
+    address: '',
   },
   comment: 'Тестовый заказ. Позвоните за час.',
   cod: true,

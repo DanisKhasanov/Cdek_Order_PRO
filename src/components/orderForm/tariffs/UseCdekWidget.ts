@@ -21,7 +21,7 @@ const UseCdekWidget = (
           servicePath: servicePath,
           popup: true,
           from: "Казань",
-          defaultLocation: orderData.to_location.city,
+          defaultLocation: orderData.to_location.address,
           hideFilters: {
             have_cashless: true,
             have_cash: true,

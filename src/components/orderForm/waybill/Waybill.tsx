@@ -65,7 +65,6 @@ const Waybill = () => {
                     <span>Накладная в город: </span>
                     <span>
                       <u>
-                        <b>{orderData.to_location.city}</b>,{" "}
                         {orderData.to_location.address}
                       </u>
                     </span>

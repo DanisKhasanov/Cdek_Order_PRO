@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState, forwardRef } from "react";
 import { Formik, Form, Field } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { updateOrderForm } from "../../../store/reducers/OrderReducer";
@@ -8,16 +8,24 @@ import Order from "../../../api/testData"; // фейковые данные
 import { RootState } from "../../../store/store";
 import { validationSchema } from "./Validation";
 import { GetOrderData } from "../../../api/GetOrderData";
+import { AddressSuggestions } from "react-dadata";
+import { StyledInput } from "./style";
+import "react-dadata/dist/react-dadata.css";
 
 const OrderForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const orderData = useSelector((state: RootState) => state.orderForm);
+
+
+  const CustomInput = forwardRef((props, ref: any) => (
+    <StyledInput {...props} ref={ref} />
+  ));
+
+
   const getOrderData = async () => {
     try {
-      //TODO: получать данные буду от бекенда
       const order = await GetOrderData(Order);
-
       dispatch(
         updateOrderForm({
           number: order.number,
@@ -59,7 +67,7 @@ const OrderForm = () => {
         validationSchema={validationSchema}
         onSubmit={onSubmit}
       >
-        {({ errors, touched }) => (
+        {({ errors, touched, setFieldValue }) => (
           <Form>
             <div className="form-group">
               <label htmlFor="contract">* Договор СДЕК:</label>
@@ -67,10 +75,8 @@ const OrderForm = () => {
                 as="select"
                 id="contract"
                 name="contract"
-                className={"form-control"}
+                className="form-control"
               >
-
-                {/*Предостлять данные с выбором */}
                 <option value="ГРМ" label="ГРМ" />
                 <option value="ЗАР" label="ЗАР" />
               </Field>
@@ -94,7 +100,7 @@ const OrderForm = () => {
                 }
               />
             </div>
-            {/*TODO: Решить вопрос с [object Object] */}
+
             <div className="form-group">
               <label htmlFor="recipient.phones[0].number">
                 * Номер телефона:
@@ -119,41 +125,19 @@ const OrderForm = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="to_location.city">* Город получателя:</label>
-              <Field
-                type="text"
-                id="to_location.city"
-                name="to_location.city"
-                className={`form-control ${
-                  errors.to_location?.city && touched.to_location?.city
-                    ? "error"
-                    : ""
-                }`}
-                placeholder={
-                  touched.to_location?.city && errors.to_location?.city
-                    ? errors.to_location.city
-                    : ""
-                }
-              />
-            </div>
-
-            <div className="form-group">
               <label htmlFor="to_location.address">* Адрес получателя:</label>
-              <Field
-                type="text"
-                id="to_location.address"
-                name="to_location.address"
-                className={`form-control ${
-                  errors.to_location?.address && touched.to_location?.address
-                    ? "error"
-                    : ""
-                }`}
-                placeholder={
-                  touched.to_location?.address && errors.to_location?.address
-                    ? errors.to_location.address
-                    : ""
-                }
-              />
+              <div className="suggestion">
+                <AddressSuggestions
+                  token="b2c421789d18d800875080844d86917099cd8416"
+                  onChange={(suggestion: any) => {
+                    console.log(suggestion
+                      );
+                    setFieldValue("to_location.address", suggestion.unrestricted_value);
+                  }}
+                  customInput={CustomInput}
+                  placeholder={"Укажите адрес получателя" as any}
+                />
+              </div>
             </div>
 
             <div style={{ marginBottom: 55, color: "red" }}>
