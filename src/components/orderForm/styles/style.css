@@ -370,10 +370,11 @@ input:checked + .slider:before {
   }
 }
 .address-input {
+  margin-top: 5px;
   margin-bottom: 5px;
   padding: 8px;
-  width: 300px;
-  height: 17px;
+  width: 280px;
+  height: 100%;
   border: 1px solid #ccc;
   border-radius: 6px;
 }
@@ -535,18 +536,3 @@ input:checked + .slider:before {
 }
 
 
-/* .suggestion ul {
-  position: absolute;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  z-index: 10;
-  background-color: #fff;
-  box-shadow: 0 1px 6px 3px rgba(0,0,0,.1);
-  top: calc(100% + 8px);
-  border-radius: 4px;
-  overflow: hidden;
-  left: 0;
-  right: 0;
-  text-align: left;
-} */

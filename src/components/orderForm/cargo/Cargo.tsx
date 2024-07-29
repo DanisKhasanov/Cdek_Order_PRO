@@ -2,21 +2,54 @@ import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field } from "formik";
 import { useNavigate } from "react-router-dom";
 import AddedCargo from "./AddedCargo";
-import { addCargoSpace } from "../../../store/reducers/OrderReducer";
+import {
+  addCargoSpace,
+  updateOrderForm,
+} from "../../../store/reducers/OrderReducer";
 import { RootState } from "../../../store/store";
 import ButtonCustom from "./ButtonCustom";
 import { validationSchema, initialValues } from "./Validation";
 import { CargoSizeOptions } from "../../../enum/CargoSize";
+import { GetDataCity } from "../../../api/GetDataCity";
+import { useEffect } from "react";
 
 const Cargo = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const packages = useSelector((state: RootState) => state.orderForm.packages);
+  const orderData = useSelector((state: RootState) => state.orderForm);
+  
+  const getDataOrder = async () => {
+    try {
+      const response = await GetDataCity(orderData);
+      if (response) {
+        dispatch(
+          updateOrderForm({
+            ...orderData,
+            to_location: { ...orderData.to_location, code: response.code },
+            cod: response.cod,
+          })
+        );
+      } else {
+        console.log("Response is empty");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    getDataOrder();
+  }, []);
 
   const addCargo = (values: any) => {
     const newId = packages.length;
     dispatch(
-      addCargoSpace({ index: newId, weight: values.weight, size: values.size })
+      addCargoSpace({
+        index: newId,
+        weight: values.weight,
+        size: values.size,
+      })
     );
   };
 

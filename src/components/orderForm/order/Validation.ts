@@ -10,7 +10,6 @@ export const validationSchema = Yup.object({
     ),
   }),
   to_location: Yup.object({
-    city: Yup.string().required("Город обязателен"),
     address: Yup.string().required("Адрес обязателен"),
   }),
 });

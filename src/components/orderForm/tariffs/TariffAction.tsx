@@ -1,10 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
-import { useState } from "react";
-import { updateOrderForm } from "../../../store/reducers/OrderReducer";
+import { forwardRef, useState } from "react";
+import {
+  editCargoSpace,
+  updateOrderForm,
+} from "../../../store/reducers/OrderReducer";
 import { TariffActionsProps } from "../../../props/TariffActionsProps";
 import { DELIVERY_MODE } from "../../../enum/DeliveryMode";
 import DoorDelivery from "./DoorDelivery";
+import { AddressSuggestions } from "react-dadata";
+import { StyledInput } from "./StyleInputAddress";
 
 const TariffActions = ({
   selectedTariff,
@@ -15,16 +20,30 @@ const TariffActions = ({
   const orderData = useSelector((state: RootState) => state.orderForm);
   const [showComment, setShowComment] = useState(false);
   const [address, setAddress] = useState("");
+  const [comment, setComment] = useState("");
   const dispatch = useDispatch();
+  const apiKey = import.meta.env.VITE_DADATA_API_KEY;
+
+  const CustomInput = forwardRef((props, ref: any) => (
+    <StyledInput {...props} ref={ref} />
+  ));
   const handleShowAddressInput = (deliveryName: number) => {
     if (deliveryName === DELIVERY_MODE.DOOR) {
       setShowAddressInput(!showAddressInput);
     }
   };
-  const handleShowComment = (deliveryName: number) => {
+  const handleShowComment = () => {
     setShowComment(!showComment);
   };
-
+  const handleChangeComment = () => {
+    dispatch(
+      updateOrderForm({
+        ...orderData,
+        comment: comment,
+      })
+    );
+    setShowComment(false);
+  };
   const handleChangeAddress = () => {
     dispatch(
       updateOrderForm({
@@ -36,46 +55,44 @@ const TariffActions = ({
   };
   return (
     <div>
-
       {selectedTariff === tariffCode && (
         <div>
-      <DoorDelivery />
+          <DoorDelivery />
 
+          <div style={{ display: "flex", gap: "10px", marginTop: 3 }}>
+            <button
+              className={`address-button ${
+                selectedTariff !== null && selectedTariff !== tariffCode
+                  ? "dimmed"
+                  : ""
+              }`}
+              onClick={() => handleShowAddressInput(deliveryName)}
+            >
+              Изменить адрес
+            </button>
 
-
-        <div style={{ display: "flex", gap: "10px", marginTop: 3 }}>
-          <button
-            className={`address-button ${
-              selectedTariff !== null && selectedTariff !== tariffCode
-                ? "dimmed"
-                : ""
-            }`}
-            onClick={() => handleShowAddressInput(deliveryName)}
-          >
-            Изменить адрес
-          </button>
-          <button
-            className={`address-button ${
-              selectedTariff !== null && selectedTariff !== tariffCode
-                ? "dimmed"
-                : ""
-            }`}
-            onClick={() => handleShowComment(deliveryName)}
-          >
-            Показать комментарий
-          </button>
-        </div>
+            <button
+              className={`address-button ${
+                selectedTariff !== null && selectedTariff !== tariffCode
+                  ? "dimmed"
+                  : ""
+              }`}
+              onClick={() => handleShowComment()}
+            >
+              Указать комментарий
+            </button>
+          </div>
         </div>
       )}
 
       {showAddressInput && selectedTariff === tariffCode && (
         <div style={{ display: "flex", gap: "10px" }}>
-          <input
-            type="text"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder={orderData.to_location.address}
-            className="address-input"
+          <AddressSuggestions
+            token={apiKey}
+            onChange={(suggestion: any) => {
+              setAddress(suggestion.unrestricted_value);
+            }}
+            customInput={CustomInput}
           />
 
           <button
@@ -94,7 +111,24 @@ const TariffActions = ({
       )}
 
       {showComment && selectedTariff === tariffCode && (
-        <div className="address-input">{orderData.comment}</div>
+        <div>
+          <input
+            type="text"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            className="address-input"
+            placeholder="Укажите комментарий"
+          />
+
+          <button
+            onClick={() => {
+              handleChangeComment();
+            }}
+            className="save-btn"
+          >
+            Сохранить
+          </button>
+        </div>
       )}
     </div>
   );

@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const GetTariffData = async (payload: any) => {
   try {
-    const response = await axios.post("https://jsonplaceholder.typicode.com/posts", payload, {
+    const response = await axios.post("http://94.180.255.226:8020/tarifflist", payload, {
       headers: {
         "Content-Type": "application/json",
       },

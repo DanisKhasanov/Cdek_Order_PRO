@@ -15,8 +15,12 @@ const DoorDelivery = () => {
   const toggleSwitch = () => {
     if (isAvailable) {
       setIsEnabled(!isEnabled);
+      if (isEnabled) {
+        dispatch(updateServices(null));
+      } else {
+        dispatch(updateServices({ code: DOOR_DELIVERY.LIFT, parameter: "" }));
+      }
       setShowInput(false);
-      dispatch(updateServices({ code: DOOR_DELIVERY.LIFT, parameter: "" }));
     }
   };
 
@@ -46,12 +50,7 @@ const DoorDelivery = () => {
     <div className="cash-on-delivery tariff">
       <div style={{ display: "flex", alignItems: "center", marginTop: 12 }}>
         <label className="switch">
-          <input
-            type="checkbox"
-            checked={isEnabled}
-            onChange={toggleSwitch}
-            disabled={!isAvailable}
-          />
+          <input type="checkbox" checked={isEnabled} onChange={toggleSwitch} />
           <span className="slider round"></span>
         </label>
         <p style={{ marginLeft: 10, marginTop: 4 }}>Подъем груза на этаж</p>
@@ -81,7 +80,9 @@ const DoorDelivery = () => {
               type="number"
               value={manual}
               onChange={handleInputChange}
-              placeholder={inputError ? "Это обязательное поле" : "Введите этаж"}
+              placeholder={
+                inputError ? "Это обязательное поле" : "Введите этаж"
+              }
               className={`manual-input ${inputError ? "error" : ""}`}
             />
           </div>

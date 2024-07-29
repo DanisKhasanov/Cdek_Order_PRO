@@ -60,7 +60,7 @@ const Waybill = () => {
                 </span>
               </div>
               <div className="waybill-item">
-              {orderData.to_location?.city ? (
+              {orderData.to_location?.address ? (
                   <>
                     <span>Накладная в город: </span>
                     <span>

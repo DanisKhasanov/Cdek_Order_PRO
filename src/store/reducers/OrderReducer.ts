@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface Package {
+  number : string;
   height: number;
   length: number;
   width: number;
@@ -14,8 +15,9 @@ interface OrderFormState {
     phones: { number: string }[];
   };
   to_location: {
-    code: number;
+    code:number;
     city: string;
+    postal_code: string;
     address: string;
   };
   packages: Package[];
@@ -23,7 +25,7 @@ interface OrderFormState {
   delivery_point: string;
   delivery_point_address: any;
   tariff_code: number;
-  services: { code: string; parameter: string; }[] | [];
+  services: { code: string; parameter: string }[] | [];
   cod: boolean;
   sum: number;
 }
@@ -37,6 +39,7 @@ const initialState: OrderFormState = {
   to_location: {
     code: 0,
     city: "",
+    postal_code: "",
     address: "",
   },
   packages: [],
@@ -67,9 +70,10 @@ const orderFormSlice = createSlice({
       state,
       action: PayloadAction<{ index: number; weight: number; size: string }>
     ) => {
+      const number = (state.packages.length + 1).toString();
       const { weight, size } = action.payload;
       const [length, width, height] = size.split("x").map(Number);
-      state.packages.push({ weight, length, width, height });
+      state.packages.push({ number , weight, length, width, height });
     },
     removeCargoSpace: (state, action: PayloadAction<number>) => {
       state.packages = state.packages.filter(
@@ -78,12 +82,13 @@ const orderFormSlice = createSlice({
     },
     editCargoSpace: (
       state,
-      action: PayloadAction<{ index: number; weight: number; size: string }>
+      action: PayloadAction<{ index: number; weight: number; size: string  }>
     ) => {
-      const { index, weight, size } = action.payload;
+      const number = (state.packages.length).toString();
+      const { index, weight, size  } = action.payload;
       const [length, width, height] = size.split("x").map(Number);
       if (state.packages[index]) {
-        state.packages[index] = { weight, length, width, height };
+        state.packages[index] = { number, weight, length, width, height };
       }
     },
     copyCargoSpace: (state, action: PayloadAction<number>) => {
@@ -95,10 +100,14 @@ const orderFormSlice = createSlice({
 
     updateServices: (
       state,
-      action: PayloadAction<{ code: string; parameter: string }>
+      action: PayloadAction<{ code: string; parameter: string } | null>
     ) => {
-      const { code, parameter } = action.payload;
-      state.services = [{ code, parameter }];
+      if (action.payload === null) {
+        state.services = [];
+      } else {
+        const { code, parameter } = action.payload;
+        state.services = [{ code, parameter }];
+      }
     },
   },
 });

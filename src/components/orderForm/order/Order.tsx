@@ -16,12 +16,11 @@ const OrderForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const orderData = useSelector((state: RootState) => state.orderForm);
-
+  const apiKey = import.meta.env.VITE_DADATA_API_KEY;
 
   const CustomInput = forwardRef((props, ref: any) => (
     <StyledInput {...props} ref={ref} />
   ));
-
 
   const getOrderData = async () => {
     try {
@@ -33,11 +32,7 @@ const OrderForm = () => {
             name: order.recipient.name,
             phones: order.recipient.phones,
           },
-          to_location: {
-            code: order.to_location.code,
-            city: order.to_location.city,
-            address: order.to_location.address,
-          },
+
           comment: order.comment,
           cod: order.cod,
           sum: order.sum,
@@ -128,16 +123,25 @@ const OrderForm = () => {
               <label htmlFor="to_location.address">* Адрес получателя:</label>
               <div className="suggestion">
                 <AddressSuggestions
-                  token="b2c421789d18d800875080844d86917099cd8416"
+                  token={apiKey}
                   onChange={(suggestion: any) => {
-                    console.log(suggestion
-                      );
-                    setFieldValue("to_location.address", suggestion.unrestricted_value);
+                    setFieldValue("to_location.city", suggestion.data.city);
+                    setFieldValue(
+                      "to_location.postal_code",
+                      suggestion.data.postal_code
+                    );
+                    setFieldValue("to_location.address", suggestion.value);
                   }}
                   customInput={CustomInput}
-                  placeholder={"Укажите адрес получателя" as any}
                 />
               </div>
+            </div>
+
+            <div className="form-group">
+              <label style={{ marginRight: 40, fontSize: 15 }}>
+                Комментарий к заказу:
+              </label>
+              <span>{orderData.comment}</span>
             </div>
 
             <div style={{ marginBottom: 55, color: "red" }}>

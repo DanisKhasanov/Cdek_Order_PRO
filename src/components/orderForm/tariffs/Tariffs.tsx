@@ -7,7 +7,7 @@ import { RootState } from "../../../store/store";
 import UseCdekWidget from "./UseCdekWidget";
 import ButtonCustom from "../cargo/ButtonCustom";
 import { useNavigate } from "react-router-dom";
-import fakeResponse from "../../../api/fakeResponse";
+// import fakeResponse from "../../../api/fakeResponse";
 import { TariffProps, PickupPointProps } from "../../../props/TariffsProps";
 import { ClipLoader } from "react-spinners";
 import TariffActions from "./TariffAction";
@@ -33,9 +33,7 @@ const Tariffs = () => {
   );
   const getTariffData = async () => {
     try {
-      //TODO: отправлять надо будет данные о коробках и весе
-      const data = await GetTariffData(fakeResponse);
-      //TODO: возможно потребуется другая обработка данных
+      const data = await GetTariffData(orderData);
       const filterTariffs = data.tariff_codes.filter((tariff: any) =>
         Object.values(DELIVERY_MODE).includes(tariff.delivery_mode)
       );
@@ -49,7 +47,7 @@ const Tariffs = () => {
 
   useEffect(() => {
     getTariffData();
-  }, []);
+  }, [orderData]);
 
   const submit = async () => {
     if (selectedTariff) {
@@ -61,7 +59,6 @@ const Tariffs = () => {
         updateOrderForm({
           ...orderData,
           tariff_code: selected?.tariff_code,
-          //TODO: условие, что если до двери то to_location, если нет то delivry_point
           to_location:
             selected?.delivery_mode === DELIVERY_MODE.DOOR
               ? orderData.to_location
@@ -121,7 +118,7 @@ const Tariffs = () => {
 
                 <div>
                   {tariff.delivery_mode !== DELIVERY_MODE.DOOR && (
-                    <div style={{ display: "flex", alignItems: "center",  }}>
+                    <div style={{ display: "flex", alignItems: "center" }}>
                       <button
                         className="tariff-button"
                         onClick={handleOpenWidget}
