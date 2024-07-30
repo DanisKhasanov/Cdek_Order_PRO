@@ -1,31 +1,53 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import "../styles/style.css";
-import { PostOrderData } from "../../../api/PostOrderData";
+import { Getshryhcode, PostOrderData } from "../../../api/PostOrderData";
 import { useEffect, useState } from "react";
-import ClipLoader from "react-spinners/ClipLoader"; 
+import ClipLoader from "react-spinners/ClipLoader";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
+
 const Waybill = () => {
   const orderData = useSelector((state: RootState) => state.orderForm);
   const packages = useSelector((state: RootState) => state.orderForm.packages);
   const [loading, setLoading] = useState(true);
   const [orderCreated, setOrderCreated] = useState(false);
+  const [response, setResponse] = useState<any>();
 
   const postOrderData = async () => {
     try {
-      await PostOrderData(orderData);
+      const data = await PostOrderData(orderData);
+      setResponse(data);
       setOrderCreated(true);
     } catch (error) {
       console.error("Ошибка при отправке данных на сервер:", error);
     } finally {
-      setLoading(false); 
+      setLoading(false);
+    }
+  };
+
+  const getShryhCode = async (id: number) => {
+    try {
+      await Getshryhcode(id);
+    } catch (error) {
+      console.error("Ошибка при получении шрихкодов:", error);
+    } finally {
     }
   };
 
   useEffect(() => {
     postOrderData();
   }, []);
+
+  const formatDateTime = (dateTimeString: string) => {
+    const date = new Date(dateTimeString);
+    const dateFormatted = date.toLocaleDateString("ru-RU");
+    const timeFormatted = date.toLocaleTimeString("ru-RU", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    return `${dateFormatted} в ${timeFormatted}`;
+  };
 
   return (
     <div className="waybill-container">
@@ -38,12 +60,14 @@ const Waybill = () => {
         <div className="waybill-content">
           {orderCreated ? (
             <div className="order-check">
-              <CheckCircleOutlineIcon style={{ fontSize: 60 , color: "4caf50"}} />
+              <CheckCircleOutlineIcon
+                style={{ fontSize: 60, color: "#4caf50" }}
+              />
               <p className="success-message">Заказ успешно создан!</p>
             </div>
           ) : (
             <div className="order-check">
-              <CloseIcon style={{ fontSize: 60 , color: "red"}} />
+              <CloseIcon style={{ fontSize: 60, color: "red" }} />
               <p className="fail-message">Не удалось создать заказ.</p>
             </div>
           )}
@@ -52,29 +76,27 @@ const Waybill = () => {
             <>
               <div className="waybill-item">
                 <span>
-                  По документу создана накладная{" "}
-                  <b>
-                    <a href="">12345</a>
-                  </b>{" "}
-                  от {new Date().toLocaleDateString("ru-RU")}
+                  По документу создана накладная <b>{response.uuid}</b> от{" "}
+                  {formatDateTime(response.date)}
                 </span>
               </div>
               <div className="waybill-item">
-              {orderData.to_location?.address ? (
+                {orderData.to_location?.address ? (
                   <>
                     <span>Накладная в город: </span>
                     <span>
-                      <u>
-                        {orderData.to_location.address}
-                      </u>
+                      <u>{orderData.to_location.address}</u>
                     </span>
                   </>
                 ) : (
                   <>
-                    <span>Накладная в {orderData.delivery_point_address?.type}: </span>
+                    <span>
+                      Накладная в {orderData.delivery_point_address?.type}:{" "}
+                    </span>
                     <span>
                       <u>
-                        <b>{orderData.delivery_point_address?.city || ""}</b>,{" "} {orderData.delivery_point_address.address}
+                        <b>{orderData.delivery_point_address?.city || ""}</b>,{" "}
+                        {orderData.delivery_point_address.address}
                       </u>
                     </span>
                   </>
@@ -84,8 +106,7 @@ const Waybill = () => {
                 <span>Последний статус по накладной: </span>
                 <span>
                   <u>
-                    <b>Создан</b> от {new Date().toLocaleDateString("ru-RU")} в
-                    15:23
+                    <b>{response.state}</b> от {formatDateTime(response.date)}
                   </u>
                 </span>
               </div>
@@ -98,11 +119,14 @@ const Waybill = () => {
 
               {packages.length > 1 && (
                 <div className="waybill-item">
-                  <a href="#">
-                    <span>Печати на штрихкоды</span>
+                  <a href={"#"}>
+                    <span onClick={() => getShryhCode(response.uuid)}>
+                      Печати на штрихкоды
+                    </span>
                   </a>
                 </div>
               )}
+
             </>
           )}
         </div>

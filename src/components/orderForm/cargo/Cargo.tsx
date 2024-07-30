@@ -18,7 +18,7 @@ const Cargo = () => {
   const navigate = useNavigate();
   const packages = useSelector((state: RootState) => state.orderForm.packages);
   const orderData = useSelector((state: RootState) => state.orderForm);
-  
+
   const getDataOrder = async () => {
     try {
       const response = await GetDataCity(orderData);
@@ -44,21 +44,29 @@ const Cargo = () => {
 
   const addCargo = (values: any) => {
     const newId = packages.length;
+    const value = orderData.cod ===false? 0: orderData.sum
+    const item = {
+      name: "Стеклянные флаконы",
+      ware_key: (newId + 1).toString(),
+      weight: values.weight,
+      amount: 1,
+      payment: {
+        value: value
+      },
+      cost: 2,
+    };
     dispatch(
       addCargoSpace({
         index: newId,
-        weight: values.weight,
+        weight: values.weight*1000,
         size: values.size,
+        items: item,
       })
     );
   };
 
-  const submit = async () => {
-    try {
-      navigate("/tariffs");
-    } catch (error) {
-      console.error("Ошибка:", error);
-    }
+  const submit = () => {
+    navigate("/tariffs");
   };
   return (
     <div className="cargo-form">

@@ -11,6 +11,7 @@ import { GetOrderData } from "../../../api/GetOrderData";
 import { AddressSuggestions } from "react-dadata";
 import { StyledInput } from "./style";
 import "react-dadata/dist/react-dadata.css";
+import { number } from "yup";
 
 const OrderForm = () => {
   const navigate = useNavigate();
@@ -91,7 +92,7 @@ const OrderForm = () => {
                 placeholder={
                   touched.recipient?.name && errors.recipient?.name
                     ? errors.recipient.name
-                    : ""
+                    : "Например: Иван Иванов Иванович"
                 }
               />
             </div>
@@ -113,8 +114,8 @@ const OrderForm = () => {
                 placeholder={
                   touched.recipient?.phones?.[0]?.number &&
                   errors.recipient?.phones?.[0]
-                    ? errors.recipient.phones[0]
-                    : ""
+                    ? "Номер телефона обязателен"
+                    : 'Например: "+7 (999) 999-99-99"'
                 }
               />
             </div>
@@ -138,13 +139,11 @@ const OrderForm = () => {
             </div>
 
             <div className="form-group">
-              <label style={{ marginRight: 40, fontSize: 15 }}>
-                Комментарий к заказу:
-              </label>
-              <span>{orderData.comment}</span>
+              <label>Комментарий к заказу:</label>
+              <span className="comment">{orderData.comment}</span>
             </div>
 
-            <div style={{ marginBottom: 55, color: "red" }}>
+            <div style={{  color: "red" }}>
               <p>* - обязательные поля</p>
             </div>
 

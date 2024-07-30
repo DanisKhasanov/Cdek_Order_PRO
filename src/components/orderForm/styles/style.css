@@ -6,7 +6,6 @@
 .order-form,
 .cargo-form {
   padding: 30px;
-  /* margin-top: 10px; */
 }
 
 .form-group {
@@ -536,3 +535,13 @@ input:checked + .slider:before {
 }
 
 
+.comment {
+  background-color: #ffffff;
+  flex: 1;
+  padding: 10px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  overflow-y: auto;
+  height: 60px;
+}

@@ -1,21 +1,32 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+interface PackageItem {
+  name: string;
+  ware_key: string;
+  weight: number;
+  amount: number;
+  payment: {
+    value: number;
+  };
+  cost: number;
+}
 interface Package {
-  number : string;
+  number: string;
   height: number;
   length: number;
   width: number;
   weight: number;
+  items: PackageItem[];
 }
 
 interface OrderFormState {
   number: string;
   recipient: {
     name: string;
-    phones: { number: string }[];
+    phones: [{ number: string }];
   };
   to_location: {
-    code:number;
+    code: number;
     city: string;
     postal_code: string;
     address: string;
@@ -68,12 +79,24 @@ const orderFormSlice = createSlice({
 
     addCargoSpace: (
       state,
-      action: PayloadAction<{ index: number; weight: number; size: string }>
+      action: PayloadAction<{
+        index: number;
+        weight: number;
+        size: string;
+        items: PackageItem;
+      }>
     ) => {
       const number = (state.packages.length + 1).toString();
-      const { weight, size } = action.payload;
+      const { weight, size, items } = action.payload;
       const [length, width, height] = size.split("x").map(Number);
-      state.packages.push({ number , weight, length, width, height });
+      state.packages.push({
+        number,
+        weight,
+        length,
+        width,
+        height,
+        items: [items],
+      });
     },
     removeCargoSpace: (state, action: PayloadAction<number>) => {
       state.packages = state.packages.filter(
@@ -82,13 +105,25 @@ const orderFormSlice = createSlice({
     },
     editCargoSpace: (
       state,
-      action: PayloadAction<{ index: number; weight: number; size: string  }>
+      action: PayloadAction<{
+        index: number;
+        weight: number;
+        size: string;
+        items: PackageItem;
+      }>
     ) => {
-      const number = (state.packages.length).toString();
-      const { index, weight, size  } = action.payload;
+      const number = state.packages.length.toString();
+      const { index, weight, size, items } = action.payload;
       const [length, width, height] = size.split("x").map(Number);
       if (state.packages[index]) {
-        state.packages[index] = { number, weight, length, width, height };
+        state.packages[index] = {
+          number,
+          weight,
+          length,
+          width,
+          height,
+          items: [items],
+        };
       }
     },
     copyCargoSpace: (state, action: PayloadAction<number>) => {

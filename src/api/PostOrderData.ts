@@ -1,18 +1,41 @@
 import axios from "axios";
 
-
 export const PostOrderData = async (payload: any) => {
-    try {
-        const response = await axios.post("https://jsonplaceholder.typicode.com/posts", payload, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
+  try {
+    const response = await axios.post(
+      "http://94.180.255.226:8020/order",
+      payload,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-        console.log("Отправка данных заказа:", response.data);
-        return response.data;
-    } catch (error) {
-        console.error("Ошибка при отправке данных на сервер:", error);
-        throw error;
-    }
-}
+    return response.data;
+  } catch (error) {
+    console.error("Ошибка при отправке данных на сервер:", error);
+    throw error;
+  }
+};
+
+export const Getshryhcode = async (id: number) => {
+  try {
+    // Запрос на получение бинарного потока
+    const response = await axios.get(
+      `http://94.180.255.226:8020/barcode/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        responseType: 'blob'  
+      }
+    );
+    
+   return window.open(URL.createObjectURL(response.data))
+
+  } catch (error) {
+    console.error("Ошибка при получении шрихкодов:", error);
+    throw error;
+  }
+};

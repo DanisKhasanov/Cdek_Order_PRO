@@ -9,6 +9,7 @@ export const GetDataCity = async (payment:any) => {
       },
     });
 
+    console.log("Получение данных о городе:", response.data);
     return response.data;
   } catch (error) {
     console.error("Ошибка при отправке данных на сервер:", error);
