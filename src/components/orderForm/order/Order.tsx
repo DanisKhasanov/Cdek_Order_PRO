@@ -72,14 +72,10 @@ const OrderForm = () => {
                 id="account"
                 name="account"
                 className={`form-control ${
-                  errors.account && touched.account
-                    ? "error"
-                    : ""
+                  errors.account && touched.account ? "error" : ""
                 }`}
                 placeholder={
-                  errors.account && touched.account
-                    ? errors.account
-                    : ""
+                  errors.account && touched.account ? errors.account : ""
                 }
               >
                 <option value="" label="Выберите договор" hidden />
@@ -132,7 +128,13 @@ const OrderForm = () => {
 
             <div className="form-group">
               <label htmlFor="to_location.address">* Адрес получателя:</label>
-              <div className="suggestion">
+              <div
+                className={`form-control address ${
+                  errors.to_location?.address && touched.to_location?.address
+                    ? "error"
+                    : ""
+                }`}
+              >
                 <AddressSuggestions
                   token={apiKey}
                   onChange={(suggestion: any) => {
@@ -153,7 +155,7 @@ const OrderForm = () => {
               <span className="comment">{orderData.comment}</span>
             </div>
 
-            <div style={{  color: "red" }}>
+            <div style={{ color: "red" }}>
               <p>* - обязательные поля</p>
             </div>
 

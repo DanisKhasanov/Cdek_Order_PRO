@@ -1,7 +1,5 @@
 export const RequestTemplateWaybill = (orderData: any) => {
-  console.log('Количество packages:', orderData.packages.length);
 
-  // Рассчитываем стоимость на один пакет
   const defaultCost = 100;
   const numberOfPackages = orderData.packages.length;
   const costPerPackage = numberOfPackages > 0 ? defaultCost / numberOfPackages : 0;
