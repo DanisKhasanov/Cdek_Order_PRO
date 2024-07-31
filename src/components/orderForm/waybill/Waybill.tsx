@@ -15,12 +15,11 @@ const Waybill = () => {
   const [orderCreated, setOrderCreated] = useState(false);
   const [response, setResponse] = useState<any>();
 
-
-
   const postOrderData = async () => {
     try {
       const data = await PostOrderData(RequestTemplateWaybill(orderData));
       console.log(RequestTemplateWaybill(orderData), "requestTemplate");
+      console.log(data, "data");
       setResponse(data);
       setOrderCreated(true);
     } catch (error) {
@@ -80,8 +79,12 @@ const Waybill = () => {
             <>
               <div className="waybill-item">
                 <span>
-                  По документу создана накладная <b>{response.uuid}</b> от{" "}
-                  {formatDateTime(response.date)}
+                  По документу создана накладная
+                  <a href={response.href} title="Скачать">
+                    {" "}
+                    <b>{response.uuid}</b>
+                  </a>{" "}
+                  от {formatDateTime(response.date)}
                 </span>
               </div>
               <div className="waybill-item">
