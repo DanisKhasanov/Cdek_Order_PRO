@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CloseIcon from "@mui/icons-material/Close";
+import { RequestTemplateWaybill } from "../../../api/requestTemplate/RequestTemplateWaybill";
 
 const Waybill = () => {
   const orderData = useSelector((state: RootState) => state.orderForm);
@@ -14,9 +15,12 @@ const Waybill = () => {
   const [orderCreated, setOrderCreated] = useState(false);
   const [response, setResponse] = useState<any>();
 
+
+
   const postOrderData = async () => {
     try {
-      const data = await PostOrderData(orderData);
+      const data = await PostOrderData(RequestTemplateWaybill(orderData));
+      console.log(RequestTemplateWaybill(orderData), "requestTemplate");
       setResponse(data);
       setOrderCreated(true);
     } catch (error) {
@@ -126,7 +130,6 @@ const Waybill = () => {
                   </a>
                 </div>
               )}
-
             </>
           )}
         </div>

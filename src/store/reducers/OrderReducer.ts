@@ -21,6 +21,7 @@ interface Package {
 
 interface OrderFormState {
   number: string;
+  account: string;
   recipient: {
     name: string;
     phones: [{ number: string }];
@@ -33,6 +34,7 @@ interface OrderFormState {
   };
   packages: Package[];
   comment: string;
+  comment_delivery: string;
   delivery_point: string;
   delivery_point_address: any;
   tariff_code: number;
@@ -43,6 +45,7 @@ interface OrderFormState {
 
 const initialState: OrderFormState = {
   number: "",
+  account: "",
   recipient: {
     name: "",
     phones: [{ number: "" }],
@@ -55,6 +58,7 @@ const initialState: OrderFormState = {
   },
   packages: [],
   comment: "",
+  comment_delivery: "",
   delivery_point: "",
   delivery_point_address: {},
   tariff_code: 0,
@@ -86,11 +90,25 @@ const orderFormSlice = createSlice({
         items: PackageItem;
       }>
     ) => {
-      const number = (state.packages.length + 1).toString();
-      const { weight, size, items } = action.payload;
+      const { index, weight, size } = action.payload;
       const [length, width, height] = size.split("x").map(Number);
+
+      const totalPackages = state.packages.length +1;
+      const costPerPackage = totalPackages > 0 ? 100 : 0;
+
+      const items = {
+        name: "Стеклянные флаконы",
+        ware_key: (index + 1).toString(),
+        weight: weight,
+        amount: 1,
+        payment: {
+          value: state.cod === false ? 0 : state.sum,
+        },
+        cost: costPerPackage,
+      };
+
       state.packages.push({
-        number,
+        number: (totalPackages).toString(),
         weight,
         length,
         width,
@@ -98,6 +116,7 @@ const orderFormSlice = createSlice({
         items: [items],
       });
     },
+
     removeCargoSpace: (state, action: PayloadAction<number>) => {
       state.packages = state.packages.filter(
         (_, index) => index !== action.payload
@@ -112,12 +131,26 @@ const orderFormSlice = createSlice({
         items: PackageItem;
       }>
     ) => {
-      const number = state.packages.length.toString();
-      const { index, weight, size, items } = action.payload;
+      const { index, weight, size } = action.payload;
       const [length, width, height] = size.split("x").map(Number);
+
       if (state.packages[index]) {
+        const totalPackages = state.packages.length;
+        const costPerPackage = 100 / totalPackages;
+
+        const items = {
+          name: "Стеклянные флаконы",
+          ware_key: (index + 1).toString(),
+          weight: weight,
+          amount: 1,
+          payment: {
+            value: state.cod === false ? 0 : state.sum,
+          },
+          cost: costPerPackage,
+        };
+
         state.packages[index] = {
-          number,
+          number: state.packages.length.toString(),
           weight,
           length,
           width,

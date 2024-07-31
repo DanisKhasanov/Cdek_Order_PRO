@@ -12,7 +12,7 @@ import {
   copyCargoSpace,
   editCargoSpace,
 } from "../../../store/reducers/OrderReducer";
-import EditAddedACargo from "./EditAddedCardo";
+import EditAddedACargo from "./EditAddedCargo";
 import CashOnDelivery from "./CashOnDelivery";
 
 const AddedCargo = () => {
@@ -33,28 +33,6 @@ const AddedCargo = () => {
     setShowItemInfoId(showItemInfoId === id ? null : id);
   };
 
-  // const handleAddCargo = (index: number) => {
-  //   // Пример создания объекта item
-  //   const item = {
-  //     name: "Стеклянные флаконы",
-  //     wary_key: (index + 1).toString(),
-  //     weight: packages[index].weight,
-  //     amount: 1,
-  //     payment: {
-  //       value: (100 / packages.length).toFixed(2),
-  //       cost: (100 / packages.length).toFixed(2),
-  //     },
-  //   };
-
-  //   dispatch(
-  //     editCargoSpace({
-  //       index,
-  //       weight: packages[index].weight,
-  //       size: `${packages[index].length}x${packages[index].width}x${packages[index].height}`,
-  //       item,
-  //     })
-  //   );
-  // };
 
   return (
     <div className="add-cargo">
@@ -86,17 +64,16 @@ const AddedCargo = () => {
 
                 <div>
                   <div style={{ display: "flex", gap: "75px" }}>
-                    <p className="cargo-info">Вес: {cargo.weight} г. </p>
+                    <p className="cargo-info">Вес: {cargo.weight} кг. </p>
                     <p className="cargo-info">Размер коробки: {cargo.length}x{cargo.width}x{cargo.height} </p>
                     <div
                       className="cargo-info item"
                       style={{ cursor: "pointer" }}
                       onClick={() => {
                         handleToggleItemInfo(index);
-                        // handleAddCargo(index); // Обновление информации о товаре
                       }}
                     >
-                      <p>Информацию о товаре</p>
+                      <p>Информация о товаре</p>
                       {showItemInfoId === index ? (
                         <ExpandLessTwoToneIcon style={{ fontSize: "35px" }} />
                       ) : (
@@ -109,7 +86,7 @@ const AddedCargo = () => {
                     <div className="item-info">
                       <p>Наименование товара – стеклянные флаконы</p>
                       <p>Код товара/артикул – {index + 1}</p>
-                      <p>Физический вес ед. товара – {cargo.weight} г</p>
+                      <p>Физический вес ед. товара – {cargo.weight} кг</p>
                       <p>Количество – 1</p>
                       <p>
                         Объявленная стоимость за ед. товара -{" "}

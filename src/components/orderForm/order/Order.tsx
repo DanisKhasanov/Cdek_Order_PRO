@@ -66,15 +66,25 @@ const OrderForm = () => {
         {({ errors, touched, setFieldValue }) => (
           <Form>
             <div className="form-group">
-              <label htmlFor="contract">* Договор СДЕК:</label>
+              <label htmlFor="account">* Договор СДЕК:</label>
               <Field
                 as="select"
-                id="contract"
-                name="contract"
-                className="form-control"
+                id="account"
+                name="account"
+                className={`form-control ${
+                  errors.account && touched.account
+                    ? "error"
+                    : ""
+                }`}
+                placeholder={
+                  errors.account && touched.account
+                    ? errors.account
+                    : ""
+                }
               >
-                <option value="ГРМ" label="ГРМ" />
-                <option value="ЗАР" label="ЗАР" />
+                <option value="" label="Выберите договор" hidden />
+                <option value="GRM" label="ГРМ" />
+                <option value="ZAR" label="ЗАР" />
               </Field>
             </div>
 

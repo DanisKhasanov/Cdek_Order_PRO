@@ -12,6 +12,7 @@ import { validationSchema, initialValues } from "./Validation";
 import { CargoSizeOptions } from "../../../enum/CargoSize";
 import { GetDataCity } from "../../../api/GetDataCity";
 import { useEffect } from "react";
+import { RequestTemplateCargo } from "../../../api/requestTemplate/RequestTemplateCargo";
 
 const Cargo = () => {
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ const Cargo = () => {
 
   const getDataOrder = async () => {
     try {
-      const response = await GetDataCity(orderData);
+      const response = await GetDataCity(RequestTemplateCargo(orderData));
       if (response) {
         dispatch(
           updateOrderForm({
@@ -44,23 +45,21 @@ const Cargo = () => {
 
   const addCargo = (values: any) => {
     const newId = packages.length;
-    const value = orderData.cod ===false? 0: orderData.sum
-    const item = {
-      name: "Стеклянные флаконы",
-      ware_key: (newId + 1).toString(),
-      weight: values.weight,
-      amount: 1,
-      payment: {
-        value: value
-      },
-      cost: 2,
-    };
     dispatch(
       addCargoSpace({
         index: newId,
-        weight: values.weight*1000,
+        weight: values.weight,
         size: values.size,
-        items: item,
+        items: {
+          name: "Стеклянные флаконы",
+          ware_key: (newId + 1).toString(),
+          weight: values.weight,
+          amount: 1,
+          payment: {
+            value: orderData.cod === false ? 0 : orderData.sum,
+          },
+          cost: 100, 
+        },
       })
     );
   };

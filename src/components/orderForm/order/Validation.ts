@@ -1,6 +1,7 @@
 import * as Yup from "yup";
 
 export const validationSchema = Yup.object({
+  account: Yup.string().required('Договор СДЕК обязателен'),
   recipient: Yup.object({
     name: Yup.string().required("Имя получателя обязательно"),
     phones: Yup.array().of(

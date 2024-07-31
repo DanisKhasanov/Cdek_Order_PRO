@@ -7,11 +7,12 @@ import { RootState } from "../../../store/store";
 import UseCdekWidget from "./UseCdekWidget";
 import ButtonCustom from "../cargo/ButtonCustom";
 import { useNavigate } from "react-router-dom";
-// import fakeResponse from "../../../api/fakeResponse";
 import { TariffProps, PickupPointProps } from "../../../props/TariffsProps";
 import { ClipLoader } from "react-spinners";
 import TariffActions from "./TariffAction";
 import { DELIVERY_MODE } from "../../../enum/DeliveryMode";
+import { RequestTemplateTariff } from "../../../api/requestTemplate/RequestTemplateTariff";
+
 
 const Tariffs = () => {
   const dispatch = useDispatch();
@@ -31,9 +32,11 @@ const Tariffs = () => {
     (selected: any) => setSelectedPickupPoint(selected),
     selectedTariffType
   );
+console.log(RequestTemplateTariff(orderData));
+
   const getTariffData = async () => {
     try {
-      const data = await GetTariffData(orderData);
+      const data = await GetTariffData(RequestTemplateTariff(orderData));
       const filterTariffs = data.tariff_codes.filter((tariff: any) =>
         Object.values(DELIVERY_MODE).includes(tariff.delivery_mode)
       );

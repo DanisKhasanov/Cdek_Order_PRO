@@ -39,7 +39,7 @@ const TariffActions = ({
     dispatch(
       updateOrderForm({
         ...orderData,
-        comment: comment,
+        comment_delivery: comment,
       })
     );
     setShowComment(false);
