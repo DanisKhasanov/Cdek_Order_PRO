@@ -31,6 +31,7 @@ interface OrderFormState {
     city: string;
     postal_code: string;
     address: string;
+    
   };
   packages: Package[];
   comment: string;
@@ -162,7 +163,16 @@ const orderFormSlice = createSlice({
     copyCargoSpace: (state, action: PayloadAction<number>) => {
       const packageToCopy = state.packages[action.payload];
       if (packageToCopy) {
-        state.packages.push({ ...packageToCopy });
+        const totalPackages = state.packages.length;
+        const newNumber = (totalPackages + 1).toString(); 
+        state.packages.push({
+          ...packageToCopy,
+          number: newNumber,
+          items: packageToCopy.items.map((item) => ({
+            ...item,
+            ware_key: `${newNumber}`, 
+          })),
+        });
       }
     },
 

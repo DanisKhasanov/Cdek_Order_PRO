@@ -156,7 +156,7 @@ const OrderForm = () => {
             </div>
 
             <div style={{ color: "red" }}>
-              <p>* - обязательные поля</p>
+              <p style={{ marginBottom: 14 }}>* - обязательные поля</p>
             </div>
 
             <button className="btn" type="submit">

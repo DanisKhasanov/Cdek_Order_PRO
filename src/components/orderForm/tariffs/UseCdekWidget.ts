@@ -1,4 +1,4 @@
-import { useRef, useCallback, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 
@@ -6,14 +6,12 @@ const UseCdekWidget = (
   setSelectedPickupPoint: any,
   selectedTariffType: any
 ) => {
-
-  
   const apiKey = import.meta.env.VITE_CDEK_API_KEY;
   const servicePath = import.meta.env.VITE_CDEK_SERVICE_PATH;
   const widgetRef = useRef<any>(null);
   const orderData = useSelector((state: RootState) => state.orderForm);
 
-  const initializeWidget = useCallback(async () => {
+  const initializeWidget = async () => {
     try {
       if ((window as any).CDEKWidget) {
         widgetRef.current = new (window as any).CDEKWidget({
@@ -56,7 +54,7 @@ const UseCdekWidget = (
     } catch (error) {
       console.error("Ошибка инициализации виджета:", error);
     }
-  }, [apiKey, servicePath, orderData.to_location.city, selectedTariffType, setSelectedPickupPoint]);
+  };
 
   useEffect(() => {
     initializeWidget();
@@ -65,15 +63,15 @@ const UseCdekWidget = (
         widgetRef.current.close();
       }
     };
-  }, [initializeWidget]);
+  }, [setSelectedPickupPoint]);
 
-  const handleOpenWidget = useCallback(() => {
+  const handleOpenWidget = () => {
     if (widgetRef.current) {
       widgetRef.current.open();
     }
-  }, []);
+  };
 
-  return { initializeWidget, handleOpenWidget };
+  return { handleOpenWidget };
 };
 
 export default UseCdekWidget;

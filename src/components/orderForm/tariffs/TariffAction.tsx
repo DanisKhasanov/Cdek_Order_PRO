@@ -90,7 +90,7 @@ const TariffActions = ({
           <AddressSuggestions
             token={apiKey}
             onChange={(suggestion: any) => {
-              setAddress(suggestion.unrestricted_value);
+              setAddress(suggestion.value);
             }}
             customInput={CustomInput}
           />

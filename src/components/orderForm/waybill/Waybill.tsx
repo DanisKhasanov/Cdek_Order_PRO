@@ -1,12 +1,17 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import "../styles/style.css";
-import { Getshryhcode, PostOrderData } from "../../../api/PostOrderData";
+import {
+  GetBarcode,
+  GetInvoice,
+  PostOrderData,
+} from "../../../api/PostOrderData";
 import { useEffect, useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CloseIcon from "@mui/icons-material/Close";
 import { RequestTemplateWaybill } from "../../../api/requestTemplate/RequestTemplateWaybill";
+import { RequestStatus } from "../../../enum/RequestStatus";
 
 const Waybill = () => {
   const orderData = useSelector((state: RootState) => state.orderForm);
@@ -14,12 +19,13 @@ const Waybill = () => {
   const [loading, setLoading] = useState(true);
   const [orderCreated, setOrderCreated] = useState(false);
   const [response, setResponse] = useState<any>();
-
+  const [status, setStatus] = useState<any>();
   const postOrderData = async () => {
     try {
       const data = await PostOrderData(RequestTemplateWaybill(orderData));
       console.log(RequestTemplateWaybill(orderData), "requestTemplate");
       console.log(data, "data");
+      setStatus(data.state);
       setResponse(data);
       setOrderCreated(true);
     } catch (error) {
@@ -29,12 +35,19 @@ const Waybill = () => {
     }
   };
 
-  const getShryhCode = async (id: number) => {
+  const getBarcode = async (id: number) => {
     try {
-      await Getshryhcode(id);
+      await GetBarcode(id);
     } catch (error) {
       console.error("Ошибка при получении шрихкодов:", error);
-    } finally {
+    }
+  };
+
+  const getInvoice = async (id: number) => {
+    try {
+      await GetInvoice(id);
+    } catch (error) {
+      console.error("Ошибка при получении счета:", error);
     }
   };
 
@@ -80,9 +93,11 @@ const Waybill = () => {
               <div className="waybill-item">
                 <span>
                   По документу создана накладная
-                  <a href={response.href} title="Скачать">
+                  <a href="#" title="Скачать">
                     {" "}
-                    <b>{response.uuid}</b>
+                    <b onClick={() => getInvoice(response.uuid)}>
+                      {response.uuid}
+                    </b>
                   </a>{" "}
                   от {formatDateTime(response.date)}
                 </span>
@@ -113,13 +128,20 @@ const Waybill = () => {
                 <span>Последний статус по накладной: </span>
                 <span>
                   <u>
-                    <b>{response.state}</b> от {formatDateTime(response.date)}
+                    <b>
+                      {
+                        RequestStatus[
+                          response.state as keyof typeof RequestStatus
+                        ]
+                      }
+                    </b>{" "}
+                    от {formatDateTime(response.date)}
                   </u>
                 </span>
               </div>
 
               <div className="waybill-item">
-                <a href="#">
+                <a href={response.href}>
                   <span>Переход в СДЕК к заказу</span>
                 </a>
               </div>
@@ -127,7 +149,7 @@ const Waybill = () => {
               {packages.length > 1 && (
                 <div className="waybill-item">
                   <a href={"#"}>
-                    <span onClick={() => getShryhCode(response.uuid)}>
+                    <span onClick={() => getBarcode(response.uuid)}>
                       Печати на штрихкоды
                     </span>
                   </a>

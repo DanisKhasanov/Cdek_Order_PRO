@@ -29,4 +29,4 @@ const validationSchema = Yup.object().shape({
   size: Yup.string().required("Выберите размер коробки"),
 });
 
-export { initialValues, validationSchema };
+export { initialValues, validationSchema ,validateWeightAndSize};

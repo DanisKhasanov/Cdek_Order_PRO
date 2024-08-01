@@ -32,7 +32,6 @@ const Tariffs = () => {
     (selected: any) => setSelectedPickupPoint(selected),
     selectedTariffType
   );
-console.log(RequestTemplateTariff(orderData));
 
   const getTariffData = async () => {
     try {
@@ -50,7 +49,7 @@ console.log(RequestTemplateTariff(orderData));
 
   useEffect(() => {
     getTariffData();
-  }, [orderData]);
+  }, []);
 
   const submit = async () => {
     if (selectedTariff) {

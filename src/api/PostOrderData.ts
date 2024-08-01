@@ -19,9 +19,8 @@ export const PostOrderData = async (payload: any) => {
   }
 };
 
-export const Getshryhcode = async (id: number) => {
+export const GetBarcode = async (id: number) => {
   try {
-    // Запрос на получение бинарного потока
     const response = await axios.get(
       `http://94.180.255.226:8020/barcode/${id}`,
       {
@@ -39,3 +38,21 @@ export const Getshryhcode = async (id: number) => {
     throw error;
   }
 };
+
+export const GetInvoice = async (id: number) => {
+  try {
+    const response = await axios.get(
+      `http://94.180.255.226:8020/invoice/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        responseType: 'blob'  
+      }
+    );
+    return window.open(URL.createObjectURL(response.data))
+  } catch (error) {
+    console.error("Ошибка при получении счета:", error);
+    throw error;
+  }
+}
