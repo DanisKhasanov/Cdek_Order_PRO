@@ -50,6 +50,8 @@ export const GetInvoice = async (id: number) => {
         responseType: 'blob'  
       }
     );
+
+    
     return window.open(URL.createObjectURL(response.data))
   } catch (error) {
     console.error("Ошибка при получении счета:", error);

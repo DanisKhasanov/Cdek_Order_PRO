@@ -9,9 +9,8 @@ import { RootState } from "../../../store/store";
 import { validationSchema } from "./Validation";
 import { GetOrderData } from "../../../api/GetOrderData";
 import { AddressSuggestions } from "react-dadata";
-import { StyledInput } from "./style";
+import { StyledInput } from "../styles/StyleInputAddressOrder";
 import "react-dadata/dist/react-dadata.css";
-import { number } from "yup";
 
 const OrderForm = () => {
   const navigate = useNavigate();

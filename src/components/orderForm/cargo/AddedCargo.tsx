@@ -10,7 +10,6 @@ import { RootState } from "../../../store/store";
 import {
   removeCargoSpace,
   copyCargoSpace,
-  editCargoSpace,
 } from "../../../store/reducers/OrderReducer";
 import EditAddedACargo from "./EditAddedCargo";
 import CashOnDelivery from "./CashOnDelivery";

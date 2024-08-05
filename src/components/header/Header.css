@@ -25,6 +25,11 @@
   color: black;
   border-bottom: 2px solid black;
 }
+.nav-link-disabled {
+  color: grey;
+  pointer-events: none; 
+  text-decoration: none;
+}
 
 .header {
   display: flex;

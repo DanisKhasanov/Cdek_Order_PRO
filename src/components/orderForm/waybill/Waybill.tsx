@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import "../styles/style.css";
 import {
@@ -12,22 +12,24 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CloseIcon from "@mui/icons-material/Close";
 import { RequestTemplateWaybill } from "../../../api/requestTemplate/RequestTemplateWaybill";
 import { RequestStatus } from "../../../enum/RequestStatus";
+import { updateOrderForm } from "../../../store/reducers/OrderReducer";
 
 const Waybill = () => {
   const orderData = useSelector((state: RootState) => state.orderForm);
+  const dispatch = useDispatch();
   const packages = useSelector((state: RootState) => state.orderForm.packages);
   const [loading, setLoading] = useState(true);
   const [orderCreated, setOrderCreated] = useState(false);
   const [response, setResponse] = useState<any>();
-  const [status, setStatus] = useState<any>();
+  const [loadingInvoice, setLoadingInvoice] = useState(false);
+  const [loadingBarcode, setLoadingBarcode] = useState(false);
+
   const postOrderData = async () => {
     try {
       const data = await PostOrderData(RequestTemplateWaybill(orderData));
-      console.log(RequestTemplateWaybill(orderData), "requestTemplate");
-      console.log(data, "data");
-      setStatus(data.state);
       setResponse(data);
       setOrderCreated(true);
+      dispatch(updateOrderForm({ ...orderData, orderCreated: true }));
     } catch (error) {
       console.error("Ошибка при отправке данных на сервер:", error);
     } finally {
@@ -36,18 +38,24 @@ const Waybill = () => {
   };
 
   const getBarcode = async (id: number) => {
+    setLoadingBarcode(true);
     try {
       await GetBarcode(id);
     } catch (error) {
       console.error("Ошибка при получении шрихкодов:", error);
+    } finally {
+      setLoadingBarcode(false);
     }
   };
 
   const getInvoice = async (id: number) => {
+    setLoadingInvoice(true);
     try {
       await GetInvoice(id);
     } catch (error) {
       console.error("Ошибка при получении счета:", error);
+    } finally {
+      setLoadingInvoice(false);
     }
   };
 
@@ -148,11 +156,33 @@ const Waybill = () => {
 
               {packages.length > 1 && (
                 <div className="waybill-item">
-                  <a href={"#"}>
-                    <span onClick={() => getBarcode(response.uuid)}>
-                      Печати на штрихкоды
-                    </span>
-                  </a>
+                  {loadingBarcode ? (
+                    <div className="loading-container">
+                      <ClipLoader
+                        color={"#000"}
+                        loading={loadingBarcode}
+                        size={25}
+                      />
+                      <p>Загрузка штрих-кодов...</p>
+                    </div>
+                  ) : (
+                    <a href={"#"}>
+                      <span onClick={() => getBarcode(response.uuid)}>
+                        Печати на штрихкоды
+                      </span>
+                    </a>
+                  )}
+                </div>
+              )}
+
+              {loadingInvoice && (
+                <div className="loading-container">
+                  <ClipLoader
+                    color={"#000"}
+                    loading={loadingInvoice}
+                    size={25}
+                  />
+                  <p>Загрузка накладной...</p>
                 </div>
               )}
             </>

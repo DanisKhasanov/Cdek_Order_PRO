@@ -13,7 +13,6 @@ import TariffActions from "./TariffAction";
 import { DELIVERY_MODE } from "../../../enum/DeliveryMode";
 import { RequestTemplateTariff } from "../../../api/requestTemplate/RequestTemplateTariff";
 
-
 const Tariffs = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

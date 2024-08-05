@@ -42,6 +42,7 @@ interface OrderFormState {
   services: { code: string; parameter: string }[] | [];
   cod: boolean;
   sum: number;
+  orderCreated: boolean;
 }
 
 const initialState: OrderFormState = {
@@ -66,6 +67,7 @@ const initialState: OrderFormState = {
   services: [],
   cod: false,
   sum: 0,
+  orderCreated: false,
 };
 
 const orderFormSlice = createSlice({

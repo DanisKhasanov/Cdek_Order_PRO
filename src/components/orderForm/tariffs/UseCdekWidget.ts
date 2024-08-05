@@ -8,7 +8,7 @@ const UseCdekWidget = (
 ) => {
   const apiKey = import.meta.env.VITE_CDEK_API_KEY;
   const servicePath = import.meta.env.VITE_CDEK_SERVICE_PATH;
-  const widgetRef = useRef<any>(null);
+  const widgetRef = useRef<any>();
   const orderData = useSelector((state: RootState) => state.orderForm);
 
   const initializeWidget = async () => {
@@ -27,7 +27,7 @@ const UseCdekWidget = (
             type: true,
           },
           forceFilters: {
-            type: selectedTariffType === "POSTAMAT" ? "POSTAMAT" : "PVZ",
+            type: selectedTariffType,
           },
           hideDeliveryOptions: {
             door: true,
@@ -40,6 +40,9 @@ const UseCdekWidget = (
                 address,
                 type: selectedTariffType,
               });
+              if (setSelectedPickupPoint) {
+                widgetRef.current.close();
+              }
             } catch (error) {
               console.error("Ошибка при выборе:", error);
             }
@@ -58,12 +61,7 @@ const UseCdekWidget = (
 
   useEffect(() => {
     initializeWidget();
-    return () => {
-      if (widgetRef.current) {
-        widgetRef.current.close();
-      }
-    };
-  }, [setSelectedPickupPoint]);
+  }, [selectedTariffType]);
 
   const handleOpenWidget = () => {
     if (widgetRef.current) {

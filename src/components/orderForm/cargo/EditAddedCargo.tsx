@@ -77,7 +77,9 @@ const EditAddedACargo = ({
         <button onClick={handleSave}>Сохранить</button>
         <button onClick={onCancel}>Отмена</button>
       </div>
-      {error && <p style={{ color: "red", marginBottom: 0, fontSize: 13 }}>{error}</p>}
+      {error && (
+        <p style={{ color: "red", marginBottom: 0, fontSize: 13 }}>{error}</p>
+      )}
     </>
   );
 };
