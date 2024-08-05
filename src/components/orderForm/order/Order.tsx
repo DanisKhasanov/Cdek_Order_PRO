@@ -144,6 +144,10 @@ const OrderForm = () => {
                     );
                     setFieldValue("to_location.address", suggestion.value);
                   }}
+                  inputProps={{
+                    placeholder: "Введите адрес",
+                  }}
+                  defaultQuery={orderData.to_location.address}
                   customInput={CustomInput}
                 />
               </div>

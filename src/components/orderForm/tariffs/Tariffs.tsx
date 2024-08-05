@@ -38,6 +38,7 @@ const Tariffs = () => {
       const filterTariffs = data.tariff_codes.filter((tariff: any) =>
         Object.values(DELIVERY_MODE).includes(tariff.delivery_mode)
       );
+      
       setTariff(filterTariffs);
     } catch (error) {
       console.error("Ошибка при загрузке данных заказа", error);

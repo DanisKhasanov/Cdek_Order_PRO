@@ -12,7 +12,6 @@ const Navigation = () => {
     (state: RootState) => state.orderForm.orderCreated
   );
 
-  console.log(orderCreated);
   return (
     <div className="container">
       <div className="App">

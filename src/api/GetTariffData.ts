@@ -8,7 +8,6 @@ export const GetTariffData = async (payload: any) => {
       },
     });
 
-    console.log("Получение данных о тарифе:", response.data);
     return response.data;
   } catch (error) {
     console.error("Ошибка при отправке данных на сервер:", error);
