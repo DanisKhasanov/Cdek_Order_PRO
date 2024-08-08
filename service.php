@@ -1,4 +1,5 @@
 <?php
+
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     header("Access-Control-Allow-Origin: *");
     header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
@@ -12,15 +13,9 @@ header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
 
-$service = new service(/**
- * Вставьте свой аккаунт\идентификатор для интеграции
- * Put your account for integration here
- */ 'uofC0dJ97DVcjjM1p6LdfP1MCLSnSmum',
-
-    /**
-     * Вставьте свой пароль для интеграции
-     * Put your password for integration here
-     */ 'g6yLzKpCZaFFaFbirKauU2hmGepryEbt');
+$service = new service(
+ 'uofC0dJ97DVcjjM1p6LdfP1MCLSnSmum',
+ 'g6yLzKpCZaFFaFbirKauU2hmGepryEbt');
 $service->process($_GET, file_get_contents('php://input'));
 
 class service

@@ -4,16 +4,16 @@ import { RootState } from "../../../store/store";
 
 const UseCdekWidget = (
   setSelectedPickupPoint: any,
-  selectedTariffType: any
+  selectedTariffType: string | null
 ) => {
   const apiKey = import.meta.env.VITE_CDEK_API_KEY;
   const servicePath = import.meta.env.VITE_CDEK_SERVICE_PATH;
   const widgetRef = useRef<any>();
   const orderData = useSelector((state: RootState) => state.orderForm);
-
+console.log(selectedTariffType)
   const initializeWidget = async () => {
     try {
-      if ((window as any).CDEKWidget) {
+      if ((window as any).CDEKWidget && selectedTariffType) {
         widgetRef.current = new (window as any).CDEKWidget({
           apiKey: apiKey,
           servicePath: servicePath,
@@ -61,7 +61,8 @@ const UseCdekWidget = (
 
   useEffect(() => {
     initializeWidget();
-  }, [selectedTariffType]);
+    console.log('1')
+  }, [selectedTariffType ]);
 
   const handleOpenWidget = () => {
     if (widgetRef.current) {

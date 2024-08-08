@@ -1,10 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import { forwardRef, useState } from "react";
-import {
-  
-  updateOrderForm,
-} from "../../../store/reducers/OrderReducer";
+import { updateOrderForm } from "../../../store/reducers/OrderReducer";
 import { TariffActionsProps } from "../../../props/TariffActionsProps";
 import { DELIVERY_MODE } from "../../../enum/DeliveryMode";
 import DoorDelivery from "./DoorDelivery";
@@ -21,20 +18,24 @@ const TariffActions = ({
   const [showComment, setShowComment] = useState(false);
   const [address, setAddress] = useState("");
   const [comment, setComment] = useState("");
+  const [error, setError] = useState("");
   const dispatch = useDispatch();
   const apiKey = import.meta.env.VITE_DADATA_API_KEY;
 
   const CustomInput = forwardRef((props, ref: any) => (
     <StyledInput {...props} ref={ref} />
   ));
+
   const handleShowAddressInput = (deliveryName: number) => {
     if (deliveryName === DELIVERY_MODE.DOOR) {
       setShowAddressInput(!showAddressInput);
     }
   };
+
   const handleShowComment = () => {
     setShowComment(!showComment);
   };
+
   const handleChangeComment = () => {
     dispatch(
       updateOrderForm({
@@ -44,7 +45,13 @@ const TariffActions = ({
     );
     setShowComment(false);
   };
+
   const handleChangeAddress = () => {
+    if (!address.trim()) {
+      setError("Адрес не может быть пустым");
+      return;
+    }
+    setError("");
     dispatch(
       updateOrderForm({
         ...orderData,
@@ -53,6 +60,7 @@ const TariffActions = ({
     );
     setShowAddressInput(false);
   };
+
   return (
     <div>
       {selectedTariff === tariffCode && (
@@ -92,24 +100,18 @@ const TariffActions = ({
             onChange={(suggestion: any) => {
               setAddress(suggestion.value);
             }}
+            inputProps={{
+              placeholder: "Введите адрес",
+            }}
             customInput={CustomInput}
           />
 
-          <button
-            onClick={() => {
-              if (!address) {
-                alert("Адрес не может быть пустым");
-                return;
-              }
-              handleChangeAddress();
-            }}
-            className="save-btn"
-          >
+          <button onClick={handleChangeAddress} className="save-btn">
             Сохранить
           </button>
         </div>
       )}
-
+      {error && showAddressInput && <p style={{ color: "red", fontSize: 15 }}>{error}</p>}
       {showComment && selectedTariff === tariffCode && (
         <div>
           <input
@@ -120,12 +122,7 @@ const TariffActions = ({
             placeholder="Укажите комментарий"
           />
 
-          <button
-            onClick={() => {
-              handleChangeComment();
-            }}
-            className="save-btn"
-          >
+          <button onClick={handleChangeComment} className="save-btn">
             Сохранить
           </button>
         </div>

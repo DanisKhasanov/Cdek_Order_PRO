@@ -2,7 +2,7 @@
 const order = {
   number: Math.floor(Math.random() * 99999).toString(),
   recipient: {
-    name: 'Зинуров Рамазан Разябович',
+    name: 'Иванов Иван Иванович',
     phones: [{ number: '+79874070867' }],
   },
 

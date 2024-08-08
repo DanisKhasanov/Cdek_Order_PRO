@@ -46,9 +46,7 @@ const OrderForm = () => {
   };
 
   useEffect(() => {
-    if (!orderData.recipient.name) {
-      getOrderData();
-    }
+    !orderData.recipient.name ? getOrderData() : setLoading(false);
   }, []);
 
   const onSubmit = (values: any) => {
@@ -105,6 +103,7 @@ const OrderForm = () => {
                     token={apiKey}
                     onChange={(suggestion: any) => {
                       setFieldValue("recipient.name", suggestion.value);
+                      console.log(suggestion);
                     }}
                     inputProps={{
                       placeholder: "Введите имя",
@@ -172,7 +171,7 @@ const OrderForm = () => {
               </div>
 
               <div style={{ color: "red" }}>
-                <p style={{ marginBottom: 14 }}>* - обязательные поля</p>
+                <p style={{ marginBottom: 10 }}>* - обязательные поля</p>
               </div>
 
               <button className="btn" type="submit">
