@@ -10,7 +10,6 @@ const UseCdekWidget = (
   const servicePath = import.meta.env.VITE_CDEK_SERVICE_PATH;
   const widgetRef = useRef<any>();
   const orderData = useSelector((state: RootState) => state.orderForm);
-console.log(selectedTariffType)
   const initializeWidget = async () => {
     try {
       if ((window as any).CDEKWidget && selectedTariffType) {
@@ -61,8 +60,7 @@ console.log(selectedTariffType)
 
   useEffect(() => {
     initializeWidget();
-    console.log('1')
-  }, [selectedTariffType ]);
+  }, [selectedTariffType]);
 
   const handleOpenWidget = () => {
     if (widgetRef.current) {
