@@ -1,17 +1,19 @@
 <?php
 
-if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-    header("Access-Control-Allow-Origin: *");
-    header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-    header("Access-Control-Allow-Headers: Content-Type, Authorization");
-    header("HTTP/1.1 200 OK");
-    exit();
-}
+// if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+//     header("Access-Control-Allow-Origin: *");
+//     header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+//     header("Access-Control-Allow-Headers: Content-Type, Authorization");
+//     header("HTTP/1.1 200 OK");
+//     exit();
+// }
 
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-
+// header("Access-Control-Allow-Origin: *");
+// header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+// header("Access-Control-Allow-Headers: Content-Type, Authorization");
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 $service = new service(
  'uofC0dJ97DVcjjM1p6LdfP1MCLSnSmum',
@@ -70,6 +72,7 @@ class service
 
     private function sendValidationError($message)
     {
+        error_log("Validation Error: $message"); 
         $this->http_response_code(400);
         header('Content-Type: application/json');
         header('X-Service-Version: 3.10.2');
@@ -273,6 +276,10 @@ class service
 
     private function sendResponse($data)
     {
+        if (isset($data['result'])) {
+            error_log("Response Data: " . $data['result']); // Добавьте это для отладки
+        }
+
         $this->http_response_code(200);
         header('Content-Type: application/json');
         header('X-Service-Version: 3.10.2');
