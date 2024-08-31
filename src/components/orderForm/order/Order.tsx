@@ -25,16 +25,25 @@ const OrderForm = () => {
 
   const getOrderData = async () => {
     try {
-      const order = await GetOrderData(Order);
+      const order = {
+        number: Math.floor(Math.random() * 99999).toString(),
+        recipient: {
+          name: "Иванов Иван Иванович",
+          phones: [{ number: "+79874070867" }],
+        },
+        comment: "Адресс: Пушкина 3, Казань. Получатель заказа: Иван Иванов. Позвонить за час",
+        sum: 10000
+        
+      };
       dispatch(
         updateOrderForm({
           number: order.number,
           recipient: {
             name: order.recipient.name,
-            phones: order.recipient.phones,
+            phones: [{ number: '12313' }]
           },
           comment: order.comment,
-          cod: order.cod,
+          cod: true,
           sum: order.sum,
         })
       );

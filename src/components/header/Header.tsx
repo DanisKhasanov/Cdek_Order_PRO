@@ -6,6 +6,7 @@ import Cargo from "../orderForm/cargo/Cargo";
 import OrderForm from "../orderForm/order/Order";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
+import Popups from "../orderForm/popup/popup";
 
 const Navigation = () => {
   const orderCreated = useSelector(
@@ -14,6 +15,8 @@ const Navigation = () => {
 
   return (
     <div className="container">
+      <Popups />
+
       <div className="App">
         <nav className="header">
           <NavLink
@@ -50,7 +53,7 @@ const Navigation = () => {
           </NavLink>
         </nav>
         <Routes>
-          <Route path="/" element={<OrderForm />} />
+          {/* <Route path="/" element={<Popups />} /> */}
           <Route path="/order" element={<OrderForm />} />
           <Route path="/cargo" element={<Cargo />} />
           <Route path="/tariffs" element={<Tariffs />} />

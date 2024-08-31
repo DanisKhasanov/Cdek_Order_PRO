@@ -1,8 +1,8 @@
 import axios from "axios";
 
-export const GetOrderData = async (payload: any) => {
+export const GetOrderData = async (id: number) => {
   try {
-    const response = await axios.post("https://jsonplaceholder.typicode.com/posts", payload, {
+    const response = await axios.get('https://cdek.flx-it.ru/ms/order/${id}', {
       headers: {
         "Content-Type": "application/json",
       },

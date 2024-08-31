@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const GetTariffData = async (payload: any) => {
   try {
-    const response = await axios.post("https://94.180.255.226:8020/tarifflist", payload, {
+    const response = await axios.post("https://cdek.flx-it.ru/tarifflist", payload, {
       headers: {
         "Content-Type": "application/json",
       },

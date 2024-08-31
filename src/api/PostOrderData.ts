@@ -3,7 +3,7 @@ import axios from "axios";
 export const PostOrderData = async (payload: any) => {
   try {
     const response = await axios.post(
-      "https://94.180.255.226:8020/order",
+      "https://cdek.flx-it.ruorder",
       payload,
       {
         headers: {
@@ -22,7 +22,7 @@ export const PostOrderData = async (payload: any) => {
 export const GetBarcode = async (id: number) => {
   try {
     const response = await axios.get(
-      `https://94.180.255.226:8020/barcode/${id}`,
+      `https://cdek.flx-it.ru/barcode/${id}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -42,7 +42,7 @@ export const GetBarcode = async (id: number) => {
 export const GetInvoice = async (id: number) => {
   try {
     const response = await axios.get(
-      `https://94.180.255.226:8020/invoice/${id}`,
+      `https://cdek.flx-it.ru/invoice/${id}`,
       {
         headers: {
           "Content-Type": "application/json",

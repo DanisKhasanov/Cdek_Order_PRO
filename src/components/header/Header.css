@@ -5,9 +5,43 @@
   height: 100vh;
 }
 
+.popup {
+  width: 700px;
+  height: 100px;
+  background-color: #f7f7f7;
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-size: 10px;
+  width: 200px;
+  height: 40px;
+  cursor: pointer;
+  color: #222222;
+  padding: 7px 11px;
+  border-radius: 3px;
+  border: 1px solid #cccccc;
+  background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
+  line-height: 1;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.popup-content button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
 .App {
   width: 700px;
   height: 700px;
+  margin-top: 100px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+
   background-color: #f4f4f4;
   border-radius: 10px;
 }
@@ -27,7 +61,7 @@
 }
 .nav-link-disabled {
   color: grey;
-  pointer-events: none; 
+  pointer-events: none;
   text-decoration: none;
 }
 
