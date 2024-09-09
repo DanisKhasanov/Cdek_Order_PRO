@@ -47,6 +47,7 @@
 .form-control.error {
   border-color: red;
 }
+
 button.btn,
 button.next {
   height: 50px;

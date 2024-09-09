@@ -25,12 +25,18 @@ const Cargo = () => {
   const getDataOrder = async () => {
     try {
       const response = await GetDataCity(RequestTemplateCargo(orderData));
+      console.log(response);
+      console.log("Код города:", orderData.cod);
+      const cod =
+      orderData.cod && response.cod
+        ? true
+        : false;
       if (response) {
         dispatch(
           updateOrderForm({
             ...orderData,
             to_location: { ...orderData.to_location, code: response.code },
-            cod: response.cod,
+            cod: cod
           })
         );
       } else {

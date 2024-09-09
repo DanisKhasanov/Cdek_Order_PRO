@@ -1,35 +1,49 @@
-import { useEffect } from "react";
-import { GetOrderData } from "../../../api/GetOrderData";
+import { useEffect, useState } from "react";
 
 const Popups = () => {
+  const [receivedMessage, setReceivedMessage] = useState("");
+  const domen = import.meta.env.VITE_DOMEN;
+  // useEffect(() => {
+  //   if (receivedMessage) {
+  //     console.log("id клиента:", receivedMessage);
+  //   }
+  // }, [receivedMessage]);
+
   useEffect(() => {
-    window.addEventListener("message", function (event) {
-      var receivedMessage = event.data;
-      const order = GetOrderData(receivedMessage.objectId);
-      console.log(order);
-    });
+    const handleMessage = (event: any) => {
+      console.log("Данные из event", event);
+      var id = event.data.objectId;
+      setReceivedMessage(id);
+    };
+    window.addEventListener("message", handleMessage);
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
   }, []);
+
+  useEffect(() => {
+    console.log("id клиента:", receivedMessage);
+  }, [receivedMessage]);
 
   const openModal = () => {
     const windowProps =
       "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=760,height=760";
-    const popup = window.open(
-      "https://localhost:5174/order",
-      // "https://vite-test.flx-it.ru/order",
-      "somePopup",
-      windowProps
-    );
+    const url = domen + "/order/";
+    const popup = window.open(url, "Pop up window", windowProps);
 
     if (popup) {
-      popup.postMessage(
-        {
-          name: "ShowPopupRequest",
-          messageId: 12,
-          popupName: "somePopup",
-        },
-        // "https://vite-test.flx-it.ru"
-        "https://localhost:5174"
-      );
+      popup.onload = () => {
+        popup.postMessage(
+          {
+            name: "ShowPopupRequest",
+            messageId: 12,
+            popupName: "somePopup",
+            popupParameters: receivedMessage,
+          },
+          domen
+        );
+      };
     }
   };
 

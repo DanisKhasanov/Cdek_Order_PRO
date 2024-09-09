@@ -23,11 +23,15 @@ const Waybill = () => {
   const [response, setResponse] = useState<any>();
   const [loadingInvoice, setLoadingInvoice] = useState(false);
   const [loadingBarcode, setLoadingBarcode] = useState(false);
+  const account = orderData.account;
+  const name = orderData.recipient.name;
 
   const postOrderData = async () => {
     try {
       const data = await PostOrderData(RequestTemplateWaybill(orderData));
+      console.log("Данные заказа:",RequestTemplateWaybill(orderData));
       setResponse(data);
+      console.log("Результат запроса",data);
       setOrderCreated(true);
       dispatch(updateOrderForm({ ...orderData, orderCreated: true }));
     } catch (error) {
@@ -39,8 +43,9 @@ const Waybill = () => {
 
   const getBarcode = async (id: number) => {
     setLoadingBarcode(true);
+
     try {
-      await GetBarcode(id);
+      await GetBarcode(id,account,name);
     } catch (error) {
       console.error("Ошибка при получении шрихкодов:", error);
     } finally {
@@ -51,7 +56,7 @@ const Waybill = () => {
   const getInvoice = async (id: number) => {
     setLoadingInvoice(true);
     try {
-      await GetInvoice(id);
+      await GetInvoice(id,account,name);
     } catch (error) {
       console.error("Ошибка при получении счета:", error);
     } finally {

@@ -2,13 +2,12 @@ import { useEffect, useState, forwardRef } from "react";
 import { Formik, Form, Field } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { updateOrderForm } from "../../../store/reducers/OrderReducer";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/style.css";
-import Order from "../../../api/testData"; // фейковые данные
 import { RootState } from "../../../store/store";
 import { validationSchema } from "./Validation";
 import { GetOrderData } from "../../../api/GetOrderData";
-import { AddressSuggestions, FioSuggestions } from "react-dadata";
+import { AddressSuggestions } from "react-dadata";
 import { StyledInput } from "../styles/StyleInputAddressOrder";
 import "react-dadata/dist/react-dadata.css";
 import { ClipLoader } from "react-spinners";
@@ -18,48 +17,64 @@ const OrderForm = () => {
   const dispatch = useDispatch();
   const orderData = useSelector((state: RootState) => state.orderForm);
   const apiKey = import.meta.env.VITE_DADATA_API_KEY;
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [idOrder, setIdOrder] = useState("");
   const CustomInput = forwardRef((props, ref: any) => (
     <StyledInput {...props} ref={ref} />
   ));
+  const domen = import.meta.env.VITE_DOMEN;
 
-  const getOrderData = async () => {
+  useEffect(() => {
+    setLoading(true);
+
+    const handleMessage = async (event: any) => {
+      console.log("Данные из event", event);
+      if (event.origin !== domen) {
+        return;
+      }
+
+      const message = event.data.popupParameters;
+
+      if (message) setIdOrder(message);
+
+      console.log("id клиента:", message);
+
+      await getOrderData(message);
+    };
+    window.addEventListener("message", handleMessage);
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+  }, []);
+
+  const getOrderData = async (idOrder: any) => {
     try {
-      const order = {
-        number: Math.floor(Math.random() * 99999).toString(),
-        recipient: {
-          name: "Иванов Иван Иванович",
-          phones: [{ number: "+79874070867" }],
-        },
-        comment: "Адресс: Пушкина 3, Казань. Получатель заказа: Иван Иванов. Позвонить за час",
-        sum: 10000
-        
-      };
+      if (idOrder === "") return;
+      const response = await GetOrderData(idOrder);
+      console.log("Результат запроса:", response);
       dispatch(
         updateOrderForm({
-          number: order.number,
+          number: response.number,
           recipient: {
-            name: order.recipient.name,
-            phones: [{ number: '12313' }]
+            name: response.recipient.name,
+            phones: [{ number: response.recipient.phones[0].number }],
           },
-          comment: order.comment,
-          cod: true,
-          sum: order.sum,
+          comment: response.comment,
+          cod: response.cod,
+          sum: response.sum,
         })
       );
     } catch (error) {
-      console.error("Ошибка при загрузке данных заказа", error);
+      console.error("Ошибка при получении данных:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    !orderData.recipient.name ? getOrderData() : setLoading(false);
-  }, []);
-
   const onSubmit = (values: any) => {
     dispatch(updateOrderForm(values));
+    console.log("Данные заказа:", orderData);
     navigate("/cargo");
   };
 
@@ -101,26 +116,41 @@ const OrderForm = () => {
 
               <div className="form-group">
                 <label htmlFor="recipient.name">* Имя получателя:</label>
-                <div
+                {/* <div
                   className={`form-control address ${
                     errors.recipient?.name && touched.recipient?.name
                       ? "error"
                       : ""
                   }`}
-                >
-                  <FioSuggestions
+                > */}
+                <Field
+                  type="text"
+                  id="recipient.name"
+                  name="recipient.name"
+                  className={`form-control  ${
+                    errors.recipient?.name && touched.recipient?.name
+                      ? "error"
+                      : ""
+                  }`}
+                  placeholder={
+                    touched.recipient?.name && errors.recipient?.name
+                      ? errors.recipient.name
+                      : "Введите имя"
+                  }
+                />
+
+                {/* <FioSuggestions
                     token={apiKey}
                     onChange={(suggestion: any) => {
                       setFieldValue("recipient.name", suggestion.value);
-                      console.log(suggestion);
                     }}
                     inputProps={{
                       placeholder: "Введите имя",
                     }}
                     defaultQuery={orderData.recipient.name}
                     customInput={CustomInput}
-                  />
-                </div>
+                  /> */}
+                {/* </div> */}
               </div>
 
               <div className="form-group">
