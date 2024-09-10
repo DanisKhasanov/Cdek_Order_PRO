@@ -8,6 +8,11 @@ export const RequestTemplateWaybill = (orderData: any) => {
   return {
     number: orderData.number,
     account: orderData.account,
+    sender: {
+      phones: orderData.sender.phones.map((phone: any) => ({
+        number: phone.number,
+      })),
+    },
     tariff_code: orderData.tariff_code,
     recipient: orderData.recipient,
     ...(orderData.to_location && {
@@ -29,8 +34,7 @@ export const RequestTemplateWaybill = (orderData: any) => {
       items: pkg.items.map((item: any) => ({
         name: item.name,
         ware_key: item.ware_key,
-        //TODO: добавить маркировку
-        //marking: item.marking,
+        marking: item.marking,
         weight: item.weight * 1000,
         amount: item.amount,
         payment: orderData.cod === true ? { value: value } : { value: 0 },

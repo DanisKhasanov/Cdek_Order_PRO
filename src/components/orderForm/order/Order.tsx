@@ -2,7 +2,7 @@ import { useEffect, useState, forwardRef } from "react";
 import { Formik, Form, Field } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { updateOrderForm } from "../../../store/reducers/OrderReducer";
-import { useLocation, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import "../styles/style.css";
 import { RootState } from "../../../store/store";
 import { validationSchema } from "./Validation";
@@ -35,11 +35,11 @@ const OrderForm = () => {
 
       const message = event.data.popupParameters;
 
-      if (message) setIdOrder(message);
-
-      console.log("id клиента:", message);
-
-      await getOrderData(message);
+      if (message) {
+        setIdOrder(message);
+        console.log("id клиента:", message);
+        await getOrderData(message); 
+      }
     };
     window.addEventListener("message", handleMessage);
 
@@ -48,7 +48,12 @@ const OrderForm = () => {
     };
   }, []);
 
+  useEffect(() => {
+    !orderData.recipient.name ? getOrderData(idOrder) : setLoading(false);
+  }, [idOrder]);
+
   const getOrderData = async (idOrder: any) => {
+    setLoading(true);
     try {
       if (idOrder === "") return;
       const response = await GetOrderData(idOrder);
@@ -73,7 +78,20 @@ const OrderForm = () => {
   };
 
   const onSubmit = (values: any) => {
-    dispatch(updateOrderForm(values));
+    const sellerPhone =
+    values.account === "GRM"
+      ? "+79272441282" 
+      : values.account === "ZAR"
+      ? "+79393932577" 
+      : ""; 
+
+  
+  dispatch(
+    updateOrderForm({
+      ...values,
+      sender: { phones: [{ number: sellerPhone }] },
+    })
+  );
     console.log("Данные заказа:", orderData);
     navigate("/cargo");
   };

@@ -3,18 +3,15 @@ import { useEffect, useState } from "react";
 const Popups = () => {
   const [receivedMessage, setReceivedMessage] = useState("");
   const domen = import.meta.env.VITE_DOMEN;
-  // useEffect(() => {
-  //   if (receivedMessage) {
-  //     console.log("id клиента:", receivedMessage);
-  //   }
-  // }, [receivedMessage]);
-
   useEffect(() => {
     const handleMessage = (event: any) => {
-      console.log("Данные из event", event);
+      console.log("Данные из event", event.data);
+
       var id = event.data.objectId;
+
       setReceivedMessage(id);
     };
+
     window.addEventListener("message", handleMessage);
 
     return () => {
@@ -25,6 +22,7 @@ const Popups = () => {
   useEffect(() => {
     console.log("id клиента:", receivedMessage);
   }, [receivedMessage]);
+
 
   const openModal = () => {
     const windowProps =

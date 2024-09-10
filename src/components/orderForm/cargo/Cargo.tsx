@@ -27,16 +27,13 @@ const Cargo = () => {
       const response = await GetDataCity(RequestTemplateCargo(orderData));
       console.log(response);
       console.log("Код города:", orderData.cod);
-      const cod =
-      orderData.cod && response.cod
-        ? true
-        : false;
+      const cod = orderData.cod && response.cod ? true : false;
       if (response) {
         dispatch(
           updateOrderForm({
             ...orderData,
             to_location: { ...orderData.to_location, code: response.code },
-            cod: cod
+            cod: cod,
           })
         );
       } else {
@@ -64,6 +61,7 @@ const Cargo = () => {
           name: "Стеклянные флаконы",
           ware_key: (newId + 1).toString(),
           weight: values.weight,
+          marking: (newId + 1).toString(),
           amount: 1,
           payment: {
             value: orderData.cod === false ? 0 : orderData.sum,

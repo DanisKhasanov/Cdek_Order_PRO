@@ -40,6 +40,7 @@ const EditAddedACargo = ({
         items: {
           name: "Стеклянные флаконы",
           ware_key: (id + 1).toString(),
+          marking: (id + 1).toString(),
           weight: weight,
           amount: 1,
           payment: {

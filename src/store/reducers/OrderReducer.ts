@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface PackageItem {
   name: string;
   ware_key: string;
+  marking: string;
   weight: number;
   amount: number;
   payment: {
@@ -22,6 +23,9 @@ interface Package {
 interface OrderFormState {
   number: string;
   account: string;
+  sender: {
+    phones: [{ number: string }];
+  };
   recipient: {
     name: string;
     phones: [{ number: string }];
@@ -31,7 +35,6 @@ interface OrderFormState {
     city: string;
     postal_code: string;
     address: string;
-    
   };
   packages: Package[];
   comment: string;
@@ -48,6 +51,9 @@ interface OrderFormState {
 const initialState: OrderFormState = {
   number: "",
   account: "",
+  sender: {
+    phones: [{ number: "" }],
+  },
   recipient: {
     name: "",
     phones: [{ number: "" }],
@@ -96,13 +102,14 @@ const orderFormSlice = createSlice({
       const { index, weight, size } = action.payload;
       const [length, width, height] = size.split("x").map(Number);
 
-      const totalPackages = state.packages.length +1;
+      const totalPackages = state.packages.length + 1;
       const costPerPackage = totalPackages > 0 ? 100 : 0;
 
       const items = {
         name: "Стеклянные флаконы",
         ware_key: (index + 1).toString(),
         weight: weight,
+        marking: (index + 1).toString(),
         amount: 1,
         payment: {
           value: state.cod === false ? 0 : state.sum,
@@ -111,7 +118,7 @@ const orderFormSlice = createSlice({
       };
 
       state.packages.push({
-        number: (totalPackages).toString(),
+        number: totalPackages.toString(),
         weight,
         length,
         width,
@@ -145,6 +152,7 @@ const orderFormSlice = createSlice({
           name: "Стеклянные флаконы",
           ware_key: (index + 1).toString(),
           weight: weight,
+          marking: (index + 1).toString(),
           amount: 1,
           payment: {
             value: state.cod === false ? 0 : state.sum,
@@ -166,13 +174,13 @@ const orderFormSlice = createSlice({
       const packageToCopy = state.packages[action.payload];
       if (packageToCopy) {
         const totalPackages = state.packages.length;
-        const newNumber = (totalPackages + 1).toString(); 
+        const newNumber = (totalPackages + 1).toString();
         state.packages.push({
           ...packageToCopy,
           number: newNumber,
           items: packageToCopy.items.map((item) => ({
             ...item,
-            ware_key: `${newNumber}`, 
+            ware_key: `${newNumber}`,
           })),
         });
       }

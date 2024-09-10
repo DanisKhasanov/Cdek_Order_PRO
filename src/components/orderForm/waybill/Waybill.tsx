@@ -109,7 +109,7 @@ const Waybill = () => {
                   <a href="#" title="Скачать">
                     {" "}
                     <b onClick={() => getInvoice(response.uuid)}>
-                      {response.uuid}
+                      {response.number}
                     </b>
                   </a>{" "}
                   от {formatDateTime(response.date)}
