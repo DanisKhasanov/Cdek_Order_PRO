@@ -77,7 +77,7 @@ button.next {
 }
 .buttons-tariffs {
   display: flex;
-  gap: 80px;
+  gap: 30px;
   margin-top: 20px;
 }
 .cash-on-delivery {
@@ -93,7 +93,6 @@ button.next {
 .cash-on-delivery-container {
   display: flex;
   align-items: center;
-  gap: 10px;
   margin-bottom: 10px;
 }
 

@@ -45,6 +45,9 @@ interface OrderFormState {
   services: { code: string; parameter: string }[] | [];
   cod: boolean;
   sum: number;
+  delivery_recipient_cost: {
+    value: number;
+  };
   orderCreated: boolean;
 }
 
@@ -73,6 +76,9 @@ const initialState: OrderFormState = {
   services: [],
   cod: false,
   sum: 0,
+  delivery_recipient_cost: {
+    value: 0,
+  },
   orderCreated: false,
 };
 
@@ -107,7 +113,7 @@ const orderFormSlice = createSlice({
 
       const items = {
         name: "Стеклянные флаконы",
-        ware_key: (index + 1).toString(),
+        ware_key: "1",
         weight: weight,
         marking: (index + 1).toString(),
         amount: 1,
@@ -150,7 +156,7 @@ const orderFormSlice = createSlice({
 
         const items = {
           name: "Стеклянные флаконы",
-          ware_key: (index + 1).toString(),
+          ware_key: "1",
           weight: weight,
           marking: (index + 1).toString(),
           amount: 1,
@@ -180,7 +186,7 @@ const orderFormSlice = createSlice({
           number: newNumber,
           items: packageToCopy.items.map((item) => ({
             ...item,
-            ware_key: `${newNumber}`,
+            marking: `${newNumber}`,
           })),
         });
       }

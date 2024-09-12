@@ -25,8 +25,8 @@ const Cargo = () => {
   const getDataOrder = async () => {
     try {
       const response = await GetDataCity(RequestTemplateCargo(orderData));
-      console.log(response);
-      console.log("Код города:", orderData.cod);
+      console.log("Принимает ли город наложенный платеж:",response.cod);
+      console.log("Наложенный платеж контрагента:", orderData.cod);
       const cod = orderData.cod && response.cod ? true : false;
       if (response) {
         dispatch(
@@ -59,7 +59,7 @@ const Cargo = () => {
         size: values.size,
         items: {
           name: "Стеклянные флаконы",
-          ware_key: (newId + 1).toString(),
+          ware_key: "1",
           weight: values.weight,
           marking: (newId + 1).toString(),
           amount: 1,

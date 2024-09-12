@@ -84,7 +84,7 @@ const AddedCargo = () => {
                   {showItemInfoId === index && (
                     <div className="item-info">
                       <p>Наименование товара – стеклянные флаконы</p>
-                      <p>Код товара/артикул – {index + 1}</p>
+                      <p>Код товара/артикул – 1</p>
                       <p>Маркировка – {index + 1}</p>
                       <p>Физический вес ед. товара – {cargo.weight} кг</p>
                       <p>Количество – 1</p>

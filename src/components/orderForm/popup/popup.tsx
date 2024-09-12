@@ -23,7 +23,6 @@ const Popups = () => {
     console.log("id клиента:", receivedMessage);
   }, [receivedMessage]);
 
-
   const openModal = () => {
     const windowProps =
       "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=760,height=760";
@@ -32,15 +31,17 @@ const Popups = () => {
 
     if (popup) {
       popup.onload = () => {
-        popup.postMessage(
-          {
-            name: "ShowPopupRequest",
-            messageId: 12,
-            popupName: "somePopup",
-            popupParameters: receivedMessage,
-          },
-          domen
-        );
+        setTimeout(() => {
+          popup.postMessage(
+            {
+              name: "ShowPopupRequest",
+              messageId: 12,
+              popupName: "somePopup",
+              popupParameters: receivedMessage,
+            },
+            domen
+          );
+        }, 2000);
       };
     }
   };

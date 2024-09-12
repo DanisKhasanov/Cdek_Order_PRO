@@ -8,7 +8,7 @@ const CashOnDelivery = () => {
   const [isAvailable, setIsAvailable] = useState(true);
 
   useEffect(() => {
-    console.log("orderData.cod", orderData.cod);
+    console.log("Итоговый код наложенного платежа:", orderData.cod);
     if (orderData.cod===true) {
       setIsAvailable(true);
       setIsEnabled(true);

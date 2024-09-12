@@ -12,6 +12,7 @@ import { ClipLoader } from "react-spinners";
 import TariffActions from "./TariffAction";
 import { DELIVERY_MODE } from "../../../enum/DeliveryMode";
 import { RequestTemplateTariff } from "../../../api/requestTemplate/RequestTemplateTariff";
+import PaymentForDelivery from "./PaymentForDelivery";
 
 const Tariffs = () => {
   const dispatch = useDispatch();
@@ -19,9 +20,17 @@ const Tariffs = () => {
   const orderData = useSelector((state: RootState) => state.orderForm);
   const [tariff, setTariff] = useState<TariffProps[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
   const [selectedTariff, setSelectedTariff] = useState<number | null>(null);
+  const [selectedTariffSum, setSelectedTariffSum] = useState<number | null>(
+    null
+  );
   const [selectedPickupPoint, setSelectedPickupPoint] =
     useState<PickupPointProps>({});
+
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
+  };
 
   const selectedTariffType =
     tariff.find((t) => t.tariff_code === selectedTariff)?.delivery_mode ===
@@ -98,7 +107,10 @@ const Tariffs = () => {
                   : ""
               }`}
               key={tariff.tariff_code}
-              onClick={() => setSelectedTariff(tariff.tariff_code)}
+              onClick={() => {
+                setSelectedTariff(tariff.tariff_code);
+                setSelectedTariffSum(tariff.delivery_sum + 100);
+              }}
             >
               <div>
                 <input
@@ -152,7 +164,8 @@ const Tariffs = () => {
                       </p>
                       {!orderData.cod && (
                         <p style={{ color: "red", fontSize: 13 }}>
-                          В данном регионе отсутствует прием наложенного платежа или контрагент оплатил заказ
+                          В данном регионе отсутствует прием наложенного платежа
+                          или контрагент оплатил заказ
                         </p>
                       )}
 
@@ -179,6 +192,12 @@ const Tariffs = () => {
         <ButtonCustom className="btn" onClick={submit}>
           Отправить
         </ButtonCustom>
+
+        <PaymentForDelivery
+          selectedTariffSum={selectedTariffSum}
+          isChecked={isChecked}
+          handleCheckboxChange={handleCheckboxChange}
+        />
       </div>
     </div>
   );

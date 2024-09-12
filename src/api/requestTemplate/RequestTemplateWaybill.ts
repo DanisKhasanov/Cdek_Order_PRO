@@ -37,12 +37,14 @@ export const RequestTemplateWaybill = (orderData: any) => {
         marking: item.marking,
         weight: item.weight * 1000,
         amount: item.amount,
-        payment: orderData.cod === true ? { value: value } : { value: 0 },
-
+        payment: orderData.cod === true && index === 0 
+          ? { value: value }
+          : { value: 0 }, 
         cost: costPerPackage,
       })),
     })),
     comment: orderData.comment_delivery,
     services: orderData.services,
+    delivery_recipient_cost: orderData.delivery_recipient_cost,
   };
 };
