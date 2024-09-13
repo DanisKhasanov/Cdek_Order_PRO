@@ -25,16 +25,22 @@ const Waybill = () => {
   const [loadingBarcode, setLoadingBarcode] = useState(false);
   const account = orderData.account;
   const name = orderData.recipient.name;
-
+  const [errors, setErrors] = useState<string[]>([]);
   const postOrderData = async () => {
     try {
       const data = await PostOrderData(RequestTemplateWaybill(orderData));
-      console.log("Данные заказа:",RequestTemplateWaybill(orderData));
+      console.log("Данные заказа:", RequestTemplateWaybill(orderData));
       setResponse(data);
-      console.log("Результат запроса",data);
-      setOrderCreated(true);
-      dispatch(updateOrderForm({ ...orderData, orderCreated: true }));
-    } catch (error) {
+      console.log("Результат запроса", data);
+
+      if (data.requests && data.requests[0].errors) {
+        setErrors(data.requests[0].errors.map((err: any) => err.message));
+        setOrderCreated(false);
+      } else {
+        setOrderCreated(true);
+        dispatch(updateOrderForm({ ...orderData, orderCreated: true }));
+      }
+    } catch (error: any) {
       console.error("Ошибка при отправке данных на сервер:", error);
     } finally {
       setLoading(false);
@@ -43,9 +49,8 @@ const Waybill = () => {
 
   const getBarcode = async (id: number) => {
     setLoadingBarcode(true);
-
     try {
-      await GetBarcode(id,account,name);
+      await GetBarcode(id, account, name);
     } catch (error) {
       console.error("Ошибка при получении шрихкодов:", error);
     } finally {
@@ -56,7 +61,7 @@ const Waybill = () => {
   const getInvoice = async (id: number) => {
     setLoadingInvoice(true);
     try {
-      await GetInvoice(id,account,name);
+      await GetInvoice(id, account, name);
     } catch (error) {
       console.error("Ошибка при получении счета:", error);
     } finally {
@@ -98,6 +103,17 @@ const Waybill = () => {
             <div className="order-check">
               <CloseIcon style={{ fontSize: 60, color: "red" }} />
               <p className="fail-message">Не удалось создать заказ.</p>
+            </div>
+          )}
+
+          {errors.length > 0 && (
+            <div className="error-messages">
+              <p style={{ color: "red" }}>Ошибки при создании заказа:</p>
+              <ul>
+                {errors.map((error, index) => (
+                  <li key={index}>{error}</li>
+                ))}
+              </ul>
             </div>
           )}
 

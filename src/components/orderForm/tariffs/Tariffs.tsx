@@ -28,6 +28,7 @@ const Tariffs = () => {
   const [selectedPickupPoint, setSelectedPickupPoint] =
     useState<PickupPointProps>({});
 
+  // console.log("Доставка клиентом", isChecked);
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
