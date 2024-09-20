@@ -1,3 +1,9 @@
+.button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transition: opacity 0.3s;
+}
+
 .order-form,
 .cargo-form {
   padding: 30px;

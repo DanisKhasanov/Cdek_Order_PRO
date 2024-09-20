@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 
 const Popups = () => {
   const [receivedMessage, setReceivedMessage] = useState("");
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
   const domen = import.meta.env.VITE_DOMEN;
   useEffect(() => {
     const handleMessage = (event: any) => {
@@ -20,6 +22,9 @@ const Popups = () => {
   }, []);
 
   useEffect(() => {
+    if (receivedMessage) {
+      setIsButtonDisabled(false);
+    }
     console.log("id клиента:", receivedMessage);
   }, [receivedMessage]);
 
@@ -49,8 +54,12 @@ const Popups = () => {
   return (
     <div className="popup">
       <div className="popup-content">
-        <button className="button" onClick={openModal}>
-          Открыть виджет
+        <button
+          className={`button ${isButtonDisabled ? "disabled" : ""}`}
+          onClick={openModal}
+          disabled={isButtonDisabled}
+        >
+          {isButtonDisabled ? "Данные не получены" : "Открыть виджет"}
         </button>
       </div>
     </div>
