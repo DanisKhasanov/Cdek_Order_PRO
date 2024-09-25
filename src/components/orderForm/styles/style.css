@@ -2,8 +2,11 @@
   opacity: 0.5;
   cursor: not-allowed;
   transition: opacity 0.3s;
+  width: 150px;
 }
-
+.button{
+  width: 150px;
+}
 .order-form,
 .cargo-form {
   padding: 30px;

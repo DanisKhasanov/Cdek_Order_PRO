@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import Tooltip from "@mui/material/Tooltip";
+import HelpOutlineTwoToneIcon from "@mui/icons-material/HelpOutlineTwoTone";
 
 const Popups = () => {
   const [receivedMessage, setReceivedMessage] = useState("");
@@ -31,7 +33,7 @@ const Popups = () => {
   const openModal = () => {
     const windowProps =
       "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=760,height=760";
-    const url = domen + "/order/";
+    const url = domen + "/order";
     const popup = window.open(url, "Pop up window", windowProps);
 
     if (popup) {
@@ -53,13 +55,44 @@ const Popups = () => {
 
   return (
     <div className="popup">
-      <div className="popup-content">
+      <div>
         <button
           className={`button ${isButtonDisabled ? "disabled" : ""}`}
           onClick={openModal}
           disabled={isButtonDisabled}
         >
-          {isButtonDisabled ? "Данные не получены" : "Открыть виджет"}
+          {isButtonDisabled ? (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 5,
+                fontSize: "10px",
+              }}
+            >
+              Данные не получены
+              <Tooltip
+                 title={
+                  <span style={{ fontSize: "10px" }}>
+                    Попробуйте обновить страницу <br /> или закройте карточку покупателя
+                  </span>
+                }
+                placement="right"
+                arrow
+                sx={{}}
+              >
+                <HelpOutlineTwoToneIcon
+                  style={{
+                    cursor: "pointer",
+                    color: "rgba(5, 107, 241, 0.7)",
+                    fontSize: "15px",
+                  }}
+                />
+              </Tooltip>
+            </div>
+          ) : (
+            "Открыть виджет"
+          )}
         </button>
       </div>
     </div>

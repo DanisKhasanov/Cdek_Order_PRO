@@ -6,9 +6,9 @@ const validateWeightAndSize = (weight:number, size:any) => {
     return false;
   } else if (size === CargoSize.SIZE_30X30X15 && (weight <= 2 || weight > 5)) {
     return false;
-  } else if (size === CargoSize.SIZE_30X30X17 && (weight <= 5 || weight > 7)) {
+  } else if (size === CargoSize.SIZE_45X30X17 && (weight <= 5 || weight > 7)) {
     return false;
-  } else if (size === CargoSize.SIZE_45X30X30 && weight < 7) {
+  } else if (size === CargoSize.SIZE_45X30X30 && weight < 10) {
     return false;
   }
   return true;

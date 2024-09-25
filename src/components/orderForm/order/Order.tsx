@@ -2,7 +2,7 @@ import { useEffect, useState, forwardRef } from "react";
 import { Formik, Form, Field } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { updateOrderForm } from "../../../store/reducers/OrderReducer";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../styles/style.css";
 import { RootState } from "../../../store/store";
 import { validationSchema } from "./Validation";
@@ -38,7 +38,7 @@ const OrderForm = () => {
       if (message) {
         setIdOrder(message);
         console.log("id клиента:", message);
-        await getOrderData(message); 
+        await getOrderData(message);
       }
     };
     window.addEventListener("message", handleMessage);
@@ -79,19 +79,18 @@ const OrderForm = () => {
 
   const onSubmit = (values: any) => {
     const sellerPhone =
-    values.account === "GRM"
-      ? "+79272441282" 
-      : values.account === "ZAR"
-      ? "+79393932577" 
-      : ""; 
+      values.account === "GRM"
+        ? "+79272441282"
+        : values.account === "ZAR"
+        ? "+79393932577"
+        : "";
 
-  
-  dispatch(
-    updateOrderForm({
-      ...values,
-      sender: { phones: [{ number: sellerPhone }] },
-    })
-  );
+    dispatch(
+      updateOrderForm({
+        ...values,
+        sender: { phones: [{ number: sellerPhone }] },
+      })
+    );
     console.log("Данные заказа:", orderData);
     navigate("/cargo");
   };
@@ -195,6 +194,11 @@ const OrderForm = () => {
               </div>
 
               <div className="form-group">
+                <label>Комментарий к заказу:</label>
+                <span className="comment">{orderData.comment}</span>
+              </div>
+              
+              <div className="form-group">
                 <label htmlFor="to_location.address">* Адрес получателя:</label>
                 <div
                   className={`form-control address ${
@@ -220,11 +224,6 @@ const OrderForm = () => {
                     customInput={CustomInput}
                   />
                 </div>
-              </div>
-
-              <div className="form-group">
-                <label>Комментарий к заказу:</label>
-                <span className="comment">{orderData.comment}</span>
               </div>
 
               <div style={{ color: "red" }}>
