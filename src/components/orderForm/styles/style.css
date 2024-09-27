@@ -27,7 +27,7 @@
 }
 
 .form-group.cargo input {
-  width: 170px;
+  width: 100%;
 }
 
 .form-group select {
@@ -82,12 +82,14 @@ button.next {
 .buttons {
   display: flex;
   gap: 80px;
+  justify-content:space-between;
   margin-top: 20px;
 }
 .buttons-tariffs {
   display: flex;
   gap: 30px;
   margin-top: 20px;
+  justify-content: space-between;
 }
 .cash-on-delivery {
   margin-top: 7px;
@@ -183,7 +185,7 @@ input:checked + .slider:before {
 }
 
 .add-cargo {
-  height: 500px;
+  height: 72vh;
   overflow-y: auto;
 }
 .cargo-block {
@@ -290,7 +292,7 @@ input:checked + .slider:before {
 }
 
 .tariffs-container {
-  height: 545px;
+  height: 76vh;
   overflow-y: auto;
   transition: background-color 0.3s;
 }
@@ -421,6 +423,7 @@ input:checked + .slider:before {
   border: 1px solid #ccc;
   border-radius: 10px;
   max-width: 600px;
+  height: 80vh;
   margin: 20px auto;
   background-color: #ffffff;
 }

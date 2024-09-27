@@ -4,16 +4,16 @@ import HelpOutlineTwoToneIcon from "@mui/icons-material/HelpOutlineTwoTone";
 
 const Popups = () => {
   const [receivedMessage, setReceivedMessage] = useState("");
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const domen = import.meta.env.VITE_DOMEN;
   useEffect(() => {
     const handleMessage = (event: any) => {
       console.log("Данные из event", event.data);
-
-      var id = event.data.objectId;
-
-      setReceivedMessage(id);
+      if (event.data.name === "Open") {
+        var id = event.data.objectId;
+        setReceivedMessage(id);
+      }
     };
 
     window.addEventListener("message", handleMessage);
@@ -32,7 +32,7 @@ const Popups = () => {
 
   const openModal = () => {
     const windowProps =
-      "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=760,height=760";
+      "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=760,height=720";
     const url = domen + "/order";
     const popup = window.open(url, "Pop up window", windowProps);
 
@@ -50,6 +50,9 @@ const Popups = () => {
           );
         }, 2000);
       };
+
+      
+  
     }
   };
 
@@ -72,9 +75,10 @@ const Popups = () => {
             >
               Данные не получены
               <Tooltip
-                 title={
+                title={
                   <span style={{ fontSize: "10px" }}>
-                    Попробуйте обновить страницу <br /> или закройте карточку покупателя
+                    Попробуйте обновить страницу <br /> или закройте карточку
+                    покупателя
                   </span>
                 }
                 placement="right"

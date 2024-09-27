@@ -28,7 +28,6 @@ const Tariffs = () => {
   const [selectedPickupPoint, setSelectedPickupPoint] =
     useState<PickupPointProps>({});
 
-  // console.log("Доставка клиентом", isChecked);
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
@@ -50,7 +49,10 @@ const Tariffs = () => {
       const filterTariffs = data.tariff_codes.filter((tariff: any) =>
         Object.values(DELIVERY_MODE).includes(tariff.delivery_mode)
       );
-      setTariff(filterTariffs);
+      const sortedTariffs = filterTariffs.sort(
+        (a: TariffProps, b: TariffProps) => a.delivery_sum - b.delivery_sum
+      );
+      setTariff(sortedTariffs);
     } catch (error) {
       console.error("Ошибка при загрузке данных заказа", error);
     } finally {

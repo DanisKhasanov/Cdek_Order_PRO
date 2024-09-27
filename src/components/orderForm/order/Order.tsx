@@ -49,13 +49,15 @@ const OrderForm = () => {
   }, []);
 
   useEffect(() => {
-    !orderData.recipient.name ? getOrderData(idOrder) : setLoading(false);
+    if (idOrder) {
+      getOrderData(idOrder);
+    }
   }, [idOrder]);
 
   const getOrderData = async (idOrder: any) => {
-    setLoading(true);
     try {
       if (idOrder === "") return;
+      setLoading(true);
       const response = await GetOrderData(idOrder);
       console.log("Результат запроса:", response);
       dispatch(

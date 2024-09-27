@@ -2,9 +2,9 @@ import * as Yup from "yup";
 import { CargoSize } from "../../../enum/CargoSize";
 
 const validateWeightAndSize = (weight:number, size:any) => {
-  if (size === CargoSize.SIZE_20X20X10 && weight > 2) {
+  if (size === CargoSize.SIZE_20X20X10 && weight > 2.7) {
     return false;
-  } else if (size === CargoSize.SIZE_30X30X15 && (weight <= 2 || weight > 5)) {
+  } else if (size === CargoSize.SIZE_30X30X15 && (weight <= 2.7 || weight > 5)) {
     return false;
   } else if (size === CargoSize.SIZE_45X30X17 && (weight <= 5 || weight > 7)) {
     return false;

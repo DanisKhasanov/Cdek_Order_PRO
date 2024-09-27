@@ -25,7 +25,7 @@ const Cargo = () => {
   const getDataOrder = async () => {
     try {
       const response = await GetDataCity(RequestTemplateCargo(orderData));
-      console.log("Принимает ли город наложенный платеж:",response.cod);
+      console.log("Принимает ли город наложенный платеж:", response.cod);
       console.log("Наложенный платеж контрагента:", orderData.cod);
       const cod = orderData.cod && response.cod ? true : false;
       if (response) {
@@ -93,7 +93,13 @@ const Cargo = () => {
           >
             {({ errors, touched }) => (
               <Form>
-                <div style={{ display: "flex", gap: 40, marginTop: 5 }}>
+                <div
+                  style={{
+                    display: "flex",
+                    marginTop: 5,
+                    justifyContent: "space-between",
+                  }}
+                >
                   <div className="form-group cargo">
                     <label htmlFor="weight">* Вес (кг):</label>
                     <Field

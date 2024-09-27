@@ -21,7 +21,7 @@ const PaymentForDelivery = ({
         updateOrderForm({ delivery_recipient_cost: { value: selectedTariffSum } })
       );
     }
-  }, [isChecked, selectedTariffSum, dispatch]); // Зависимости для useEffect
+  }, [isChecked, selectedTariffSum, dispatch]); 
 
   return (
     <>
