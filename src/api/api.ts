@@ -1,13 +1,10 @@
 import axios from "axios";
 
 const URL_API = import.meta.env.VITE_API_URL;
-const AUTH_API_URL = "https://cdek.flx-it.ru/api/auth";
 
-// Логин и пароль
 const username = "danis_widget";
 const password = "FLX_cdekWidget5";
 
-// Экземпляр axios для работы с API
 const api = axios.create({
   baseURL: URL_API,
   headers: {
@@ -16,13 +13,13 @@ const api = axios.create({
   withCredentials: true,
 });
 
-// Метод для логина и получения токенов
-const login = async () => {
+export const login = async () => {
   try {
-    const response = await axios.post(`${AUTH_API_URL}/login`, {
+    const response = await api.post("/auth/login", {
       username,
       password,
     });
+    console.log("response", response);
     const { access_token, refresh_token } = response.data;
 
     // Сохраняем токены в localStorage
@@ -45,7 +42,7 @@ const refreshAccessToken = async () => {
   }
 
   try {
-    const response = await axios.post(`${AUTH_API_URL}/token`, {
+    const response = await api.post("/auth/token", {
       refresh_token: refreshToken,
     });
     const { access_token } = response.data;

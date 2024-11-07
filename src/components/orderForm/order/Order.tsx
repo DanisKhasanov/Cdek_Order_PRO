@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/style.css";
 import { RootState } from "../../../store/store";
 import { validationSchema } from "./Validation";
-import { GetOrderData } from "../../../api/api";
+import { GetOrderData, login } from "../../../api/api";
 import { AddressSuggestions } from "react-dadata";
 import { StyledInput } from "../styles/StyleInputAddressOrder";
 import "react-dadata/dist/react-dadata.css";
@@ -55,6 +55,7 @@ const OrderForm = () => {
   useEffect(() => {
     if (orderData.recipient.name) return;
     if (idOrder) {
+      login
       dispatch(updateOrderForm({ ...orderData, counterparty: true }));
       getOrderData(idOrder);
     } 
