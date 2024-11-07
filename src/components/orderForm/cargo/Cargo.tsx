@@ -10,10 +10,10 @@ import { RootState } from "../../../store/store";
 import ButtonCustom from "./ButtonCustom";
 import { validationSchema, initialValues } from "./Validation";
 import { CargoSizeOptions } from "../../../enum/CargoSize";
-import { GetDataCity } from "../../../api/GetDataCity";
+import { GetDataCity } from "../../../api/api";
 import { useEffect, useState } from "react";
 import { RequestTemplateCargo } from "../../../api/requestTemplate/RequestTemplateCargo";
-import { ClipLoader } from "react-spinners";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Cargo = () => {
   const dispatch = useDispatch();
@@ -21,6 +21,12 @@ const Cargo = () => {
   const packages = useSelector((state: RootState) => state.orderForm.packages);
   const orderData = useSelector((state: RootState) => state.orderForm);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (orderData.counterparty) {
+    getDataOrder();
+    }
+  }, []);
 
   const getDataOrder = async () => {
     try {
@@ -45,10 +51,6 @@ const Cargo = () => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    getDataOrder();
-  }, []);
 
   const addCargo = (values: any) => {
     const newId = packages.length;
@@ -78,9 +80,9 @@ const Cargo = () => {
 
   return (
     <div className="cargo-form">
-      {loading ? (
+      {loading || !orderData.counterparty ? (
         <div className="loading-container">
-          <ClipLoader color={"#000"} loading={loading} size={25} />
+          <CircularProgress size={25} />
           <p>Загрузка...</p>
         </div>
       ) : (

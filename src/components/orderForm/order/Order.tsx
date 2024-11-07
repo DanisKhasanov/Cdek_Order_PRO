@@ -6,11 +6,12 @@ import { useNavigate } from "react-router-dom";
 import "../styles/style.css";
 import { RootState } from "../../../store/store";
 import { validationSchema } from "./Validation";
-import { GetOrderData } from "../../../api/GetOrderData";
+import { GetOrderData } from "../../../api/api";
 import { AddressSuggestions } from "react-dadata";
 import { StyledInput } from "../styles/StyleInputAddressOrder";
 import "react-dadata/dist/react-dadata.css";
-import { ClipLoader } from "react-spinners";
+import CircularProgress from "@mui/material/CircularProgress";
+
 
 const OrderForm = () => {
   const navigate = useNavigate();
@@ -25,20 +26,28 @@ const OrderForm = () => {
   const domen = import.meta.env.VITE_DOMEN;
 
   useEffect(() => {
-    setLoading(true);
+    if (orderData.recipient.name) {
+      return;
+    } else {
+      setLoading(true);
+    }
 
     const handleMessage = async (event: any) => {
       console.log("Данные из event", event);
       if (event.origin !== domen) {
+        navigate("/");
         return;
       }
 
       const message = event.data.popupParameters;
+    
 
       if (message) {
         setIdOrder(message);
         console.log("id клиента:", message);
         await getOrderData(message);
+      } else {
+        navigate("/not-found");
       }
     };
     window.addEventListener("message", handleMessage);
@@ -49,7 +58,9 @@ const OrderForm = () => {
   }, []);
 
   useEffect(() => {
+    if (orderData.recipient.name) return;
     if (idOrder) {
+      dispatch(updateOrderForm({ ...orderData, counterparty: true }));
       getOrderData(idOrder);
     }
   }, [idOrder]);
@@ -101,7 +112,7 @@ const OrderForm = () => {
     <div className="order-form">
       {loading ? (
         <div className="loading-container">
-          <ClipLoader color={"#000"} loading={loading} size={25} />
+          <CircularProgress size={25} />
           <p>Загрузка...</p>
         </div>
       ) : (
@@ -199,7 +210,7 @@ const OrderForm = () => {
                 <label>Комментарий к заказу:</label>
                 <span className="comment">{orderData.comment}</span>
               </div>
-              
+
               <div className="form-group">
                 <label htmlFor="to_location.address">* Адрес получателя:</label>
                 <div

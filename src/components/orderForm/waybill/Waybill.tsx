@@ -1,19 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import "../styles/style.css";
-import {
-  GetBarcode,
-  GetInvoice,
-  PostOrderData,
-} from "../../../api/PostOrderData";
+import { GetBarcode, GetInvoice, PostOrderData } from "../../../api/api";
 import { useEffect, useState } from "react";
-import ClipLoader from "react-spinners/ClipLoader";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CloseIcon from "@mui/icons-material/Close";
 import { RequestTemplateWaybill } from "../../../api/requestTemplate/RequestTemplateWaybill";
 import { RequestStatus } from "../../../enum/RequestStatus";
 import { updateOrderForm } from "../../../store/reducers/OrderReducer";
-
+import CircularProgress from "@mui/material/CircularProgress";
 const Waybill = () => {
   const orderData = useSelector((state: RootState) => state.orderForm);
   const dispatch = useDispatch();
@@ -26,6 +21,13 @@ const Waybill = () => {
   const account = orderData.account;
   const name = orderData.recipient.name;
   const [errors, setErrors] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (orderData.counterparty) {
+      postOrderData();
+    }
+  }, []);
+
   const postOrderData = async () => {
     try {
       const data = await PostOrderData(RequestTemplateWaybill(orderData));
@@ -69,10 +71,6 @@ const Waybill = () => {
     }
   };
 
-  useEffect(() => {
-    postOrderData();
-  }, []);
-
   const formatDateTime = (dateTimeString: string) => {
     const date = new Date(dateTimeString);
     const dateFormatted = date.toLocaleDateString("ru-RU");
@@ -85,9 +83,9 @@ const Waybill = () => {
 
   return (
     <div className="waybill-container">
-      {loading ? (
+      {loading || !orderData.counterparty ? (
         <div className="loading-container">
-          <ClipLoader color={"#000"} loading={loading} size={25} />
+          <CircularProgress size={25} />
           <p>Загрузка...</p>
         </div>
       ) : (
@@ -179,11 +177,7 @@ const Waybill = () => {
                 <div className="waybill-item">
                   {loadingBarcode ? (
                     <div className="loading-container">
-                      <ClipLoader
-                        color={"#000"}
-                        loading={loadingBarcode}
-                        size={25}
-                      />
+                      <CircularProgress size={25} />
                       <p>Загрузка штрих-кодов...</p>
                     </div>
                   ) : (
@@ -198,11 +192,7 @@ const Waybill = () => {
 
               {loadingInvoice && (
                 <div className="loading-container">
-                  <ClipLoader
-                    color={"#000"}
-                    loading={loadingInvoice}
-                    size={25}
-                  />
+                  <CircularProgress size={25} />
                   <p>Загрузка накладной...</p>
                 </div>
               )}

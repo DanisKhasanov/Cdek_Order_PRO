@@ -4,7 +4,7 @@ import HelpOutlineTwoToneIcon from "@mui/icons-material/HelpOutlineTwoTone";
 
 const Popups = () => {
   const [receivedMessage, setReceivedMessage] = useState("");
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   const domen = import.meta.env.VITE_DOMEN;
   useEffect(() => {

@@ -7,11 +7,13 @@ import OrderForm from "../orderForm/order/Order";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import Popups from "../orderForm/popup/popup";
+import NotFoundPage from "../notPage/notPage";
 
 const Navigation = () => {
   const orderCreated = useSelector(
     (state: RootState) => state.orderForm.orderCreated
   );
+
   const location = useLocation();
 
   return (
@@ -59,6 +61,7 @@ const Navigation = () => {
             <Route path="/cargo" element={<Cargo />} />
             <Route path="/tariffs" element={<Tariffs />} />
             <Route path="/waybill" element={<Waybill />} />
+            <Route path="/not-found" element={<NotFoundPage />} />
           </Routes>
         </div>
       )}

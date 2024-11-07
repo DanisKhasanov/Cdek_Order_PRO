@@ -11,6 +11,7 @@ interface PackageItem {
   };
   cost: number;
 }
+
 interface Package {
   number: string;
   height: number;
@@ -49,6 +50,7 @@ interface OrderFormState {
     value: number;
   };
   orderCreated: boolean;
+  counterparty: boolean;
 }
 
 const initialState: OrderFormState = {
@@ -80,6 +82,7 @@ const initialState: OrderFormState = {
     value: 0,
   },
   orderCreated: false,
+  counterparty: false,
 };
 
 const orderFormSlice = createSlice({
@@ -138,6 +141,7 @@ const orderFormSlice = createSlice({
         (_, index) => index !== action.payload
       );
     },
+
     editCargoSpace: (
       state,
       action: PayloadAction<{
@@ -176,6 +180,7 @@ const orderFormSlice = createSlice({
         };
       }
     },
+
     copyCargoSpace: (state, action: PayloadAction<number>) => {
       const packageToCopy = state.packages[action.payload];
       if (packageToCopy) {

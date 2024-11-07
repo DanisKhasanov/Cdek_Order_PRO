@@ -563,3 +563,54 @@ input:checked + .slider:before {
 .form-control.address {
   padding: 0;
 }
+
+
+.notfound-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+  flex-direction: column;
+  text-align: center;
+}
+
+.notfound-content {
+  max-width: 600px;
+  padding: 20px;
+}
+
+.notfound-header {
+  font-size: 10rem;
+  font-weight: 900;
+  color: #ff6b6b;
+  margin: 0;
+  animation: pulse 1.5s infinite;
+}
+
+.notfound-subheader {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.notfound-text {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  color: #666;
+}
+
+.notfound-button {
+  padding: 10px 20px;
+  font-size: 1.1rem;
+  color: white;
+  background-color: #ff6b6b;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.notfound-button:hover {
+  background-color: #ff3b3b;
+}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "../styles/style.css";
-import { GetTariffData } from "../../../api/GetTariffData";
+import { GetTariffData } from "../../../api/api";
 import { updateOrderForm } from "../../../store/reducers/OrderReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
@@ -8,11 +8,11 @@ import UseCdekWidget from "./UseCdekWidget";
 import ButtonCustom from "../cargo/ButtonCustom";
 import { useNavigate } from "react-router-dom";
 import { TariffProps, PickupPointProps } from "../../../props/TariffsProps";
-import { ClipLoader } from "react-spinners";
 import TariffActions from "./TariffAction";
 import { DELIVERY_MODE } from "../../../enum/DeliveryMode";
 import { RequestTemplateTariff } from "../../../api/requestTemplate/RequestTemplateTariff";
 import PaymentForDelivery from "./PaymentForDelivery";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Tariffs = () => {
   const dispatch = useDispatch();
@@ -61,7 +61,9 @@ const Tariffs = () => {
   };
 
   useEffect(() => {
-    getTariffData();
+    if (orderData.counterparty) {
+      getTariffData();
+    }
   }, []);
 
   const submit = async () => {
@@ -94,9 +96,9 @@ const Tariffs = () => {
   return (
     <div style={{ padding: 30 }}>
       <div className="tariffs-container">
-        {loading ? (
+        {loading || !orderData.counterparty ? (
           <div className="loading-container">
-            <ClipLoader color={"#000"} loading={loading} size={25} />
+            <CircularProgress size={25} />
             <p>Загрузка...</p>
           </div>
         ) : (
