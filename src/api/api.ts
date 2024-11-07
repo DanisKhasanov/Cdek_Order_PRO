@@ -1,20 +1,21 @@
 import axios from "axios";
 
-const URL_API = import.meta.env.VITE_API_URL;
+// const URL_API = import.meta.env.VITE_API_URL;
+const URL_API = "https://cdek.flx-it.ru/api";
 
 
 
 const api = axios.create({
   baseURL: URL_API,
-  headers: {
-    "Content-Type": "application/json",
-  },
-  withCredentials: true,
+  // headers: {
+  //   "Content-Type": "application/json",
+  // },
+  // withCredentials: true,
 });
 
 export const login = async (username: string, password: string) => {
   try {
-    const response = await api.post("/auth/login", {
+    const response = await axios.post("https://cdek.flx-it.ru/api/auth/login", {
       username,
       password,
     });
