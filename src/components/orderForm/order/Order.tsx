@@ -11,6 +11,8 @@ import { AddressSuggestions } from "react-dadata";
 import { StyledInput } from "../styles/StyleInputAddressOrder";
 import "react-dadata/dist/react-dadata.css";
 import CircularProgress from "@mui/material/CircularProgress";
+const username = "danis_widget";
+const password = "FLX_cdekWidget5";
 
 const OrderForm = () => {
   const navigate = useNavigate();
@@ -57,7 +59,7 @@ const OrderForm = () => {
       if (orderData.recipient.name) return;
       if (idOrder) {
         try {
-          await login();
+          await login(username, password);
           dispatch(updateOrderForm({ ...orderData, counterparty: true }));
           await getOrderData(idOrder);
         } catch (error) {

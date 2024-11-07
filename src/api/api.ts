@@ -2,8 +2,7 @@ import axios from "axios";
 
 const URL_API = import.meta.env.VITE_API_URL;
 
-const username = "danis_widget";
-const password = "FLX_cdekWidget5";
+
 
 const api = axios.create({
   baseURL: URL_API,
@@ -13,7 +12,7 @@ const api = axios.create({
   withCredentials: true,
 });
 
-export const login = async () => {
+export const login = async (username: string, password: string) => {
   try {
     const response = await api.post("/auth/login", {
       username,
@@ -63,9 +62,9 @@ api.interceptors.request.use(
     let accessToken = localStorage.getItem("access_token");
 
     // Если нет токена, делаем запрос на авторизацию
-    if (!accessToken) {
-      accessToken = await login(); // Первый запрос на авторизацию
-    }
+    // if (!accessToken) {
+    //   accessToken = await login(username, password); // Первый запрос на авторизацию
+    // }
 
     // Добавляем токен в заголовок Authorization
     if (accessToken) {
