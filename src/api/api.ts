@@ -29,7 +29,7 @@ api.interceptors.response.use(
       originalRequest._isRetry = true;
       try {
         console.log(URL_API);
-        const response = await axios.get(`${URL_API}/refresh`, {
+        const response = await api.get(`${URL_API}/refresh`, {
           withCredentials: true,
         });
         localStorage.setItem("token", response.data.accessToken);
@@ -37,7 +37,7 @@ api.interceptors.response.use(
       } catch (e) {
         console.log("НЕ АВТОРИЗОВАН");
         try {
-          const response = await axios.post(`${URL_API}/auth/login`, {
+          const response = await api.post(`${URL_API}/auth/login`, {
             username: "danis_widget",
             password: "FLX_cdekWidget5",
           });
