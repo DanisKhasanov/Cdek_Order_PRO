@@ -59,7 +59,9 @@ const OrderForm = () => {
       if (orderData.recipient.name) return;
       if (idOrder) {
         try {
-          await login(username, password);
+          
+          const response = await login(username, password);
+          console.log("response auth", response);
           dispatch(updateOrderForm({ ...orderData, counterparty: true }));
           await getOrderData(idOrder);
         } catch (error) {
