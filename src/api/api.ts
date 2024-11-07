@@ -1,7 +1,13 @@
 import axios from "axios";
 
 const URL_API = import.meta.env.VITE_API_URL;
+const AUTH_API_URL = "https://cdek.flx-it.ru/api/auth";
 
+// Логин и пароль
+const username = "danis_widget";
+const password = "FLX_cdekWidget5";
+
+// Экземпляр axios для работы с API
 const api = axios.create({
   baseURL: URL_API,
   headers: {
@@ -10,43 +16,92 @@ const api = axios.create({
   withCredentials: true,
 });
 
-api.interceptors.request.use((config) => {
-  config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
-  return config;
-});
+// Метод для логина и получения токенов
+const login = async () => {
+  try {
+    const response = await axios.post(`${AUTH_API_URL}/login`, {
+      username,
+      password,
+    });
+    const { access_token, refresh_token } = response.data;
 
-api.interceptors.response.use(
-  (config) => {
+    // Сохраняем токены в localStorage
+    localStorage.setItem("access_token", access_token);
+    localStorage.setItem("refresh_token", refresh_token);
+
+    return access_token;
+  } catch (error) {
+    console.error("Ошибка при авторизации:", error);
+    throw error;
+  }
+};
+
+// Метод для обновления access токена
+const refreshAccessToken = async () => {
+  const refreshToken = localStorage.getItem("refresh_token");
+
+  if (!refreshToken) {
+    throw new Error("Нет refresh токена");
+  }
+
+  try {
+    const response = await axios.post(`${AUTH_API_URL}/token`, {
+      refresh_token: refreshToken,
+    });
+    const { access_token } = response.data;
+
+    // Сохраняем новый access токен
+    localStorage.setItem("access_token", access_token);
+
+    return access_token;
+  } catch (error) {
+    console.error("Ошибка при обновлении токена:", error);
+    throw error;
+  }
+};
+
+// Перехватчик для запроса (для добавления токена в заголовки)
+api.interceptors.request.use(
+  async (config) => {
+    let accessToken = localStorage.getItem("access_token");
+
+    // Если нет токена, делаем запрос на авторизацию
+    if (!accessToken) {
+      accessToken = await login(); // Первый запрос на авторизацию
+    }
+
+    // Добавляем токен в заголовок Authorization
+    if (accessToken) {
+      config.headers["Authorization"] = `Bearer ${accessToken}`;
+    }
+
     return config;
   },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Перехватчик для ответа (для обработки ошибки 401 и обновления токена)
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
   async (error) => {
-    const originalRequest = error.config;
-    if (
-      error.response.status == 401 &&
-      error.config &&
-      !error.config._isRetry
-    ) {
-      originalRequest._isRetry = true;
+    if (error.response && error.response.status === 401) {
+      // Если ошибка 401 (неавторизован), пробуем обновить токен
       try {
-        console.log(URL_API);
-        const response = await api.get("/refresh");
-        localStorage.setItem("token", response.data.accessToken);
-        return api(originalRequest);
-      } catch  {
-        console.log("НЕ АВТОРИЗОВАН");
-        try {
-          const response = await api.post("/auth/login", {
-            username: "danis_widget",
-            password: "FLX_cdekWidget5",
-          });
-          localStorage.setItem("token", response.data.accessToken);
-          return api.request(originalRequest);
-        } catch (authError) {
-          console.error("Ошибка авторизации:", authError);
-        }
+        const accessToken = await refreshAccessToken();
+        error.config.headers["Authorization"] = `Bearer ${accessToken}`;
+
+        // Повторный запрос с новым токеном
+        return axios(error.config);
+      } catch (refreshError) {
+        console.error("Не удалось обновить токен:", refreshError);
+        throw refreshError;
       }
     }
-    throw error;
+    return Promise.reject(error);
   }
 );
 
