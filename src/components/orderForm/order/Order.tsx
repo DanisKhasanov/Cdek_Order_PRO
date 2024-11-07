@@ -28,27 +28,27 @@ const OrderForm = () => {
   const domen = import.meta.env.VITE_DOMEN;
 
   useEffect(() => {
-    if (orderData.recipient.name) {
-      return;
-    } else {
-      setLoading(true);
-    }
+    // if (orderData.recipient.name) {
+    //   return;
+    // } else {
+    //   setLoading(true);
+    // }
 
-    const handleMessage = async (event: any) => {
-      console.log("Данные из event", event);
-      if (event.origin !== domen) {
-        return;
-      }
+    // const handleMessage = async (event: any) => {
+    //   console.log("Данные из event", event);
+    //   if (event.origin !== domen) {
+    //     return;
+    //   }
 
-      const message = event.data.popupParameters;
+    //   const message = event.data.popupParameters;
 
-      if (message) {
-        setIdOrder(message);
-        console.log("id клиента:", message);
-        // await getOrderData(message);
-      }
-    };
-    window.addEventListener("message", handleMessage);
+    //   if (message) {
+    //     setIdOrder(message);
+    //     console.log("id клиента:", message);
+    //     // await getOrderData(message);
+    //   }
+    // };
+    // window.addEventListener("message", handleMessage);
     
     const fetchData = async () => {
       
@@ -57,9 +57,9 @@ const OrderForm = () => {
 
     fetchData();
 
-    return () => {
-      window.removeEventListener("message", handleMessage);
-    };
+    // return () => {
+      // window.removeEventListener("message", handleMessage);
+    // };
   }, []);
 
   useEffect(() => {
