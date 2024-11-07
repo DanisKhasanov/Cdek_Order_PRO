@@ -45,9 +45,9 @@ const OrderForm = () => {
         setIdOrder(message);
         console.log("id клиента:", message);
         await getOrderData(message);
-      } else {
-        navigate("/not-found");
-      }
+      // } else {
+      //   navigate("/not-found");
+       }
     };
     window.addEventListener("message", handleMessage);
 
