@@ -15,42 +15,40 @@ const api = axios.create({
 //   return config;
 // });
 
-// api.interceptors.response.use(
-//   (config) => {
-//     return config;
-//   },
-//   async (error) => {
-//     const originalRequest = error.config;
-//     if (
-//       error.response.status == 401 &&
-//       error.config &&
-//       !error.config._isRetry
-//     ) {
-//       originalRequest._isRetry = true;
-//       try {
-//         console.log(URL_API);
-//         const response = await api.get("/refresh", {
-//           withCredentials: true,
-//         });
-//         localStorage.setItem("token", response.data.accessToken);
-//         return api.request(originalRequest);
-//       } catch (e) {
-//         console.log("НЕ АВТОРИЗОВАН");
-//         try {
-//           const response = await api.post("/auth/login", {
-//             username: "danis_widget",
-//             password: "FLX_cdekWidget5",
-//           });
-//           localStorage.setItem("token", response.data.accessToken);
-//           return api.request(originalRequest);
-//         } catch (authError) {
-//           console.error("Ошибка авторизации:", authError);
-//         }
-//       }
-//     }
-//     throw error;
-//   }
-// );
+api.interceptors.response.use(
+  (config) => {
+    return config;
+  },
+  async (error) => {
+    const originalRequest = error.config;
+    if (
+      error.response.status == 401 &&
+      error.config &&
+      !error.config._isRetry
+    ) {
+      originalRequest._isRetry = true;
+      try {
+        console.log(URL_API);
+        const response = await api.get("/refresh");
+        localStorage.setItem("token", response.data.accessToken);
+        return api(originalRequest);
+      } catch  {
+        console.log("НЕ АВТОРИЗОВАН");
+        try {
+          const response = await api.post("/auth/login", {
+            username: "danis_widget",
+            password: "FLX_cdekWidget5",
+          });
+          localStorage.setItem("token", response.data.accessToken);
+          return api.request(originalRequest);
+        } catch (authError) {
+          console.error("Ошибка авторизации:", authError);
+        }
+      }
+    }
+    throw error;
+  }
+);
 
 export const PostOrderData = async (payload: any) => {
   try {
