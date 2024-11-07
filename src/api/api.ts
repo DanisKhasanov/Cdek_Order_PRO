@@ -18,6 +18,8 @@ export const login = async (username: string, password: string) => {
       username,
       password,
     });
+
+    console.log("response auth", response);
     const { access_token, refresh_token } = response.data;
 
     // Сохраняем токены в localStorage

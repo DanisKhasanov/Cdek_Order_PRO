@@ -11,6 +11,7 @@ import { AddressSuggestions } from "react-dadata";
 import { StyledInput } from "../styles/StyleInputAddressOrder";
 import "react-dadata/dist/react-dadata.css";
 import CircularProgress from "@mui/material/CircularProgress";
+
 const username = "danis_widget";
 const password = "FLX_cdekWidget5";
 
@@ -48,6 +49,13 @@ const OrderForm = () => {
       }
     };
     window.addEventListener("message", handleMessage);
+    
+    const fetchData = async () => {
+      
+      await login(username, password);
+    };
+
+    fetchData();
 
     return () => {
       window.removeEventListener("message", handleMessage);
@@ -55,22 +63,11 @@ const OrderForm = () => {
   }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (orderData.recipient.name) return;
-      if (idOrder) {
-        try {
-          
-          const response = await login(username, password);
-          console.log("response auth", response);
-          dispatch(updateOrderForm({ ...orderData, counterparty: true }));
-          await getOrderData(idOrder);
-        } catch (error) {
-          console.error("Ошибка при авторизации:", error);
-        }
-      } 
-    };
-
-    fetchData();
+    if (orderData.recipient.name) return;
+    if (idOrder) {
+      dispatch(updateOrderForm({ ...orderData, counterparty: true }));
+      // getOrderData(idOrder);
+    }
   }, [idOrder]);
 
   const getOrderData = async (idOrder: any) => {
