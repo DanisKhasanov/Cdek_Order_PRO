@@ -57,9 +57,7 @@ const OrderForm = () => {
     if (idOrder) {
       dispatch(updateOrderForm({ ...orderData, counterparty: true }));
       getOrderData(idOrder);
-    } else {
-      navigate("/not-found");
-    }
+    } 
   }, [idOrder]);
 
   const getOrderData = async (idOrder: any) => {
