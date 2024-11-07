@@ -35,7 +35,6 @@ const OrderForm = () => {
     const handleMessage = async (event: any) => {
       console.log("Данные из event", event);
       if (event.origin !== domen) {
-        navigate("/");
         return;
       }
 
