@@ -53,12 +53,20 @@ const OrderForm = () => {
   }, []);
 
   useEffect(() => {
-    if (orderData.recipient.name) return;
-    if (idOrder) {
-      login
-      dispatch(updateOrderForm({ ...orderData, counterparty: true }));
-      getOrderData(idOrder);
-    } 
+    const fetchData = async () => {
+      if (orderData.recipient.name) return;
+      if (idOrder) {
+        try {
+          await login();
+          dispatch(updateOrderForm({ ...orderData, counterparty: true }));
+          await getOrderData(idOrder);
+        } catch (error) {
+          console.error("Ошибка при авторизации:", error);
+        }
+      } 
+    };
+
+    fetchData();
   }, [idOrder]);
 
   const getOrderData = async (idOrder: any) => {
