@@ -12,7 +12,6 @@ import { StyledInput } from "../styles/StyleInputAddressOrder";
 import "react-dadata/dist/react-dadata.css";
 import CircularProgress from "@mui/material/CircularProgress";
 
-
 const OrderForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -39,15 +38,12 @@ const OrderForm = () => {
       }
 
       const message = event.data.popupParameters;
-    
 
       if (message) {
         setIdOrder(message);
         console.log("id клиента:", message);
         await getOrderData(message);
-      // } else {
-      //   navigate("/not-found");
-       }
+      }
     };
     window.addEventListener("message", handleMessage);
 
@@ -61,6 +57,8 @@ const OrderForm = () => {
     if (idOrder) {
       dispatch(updateOrderForm({ ...orderData, counterparty: true }));
       getOrderData(idOrder);
+    } else {
+      navigate("/not-found");
     }
   }, [idOrder]);
 
