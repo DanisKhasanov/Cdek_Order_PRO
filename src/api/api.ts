@@ -1,114 +1,95 @@
 import axios from "axios";
 
-// const URL_API = import.meta.env.VITE_API_URL;
-const URL_API = "https://cdek.flx-it.ru/api";
+const URL_API = import.meta.env.VITE_API_URL;
 
 const api = axios.create({
   baseURL: URL_API,
-  // headers: {
-  //   "Content-Type": "application/json",
-  // },
-  // withCredentials: true,
+  withCredentials: true,
 });
 
-export const login = async (username: string, password: string) => {
+const username = "danis_widget";
+const password = "FLX_cdekWidget5";
+
+export const login = async () => {
   try {
-    const response = await axios.post(
-      "https://cdek.flx-it.ru/api/auth/login",
-      {
-        username,
-        password,
-      },
-      {
-        headers: {
-          Accept: "application/json",
-        },
-        withCredentials: false,
-      }
-    );
+    const response = await api.post("auth/login/", {
+      username: username,
+      password: password,
+    });
 
     console.log("response auth", response);
-    const { access_token, refresh_token } = response.data;
+    const { accessToken, refreshToken } = response.data;
 
-    // Сохраняем токены в localStorage
-    localStorage.setItem("access_token", access_token);
-    localStorage.setItem("refresh_token", refresh_token);
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("refreshToken", refreshToken);
 
-    return access_token;
+    return accessToken;
   } catch (error) {
     console.error("Ошибка при авторизации:", error);
     throw error;
   }
 };
 
-// // Метод для обновления access токена
-// const refreshAccessToken = async () => {
-//   const refreshToken = localStorage.getItem("refresh_token");
+const refreshAccessToken = async () => {
+  const refreshToken = localStorage.getItem("refreshToken");
 
-//   if (!refreshToken) {
-//     throw new Error("Нет refresh токена");
-//   }
+  if (!refreshToken) {
+    throw new Error("Нет refresh токена");
+  }
 
-//   try {
-//     const response = await api.post("/auth/token", {
-//       refresh_token: refreshToken,
-//     });
-//     const { access_token } = response.data;
+  try {
+    const response = await api.post("/auth/token", {
+      refreshToken: refreshToken,
+    });
+    const { accessToken } = response.data;
 
-//     // Сохраняем новый access токен
-//     localStorage.setItem("access_token", access_token);
+    localStorage.setItem("accessToken", accessToken);
 
-//     return access_token;
-//   } catch (error) {
-//     console.error("Ошибка при обновлении токена:", error);
-//     throw error;
-//   }
-// };
+    return accessToken;
+  } catch (error) {
+    console.error("Ошибка при обновлении токена:", error);
+    throw error;
+  }
+};
 
-// // Перехватчик для запроса (для добавления токена в заголовки)
-// api.interceptors.request.use(
-//   async (config) => {
-//     let accessToken = localStorage.getItem("access_token");
+api.interceptors.request.use(
+  async (config) => {
+    let accessToken = localStorage.getItem("accessToken");
 
-//     // Если нет токена, делаем запрос на авторизацию
-//     // if (!accessToken) {
-//     //   accessToken = await login(username, password); // Первый запрос на авторизацию
-//     // }
+    if (!accessToken) {
+      accessToken = await login();
+    }
 
-//     // Добавляем токен в заголовок Authorization
-//     if (accessToken) {
-//       config.headers["Authorization"] = `Bearer ${accessToken}`;
-//     }
+    if (accessToken) {
+      config.headers["Authorization"] = `Bearer ${accessToken}`;
+    }
 
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
-// // Перехватчик для ответа (для обработки ошибки 401 и обновления токена)
-// api.interceptors.response.use(
-//   (response) => {
-//     return response;
-//   },
-//   async (error) => {
-//     if (error.response && error.response.status === 401) {
-//       // Если ошибка 401 (неавторизован), пробуем обновить токен
-//       try {
-//         const accessToken = await refreshAccessToken();
-//         error.config.headers["Authorization"] = `Bearer ${accessToken}`;
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    if (error.response && error.response.status === 401) {
+      try {
+        const accessToken = await refreshAccessToken();
+        error.config.headers["Authorization"] = `Bearer ${accessToken}`;
 
-//         // Повторный запрос с новым токеном
-//         return axios(error.config);
-//       } catch (refreshError) {
-//         console.error("Не удалось обновить токен:", refreshError);
-//         throw refreshError;
-//       }
-//     }
-//     return Promise.reject(error);
-//   }
-// );
+        return axios(error.config);
+      } catch (refreshError) {
+        console.error("Не удалось обновить токен:", refreshError);
+        throw refreshError;
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 
 export const PostOrderData = async (payload: any) => {
   try {

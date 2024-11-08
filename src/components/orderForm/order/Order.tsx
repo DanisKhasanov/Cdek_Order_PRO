@@ -12,8 +12,7 @@ import { StyledInput } from "../styles/StyleInputAddressOrder";
 import "react-dadata/dist/react-dadata.css";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const username = "danis_widget";
-const password = "FLX_cdekWidget5";
+
 
 const OrderForm = () => {
   const navigate = useNavigate();
@@ -28,45 +27,45 @@ const OrderForm = () => {
   const domen = import.meta.env.VITE_DOMEN;
 
   useEffect(() => {
-    // if (orderData.recipient.name) {
-    //   return;
-    // } else {
-    //   setLoading(true);
-    // }
+    if (orderData.recipient.name) {
+      return;
+    } else {
+      setLoading(true);
+    }
 
-    // const handleMessage = async (event: any) => {
-    //   console.log("Данные из event", event);
-    //   if (event.origin !== domen) {
-    //     return;
-    //   }
+    const handleMessage = async (event: any) => {
+      console.log("Данные из event", event);
+      if (event.origin !== domen) {
+        return;
+      }
 
-    //   const message = event.data.popupParameters;
+      const message = event.data.popupParameters;
 
-    //   if (message) {
-    //     setIdOrder(message);
-    //     console.log("id клиента:", message);
-    //     // await getOrderData(message);
-    //   }
-    // };
-    // window.addEventListener("message", handleMessage);
-    
-    const fetchData = async () => {
-      
-      await login(username, password);
+      if (message) {
+        setIdOrder(message);
+        console.log("id клиента:", message);
+        await getOrderData(message);
+      }
     };
-
-    fetchData();
-
-    // return () => {
-      // window.removeEventListener("message", handleMessage);
+    window.addEventListener("message", handleMessage);
+    
+    // const fetchData = async () => {
+      
+    //   await login;
     // };
+
+    // fetchData();
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
   }, []);
 
   useEffect(() => {
     if (orderData.recipient.name) return;
     if (idOrder) {
       dispatch(updateOrderForm({ ...orderData, counterparty: true }));
-      // getOrderData(idOrder);
+      getOrderData(idOrder);
     }
   }, [idOrder]);
 
