@@ -76,7 +76,9 @@ api.interceptors.response.use(
     return response;
   },
   async (error) => {
+    console.log("Зашел в interceptor");
     if (error.response && error.response.status === 401) {
+      console.log("Считал в 401");
       try {
         const accessToken = await refreshAccessToken();
         error.config.headers["Authorization"] = `Bearer ${accessToken}`;
