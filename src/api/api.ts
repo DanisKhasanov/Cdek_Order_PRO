@@ -7,89 +7,89 @@ const api = axios.create({
   withCredentials: true,
 });
 
-const username = "danis_widget";
-const password = "FLX_cdekWidget5";
+// const username = "danis_widget";
+// const password = "FLX_cdekWidget5";
 
-export const login = async () => {
-  try {
-    const response = await api.post("auth/login/", {
-      username: username,
-      password: password,
-    });
+// export const login = async () => {
+//   try {
+//     const response = await api.post("auth/login/", {
+//       username: username,
+//       password: password,
+//     });
 
-    console.log("response auth", response);
-    const { accessToken, refreshToken } = response.data;
+//     console.log("response auth", response);
+//     const { accessToken, refreshToken } = response.data;
 
-    localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("refreshToken", refreshToken);
+//     localStorage.setItem("accessToken", accessToken);
+//     localStorage.setItem("refreshToken", refreshToken);
 
-    return accessToken;
-  } catch (error) {
-    console.error("Ошибка при авторизации:", error);
-    throw error;
-  }
-};
+//     return accessToken;
+//   } catch (error) {
+//     console.error("Ошибка при авторизации:", error);
+//     throw error;
+//   }
+// };
 
-const refreshAccessToken = async () => {
-  const refreshToken = localStorage.getItem("refreshToken");
+// const refreshAccessToken = async () => {
+//   const refreshToken = localStorage.getItem("refreshToken");
 
-  if (!refreshToken) {
-    throw new Error("Нет refresh токена");
-  }
+//   if (!refreshToken) {
+//     throw new Error("Нет refresh токена");
+//   }
 
-  try {
-    const response = await api.post("/auth/token", {
-      refreshToken: refreshToken,
-    });
-    const { accessToken } = response.data;
+//   try {
+//     const response = await api.post("/auth/token", {
+//       refreshToken: refreshToken,
+//     });
+//     const { accessToken } = response.data;
 
-    localStorage.setItem("accessToken", accessToken);
+//     localStorage.setItem("accessToken", accessToken);
 
-    return accessToken;
-  } catch (error) {
-    console.error("Ошибка при обновлении токена:", error);
-    throw error;
-  }
-};
+//     return accessToken;
+//   } catch (error) {
+//     console.error("Ошибка при обновлении токена:", error);
+//     throw error;
+//   }
+// };
 
-api.interceptors.request.use(
-  async (config) => {
-    let accessToken = localStorage.getItem("accessToken");
+// api.interceptors.request.use(
+//   async (config) => {
+//     let accessToken = localStorage.getItem("accessToken");
 
-    if (!accessToken) {
-      accessToken = await login();
-    }
+//     if (!accessToken) {
+//       accessToken = await login();
+//     }
 
-    if (accessToken) {
-      config.headers["Authorization"] = `Bearer ${accessToken}`;
-    }
+//     if (accessToken) {
+//       config.headers["Authorization"] = `Bearer ${accessToken}`;
+//     }
 
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
 
-api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  async (error) => {
-    if (error.response && error.response.status === 401) {
-      try {
-        const accessToken = await refreshAccessToken();
-        error.config.headers["Authorization"] = `Bearer ${accessToken}`;
+// api.interceptors.response.use(
+//   (response) => {
+//     return response;
+//   },
+//   async (error) => {
+//     if (error.response && error.response.status === 401) {
+//       try {
+//         const accessToken = await refreshAccessToken();
+//         error.config.headers["Authorization"] = `Bearer ${accessToken}`;
 
-        return axios(error.config);
-      } catch (refreshError) {
-        console.error("Не удалось обновить токен:", refreshError);
-        throw refreshError;
-      }
-    }
-    return Promise.reject(error);
-  }
-);
+//         return axios(error.config);
+//       } catch (refreshError) {
+//         console.error("Не удалось обновить токен:", refreshError);
+//         throw refreshError;
+//       }
+//     }
+//     return Promise.reject(error);
+//   }
+// );
 
 export const PostOrderData = async (payload: any) => {
   try {
