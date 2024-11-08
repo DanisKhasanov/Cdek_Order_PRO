@@ -27,64 +27,64 @@ export const login = async () => {
   }
 };
 
-// const refreshAccessToken = async () => {
-//   const refreshToken = localStorage.getItem("refreshToken");
+const refreshAccessToken = async () => {
+  const refreshToken = localStorage.getItem("refreshToken");
 
-//   if (!refreshToken) {
-//     throw new Error("Нет refresh токена");
-//   }
+  if (!refreshToken) {
+    throw new Error("Нет refresh токена");
+  }
 
-//   try {
-//     const response = await api.post("/auth/token", {
-//       refreshToken: refreshToken,
-//     });
-//     const { accessToken } = response.data;
+  try {
+    const response = await api.post("/auth/token", {
+      refreshToken: refreshToken,
+    });
+    const { accessToken } = response.data;
 
-//     localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("accessToken", accessToken);
 
-//     return accessToken;
-//   } catch (error) {
-//     console.error("Ошибка при обновлении токена:", error);
-//     throw error;
-//   }
-// };
+    return accessToken;
+  } catch (error) {
+    console.error("Ошибка при обновлении токена:", error);
+    throw error;
+  }
+};
 
-// api.interceptors.request.use(
-//   async (config) => {
-//     let accessToken = localStorage.getItem("accessToken");
+api.interceptors.request.use(
+  async (config) => {
+    let accessToken = localStorage.getItem("accessToken");
 
-//     if (!accessToken) {
-//       accessToken = await login();
-//     }
+    if (!accessToken) {
+      accessToken = await login();
+    }
 
-//     if (accessToken) {
-//       config.headers["Authorization"] = `Bearer ${accessToken}`;
-//     }
+    if (accessToken) {
+      config.headers["Authorization"] = `Bearer ${accessToken}`;
+    }
 
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
-// api.interceptors.response.use(
-//   (response) => {
-//     return response;
-//   },
-//   async (error) => {
-//     if (error.response && error.response.status === 401) {
-//       try {
-//         const accessToken = await refreshAccessToken();
-//         error.config.headers["Authorization"] = `Bearer ${accessToken}`;
-//         return axios(error.config);
-//       } catch (refreshError) {
-//         throw refreshError;
-//       }
-//     }
-//     return Promise.reject(error);
-//   }
-// );
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    if (error.response && error.response.status === 401) {
+      try {
+        const accessToken = await refreshAccessToken();
+        error.config.headers["Authorization"] = `Bearer ${accessToken}`;
+        return axios(error.config);
+      } catch (refreshError) {
+        throw refreshError;
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 
 export const PostOrderData = async (payload: any) => {
   try {
