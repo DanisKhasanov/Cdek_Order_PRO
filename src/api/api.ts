@@ -78,7 +78,7 @@ api.interceptors.response.use(
   },
   async (error) => {
     console.log("Зашел в interceptor");
-    console.log("Ошибки", error.response);
+    console.log("Ошибки", error);
     if (error.response && error.response.status === 401) {
       console.log("Считал в 401");
       try {
