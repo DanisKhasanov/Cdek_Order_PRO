@@ -1,12 +1,15 @@
 import axios from "axios";
 
 const URL_API = import.meta.env.VITE_API_URL;
-const username = import.meta.env.VITE_USERNAME;
-const password = import.meta.env.VITE_PASSWORD;
+
 
 const api = axios.create({
   baseURL: URL_API,
 });
+
+const username = "danis_widget";
+const password = "FLX_cdekWidget5";
+
 
 export const login = async () => {
   try {
@@ -79,6 +82,7 @@ api.interceptors.response.use(
         error.config.headers["Authorization"] = `Bearer ${accessToken}`;
         return axios(error.config);
       } catch (refreshError) {
+        console.error("Не удалось обновить токен:", refreshError);
         throw refreshError;
       }
     }
