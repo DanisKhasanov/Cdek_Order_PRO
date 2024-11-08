@@ -12,8 +12,6 @@ import { StyledInput } from "../styles/StyleInputAddressOrder";
 import "react-dadata/dist/react-dadata.css";
 import CircularProgress from "@mui/material/CircularProgress";
 
-
-
 const OrderForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -34,7 +32,6 @@ const OrderForm = () => {
     }
 
     const handleMessage = async (event: any) => {
-      console.log("Данные из event", event);
       if (event.origin !== domen) {
         return;
       }
@@ -43,13 +40,11 @@ const OrderForm = () => {
 
       if (message) {
         setIdOrder(message);
-        console.log("id клиента:", message);
       }
     };
     window.addEventListener("message", handleMessage);
-    
+
     const fetchData = async () => {
-      
       await login();
     };
 
@@ -73,7 +68,6 @@ const OrderForm = () => {
       if (idOrder === "") return;
       setLoading(true);
       const response = await GetOrderData(idOrder);
-      console.log("Результат запроса:", response);
       dispatch(
         updateOrderForm({
           number: response.number,
@@ -107,7 +101,6 @@ const OrderForm = () => {
         sender: { phones: [{ number: sellerPhone }] },
       })
     );
-    console.log("Данные заказа:", orderData);
     navigate("/cargo");
   };
 

@@ -31,9 +31,7 @@ const Waybill = () => {
   const postOrderData = async () => {
     try {
       const data = await PostOrderData(RequestTemplateWaybill(orderData));
-      console.log("Данные заказа:", RequestTemplateWaybill(orderData));
       setResponse(data);
-      console.log("Результат запроса", data);
 
       if (data.requests && data.requests[0].errors) {
         setErrors(data.requests[0].errors.map((err: any) => err.message));

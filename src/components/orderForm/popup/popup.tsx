@@ -9,7 +9,6 @@ const Popups = () => {
   const domen = import.meta.env.VITE_DOMEN;
   useEffect(() => {
     const handleMessage = (event: any) => {
-      console.log("Данные из event", event.data);
       if (event.data.name === "Open") {
         var id = event.data.objectId;
         setReceivedMessage(id);
@@ -27,7 +26,6 @@ const Popups = () => {
     if (receivedMessage) {
       setIsButtonDisabled(false);
     }
-    console.log("id клиента:", receivedMessage);
   }, [receivedMessage]);
 
   const openModal = () => {

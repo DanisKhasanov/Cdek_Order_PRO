@@ -31,8 +31,6 @@ const Cargo = () => {
   const getDataOrder = async () => {
     try {
       const response = await GetDataCity(RequestTemplateCargo(orderData));
-      console.log("Принимает ли город наложенный платеж:", response.cod);
-      console.log("Наложенный платеж контрагента:", orderData.cod);
       const cod = orderData.cod && response.cod ? true : false;
       if (response) {
         dispatch(

@@ -1,13 +1,12 @@
 import axios from "axios";
 
 const URL_API = import.meta.env.VITE_API_URL;
+const username = import.meta.env.VITE_USERNAME;
+const password = import.meta.env.VITE_PASSWORD;
 
 const api = axios.create({
   baseURL: URL_API,
 });
-
-const username = "danis_widget";
-const password = "FLX_cdekWidget5";
 
 export const login = async () => {
   try {
@@ -16,7 +15,6 @@ export const login = async () => {
       password: password,
     });
 
-    console.log("response auth", response);
     const { accessToken, refreshToken } = response.data;
 
     localStorage.setItem("accessToken", accessToken);
@@ -36,7 +34,6 @@ const refreshAccessToken = async () => {
     throw new Error("Нет refresh токена");
   }
 
-  
   try {
     const response = await api.post("/auth/token", {
       refreshToken: refreshToken,
@@ -73,22 +70,15 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response) => {
-    console.log("Ответ", response);
     return response;
   },
   async (error) => {
-    console.log("Зашел в interceptor");
-    console.log("Ошибки", error);
     if (error.response && error.response.status === 401) {
-      console.log("Считал в 401");
       try {
         const accessToken = await refreshAccessToken();
-        console.log("Обновил токен");
         error.config.headers["Authorization"] = `Bearer ${accessToken}`;
-
         return axios(error.config);
       } catch (refreshError) {
-        console.error("Не удалось обновить токен:", refreshError);
         throw refreshError;
       }
     }
