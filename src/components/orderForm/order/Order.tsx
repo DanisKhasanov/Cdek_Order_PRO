@@ -44,11 +44,11 @@ const OrderForm = () => {
     };
     window.addEventListener("message", handleMessage);
 
-    const fetchData = async () => {
-      await login();
-    };
+    // const fetchData = async () => {
+    //   await login();
+    // };
 
-    fetchData();
+    // fetchData();
 
     return () => {
       window.removeEventListener("message", handleMessage);
