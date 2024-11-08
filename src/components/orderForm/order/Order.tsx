@@ -44,7 +44,6 @@ const OrderForm = () => {
       if (message) {
         setIdOrder(message);
         console.log("id клиента:", message);
-        // await getOrderData(message);
       }
     };
     window.addEventListener("message", handleMessage);
