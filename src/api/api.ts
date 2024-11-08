@@ -6,28 +6,28 @@ const api = axios.create({
   baseURL: URL_API,
 });
 
-// const username = "danis_widget";
-// const password = "FLX_cdekWidget5";
+const username = "danis_widget";
+const password = "FLX_cdekWidget5";
 
-// export const login = async () => {
-//   try {
-//     const response = await api.post("auth/login/", {
-//       username: username,
-//       password: password,
-//     });
+export const login = async () => {
+  try {
+    const response = await api.post("auth/login/", {
+      username: username,
+      password: password,
+    });
 
-//     console.log("response auth", response);
-//     const { accessToken, refreshToken } = response.data;
+    console.log("response auth", response);
+    const { accessToken, refreshToken } = response.data;
 
-//     localStorage.setItem("accessToken", accessToken);
-//     localStorage.setItem("refreshToken", refreshToken);
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("refreshToken", refreshToken);
 
-//     return accessToken;
-//   } catch (error) {
-//     console.error("Ошибка при авторизации:", error);
-//     throw error;
-//   }
-// };
+    return accessToken;
+  } catch (error) {
+    console.error("Ошибка при авторизации:", error);
+    throw error;
+  }
+};
 
 const refreshAccessToken = async () => {
   const refreshToken = localStorage.getItem("refreshToken");
@@ -36,6 +36,7 @@ const refreshAccessToken = async () => {
     throw new Error("Нет refresh токена");
   }
 
+  
   try {
     const response = await api.post("/auth/token", {
       refreshToken: refreshToken,
@@ -90,7 +91,7 @@ api.interceptors.response.use(
         console.error("Не удалось обновить токен:", refreshError);
         throw refreshError;
       }
-    } 
+    }
     return Promise.reject(error);
   }
 );
