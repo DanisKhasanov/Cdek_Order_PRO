@@ -73,6 +73,7 @@ const refreshAccessToken = async () => {
 
 api.interceptors.response.use(
   (response) => {
+    console.log("Ответ", response);
     return response;
   },
   async (error) => {
