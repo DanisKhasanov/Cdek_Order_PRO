@@ -4,7 +4,6 @@ const URL_API = import.meta.env.VITE_API_URL;
 
 const api = axios.create({
   baseURL: URL_API,
-  withCredentials: true,
 });
 
 // const username = "danis_widget";
