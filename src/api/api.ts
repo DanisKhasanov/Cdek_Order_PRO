@@ -23,6 +23,7 @@ export const login = async (username: string, password: string) => {
         headers: {
           Accept: "application/json",
         },
+        withCredentials: false,
       }
     );
 
