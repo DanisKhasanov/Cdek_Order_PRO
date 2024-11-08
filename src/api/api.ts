@@ -81,6 +81,7 @@ api.interceptors.response.use(
       console.log("Считал в 401");
       try {
         const accessToken = await refreshAccessToken();
+        console.log("Обновил токен");
         error.config.headers["Authorization"] = `Bearer ${accessToken}`;
 
         return axios(error.config);
