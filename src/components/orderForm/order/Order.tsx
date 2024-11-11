@@ -37,8 +37,7 @@ const OrderForm = () => {
       }
 
       const message = event.data.popupParameters;
-      console.log("id client", message);
-      
+
       if (message) {
         setIdOrder(message);
       }
