@@ -52,24 +52,24 @@ const refreshAccessToken = async () => {
   }
 };
 
-api.interceptors.request.use(
-  async (config) => {
-    let accessToken = localStorage.getItem("accessToken");
+// api.interceptors.request.use(
+//   async (config) => {
+//     let accessToken = localStorage.getItem("accessToken");
 
-    if (!accessToken) {
-      accessToken = await login();
-    }
+//     if (!accessToken) {
+//       accessToken = await login();
+//     }
 
-    if (accessToken) {
-      config.headers["Authorization"] = `Bearer ${accessToken}`;
-    }
+//     if (accessToken) {
+//       config.headers["Authorization"] = `Bearer ${accessToken}`;
+//     }
 
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
 
 api.interceptors.response.use(
   (response) => {
