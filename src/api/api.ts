@@ -2,14 +2,12 @@ import axios from "axios";
 
 const URL_API = import.meta.env.VITE_API_URL;
 
-
 const api = axios.create({
   baseURL: URL_API,
 });
 
 const username = "danis_widget";
 const password = "FLX_cdekWidget5";
-
 
 export const login = async () => {
   try {
@@ -52,24 +50,20 @@ const refreshAccessToken = async () => {
   }
 };
 
-// api.interceptors.request.use(
-//   async (config) => {
-//     let accessToken = localStorage.getItem("accessToken");
+api.interceptors.request.use(
+  async (config) => {
+    let accessToken = localStorage.getItem("accessToken");
 
-//     if (!accessToken) {
-//       accessToken = await login();
-//     }
+    if (accessToken) {
+      config.headers["Authorization"] = `Bearer ${accessToken}`;
+    }
 
-//     if (accessToken) {
-//       config.headers["Authorization"] = `Bearer ${accessToken}`;
-//     }
-
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 api.interceptors.response.use(
   (response) => {
