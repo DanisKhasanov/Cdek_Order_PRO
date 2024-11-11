@@ -7,7 +7,7 @@ import "../styles/style.css";
 import { RootState } from "../../../store/store";
 import { validationSchema } from "./Validation";
 import { GetOrderData, login } from "../../../api/api";
-import { AddressSuggestions } from "react-dadata";
+import { AddressSuggestions, FioSuggestions } from "react-dadata";
 import { StyledInput } from "../styles/StyleInputAddressOrder";
 import "react-dadata/dist/react-dadata.css";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -134,7 +134,6 @@ const OrderForm = () => {
                     errors.account && touched.account ? errors.account : ""
                   }
                 >
-                  <option value="" label="Выберите договор" hidden />
                   <option value="GRM" label="ГРМ" />
                   <option value="ZAR" label="ЗАР" />
                 </Field>
@@ -142,14 +141,14 @@ const OrderForm = () => {
 
               <div className="form-group">
                 <label htmlFor="recipient.name">* Имя получателя:</label>
-                {/* <div
+                <div
                   className={`form-control address ${
                     errors.recipient?.name && touched.recipient?.name
                       ? "error"
                       : ""
                   }`}
-                > */}
-                <Field
+                >
+                {/* <Field
                   type="text"
                   id="recipient.name"
                   name="recipient.name"
@@ -163,9 +162,9 @@ const OrderForm = () => {
                       ? errors.recipient.name
                       : "Введите имя"
                   }
-                />
+                /> */}
 
-                {/* <FioSuggestions
+                <FioSuggestions
                     token={apiKey}
                     onChange={(suggestion: any) => {
                       setFieldValue("recipient.name", suggestion.value);
@@ -175,8 +174,8 @@ const OrderForm = () => {
                     }}
                     defaultQuery={orderData.recipient.name}
                     customInput={CustomInput}
-                  /> */}
-                {/* </div> */}
+                  />
+                </div>
               </div>
 
               <div className="form-group">

@@ -55,7 +55,7 @@ interface OrderFormState {
 
 const initialState: OrderFormState = {
   number: "",
-  account: "",
+  account: "GRM",
   sender: {
     phones: [{ number: "" }],
   },
