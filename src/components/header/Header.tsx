@@ -7,7 +7,7 @@ import OrderForm from "../orderForm/order/Order";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import Popups from "../orderForm/popup/popup";
-import NotFoundPage from "../notPage/notPage";
+import SettingPage from "../setting/settingPage";
 
 const Navigation = () => {
   const orderCreated = useSelector(
@@ -20,6 +20,8 @@ const Navigation = () => {
     <div className="container">
       {location.pathname === "/" ? (
         <Popups />
+      ) : location.pathname === "/setting" ? (
+        <SettingPage />
       ) : (
         <div className="App">
           <nav className="header">
@@ -61,7 +63,6 @@ const Navigation = () => {
             <Route path="/cargo" element={<Cargo />} />
             <Route path="/tariffs" element={<Tariffs />} />
             <Route path="/waybill" element={<Waybill />} />
-            <Route path="/not-found" element={<NotFoundPage />} />
           </Routes>
         </div>
       )}

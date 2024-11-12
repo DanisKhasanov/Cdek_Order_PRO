@@ -17,12 +17,12 @@ const OrderForm = () => {
   const dispatch = useDispatch();
   const orderData = useSelector((state: RootState) => state.orderForm);
   const apiKey = import.meta.env.VITE_DADATA_API_KEY;
+  const domen = import.meta.env.VITE_DOMEN;
   const [loading, setLoading] = useState(false);
   const [idOrder, setIdOrder] = useState("");
   const CustomInput = forwardRef((props, ref: any) => (
     <StyledInput {...props} ref={ref} />
   ));
-  const domen = import.meta.env.VITE_DOMEN;
 
   const auth = async () => {
     try {
@@ -60,7 +60,8 @@ const OrderForm = () => {
     if (event.origin !== domen) {
       return;
     }
-    const message = event.data.popupParameters;
+    // const message = event.data.popupParameters;
+    const message = "f5fdd842-a032-11ef-0a80-0bb5003b6ff6";
     if (message) setIdOrder(message);
   };
 
