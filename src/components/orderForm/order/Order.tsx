@@ -37,6 +37,7 @@ const OrderForm = () => {
       }
 
       const message = event.data.popupParameters;
+      console.log("message", message);
 
       if (message) {
         setIdOrder(message);
@@ -148,7 +149,7 @@ const OrderForm = () => {
                       : ""
                   }`}
                 >
-                {/* <Field
+                  {/* <Field
                   type="text"
                   id="recipient.name"
                   name="recipient.name"
@@ -164,7 +165,7 @@ const OrderForm = () => {
                   }
                 /> */}
 
-                <FioSuggestions
+                  <FioSuggestions
                     token={apiKey}
                     onChange={(suggestion: any) => {
                       setFieldValue("recipient.name", suggestion.value);
