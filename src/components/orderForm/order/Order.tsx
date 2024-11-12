@@ -24,45 +24,13 @@ const OrderForm = () => {
   ));
   const domen = import.meta.env.VITE_DOMEN;
 
-  useEffect(() => {
-    if (orderData.recipient.name) {
-      return;
-    } else {
-      setLoading(true);
-    }
-
-    const handleMessage = async (event: any) => {
-      if (event.origin !== domen) {
-        return;
-      }
-
-      const message = event.data.popupParameters;
-      console.log("message", message);
-
-      if (message) {
-        setIdOrder(message);
-      }
-    };
-    window.addEventListener("message", handleMessage);
-
-    const fetchData = async () => {
+  const fetchData = async () => {
+    try {
       await login();
-    };
-
-    fetchData();
-
-    return () => {
-      window.removeEventListener("message", handleMessage);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (orderData.recipient.name) return;
-    if (idOrder) {
-      dispatch(updateOrderForm({ ...orderData, counterparty: true }));
-      getOrderData(idOrder);
+    } catch (error) {
+      console.error("Ошибка при получении данных:", error);
     }
-  }, [idOrder]);
+  };
 
   const getOrderData = async (idOrder: any) => {
     try {
@@ -87,6 +55,35 @@ const OrderForm = () => {
       setLoading(false);
     }
   };
+
+  const handleMessage = async (event: any) => {
+    if (event.origin !== domen) {
+      return;
+    }
+    const message = event.data.popupParameters;
+    if (message) setIdOrder(message);
+  };
+
+  useEffect(() => {
+    if (orderData.recipient.name) {
+      return;
+    } else {
+      setLoading(true);
+    }
+    window.addEventListener("message", handleMessage);
+    fetchData();
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (orderData.recipient.name) return;
+    if (idOrder) {
+      dispatch(updateOrderForm({ ...orderData, counterparty: true }));
+      getOrderData(idOrder);
+    }
+  }, [idOrder]);
 
   const onSubmit = (values: any) => {
     const sellerPhone =
