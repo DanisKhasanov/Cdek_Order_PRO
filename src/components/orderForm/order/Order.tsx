@@ -24,7 +24,7 @@ const OrderForm = () => {
   ));
   const domen = import.meta.env.VITE_DOMEN;
 
-  const fetchData = async () => {
+  const auth = async () => {
     try {
       await login();
     } catch (error) {
@@ -71,7 +71,7 @@ const OrderForm = () => {
       setLoading(true);
     }
     window.addEventListener("message", handleMessage);
-    fetchData();
+    auth();
     return () => {
       window.removeEventListener("message", handleMessage);
     };
