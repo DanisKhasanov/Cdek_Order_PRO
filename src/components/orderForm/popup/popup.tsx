@@ -36,7 +36,7 @@ const Popups = () => {
 
     if (popup) {
       popup.onload = () => {
-        // setTimeout(() => {
+        setTimeout(() => {
           popup.postMessage(
             {
               name: "ShowPopupRequest",
@@ -46,7 +46,7 @@ const Popups = () => {
             },
             domen
           );
-        // }, 1000);
+        }, 1500);
       };
 
       
