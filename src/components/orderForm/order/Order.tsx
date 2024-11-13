@@ -60,7 +60,8 @@ const OrderForm = () => {
     if (event.origin !== domen) {
       return;
     }
-    const message = event.data.popupParameters;
+    // const message = event.data.popupParameters;
+    const message = "f5fdd842-a032-11ef-0a80-0bb5003b6ff6";
     if (message) setIdOrder(message);
   };
 

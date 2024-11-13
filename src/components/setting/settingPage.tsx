@@ -4,21 +4,22 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import HelpIcon from "@mui/icons-material/Help";
 import { SettingAccount } from "./settingAccount";
 import { Help } from "./help";
+import { useLocation } from "react-router-dom";
 
 const NotFoundPage = () => {
   const [activeTab, setActiveTab] = useState(0);
-
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
   return (
     <Box sx={{ maxWidth: 600, p: 2 }}>
-      <Tabs value={activeTab} onChange={handleTabChange}>
+      <Tabs value={activeTab} onChange={handleTabChange} >
         <Tab
           icon={<SettingsIcon />}
           iconPosition="start"
           label="Настройки"
           sx={{ textTransform: "none" }}
+          
         />
         <Tab
           icon={<HelpIcon />}
@@ -27,9 +28,7 @@ const NotFoundPage = () => {
           sx={{ textTransform: "none" }}
         />
       </Tabs>
-
       {activeTab === 0 && <SettingAccount />}
-
       {activeTab === 1 && <Help />}
     </Box>
   );

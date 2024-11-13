@@ -17,7 +17,7 @@ const Navigation = () => {
   const location = useLocation();
 
   return (
-    <div className="container">
+    <div>
       {location.pathname === "/" ? (
         <Popups />
       ) : location.pathname === "/setting" ? (

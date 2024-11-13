@@ -22,11 +22,11 @@ const Waybill = () => {
   const name = orderData.recipient.name;
   const [errors, setErrors] = useState<string[]>([]);
 
-  useEffect(() => {
-    if (orderData.counterparty) {
-      postOrderData();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (orderData.counterparty) {
+  //     postOrderData();
+  //   }
+  // }, []);
 
   const postOrderData = async () => {
     try {
