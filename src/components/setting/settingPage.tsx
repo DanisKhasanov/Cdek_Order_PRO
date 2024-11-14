@@ -12,7 +12,7 @@ const NotFoundPage = () => {
     setActiveTab(newValue);
   };
   return (
-    <Box sx={{ maxWidth: 600, p: 2 }}>
+    <Box sx={{ width: "40%", p: 2 }}>
       <Tabs value={activeTab} onChange={handleTabChange} >
         <Tab
           icon={<SettingsIcon />}
