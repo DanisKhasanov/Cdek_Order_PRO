@@ -18,13 +18,13 @@ const NotFoundPage = () => {
           icon={<SettingsIcon />}
           iconPosition="start"
           label="Настройки"
-          sx={{ textTransform: "none" }}
+          sx={{ textTransform: "none", fontSize: "1.5vh" }}
         />
         <Tab
           icon={<HelpIcon />}
           iconPosition="start"
           label="Помощь"
-          sx={{ textTransform: "none" }}
+          sx={{ textTransform: "none", fontSize: "1.5vh" }}
         />
       </Tabs>
       {activeTab === 0 && <SettingAccount />}

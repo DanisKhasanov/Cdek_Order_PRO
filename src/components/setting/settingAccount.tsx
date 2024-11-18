@@ -109,7 +109,9 @@ export const SettingAccount = () => {
             <Tooltip title={textСonnection} placement="right">
               <HelpOutlineTwoToneIcon color="primary" />
             </Tooltip>
-            <Typography variant="h6">1. Подключение аккаунта</Typography>
+            <Typography variant="subtitle1">
+              1. Подключение аккаунта
+            </Typography>
           </Box>
           <CustomInput
             label="Ключ API"
@@ -136,7 +138,7 @@ export const SettingAccount = () => {
             <Tooltip title={textDelivery} placement="right">
               <HelpOutlineTwoToneIcon color="primary" />
             </Tooltip>
-            <Typography variant="h6">2. Параметры доставки</Typography>
+            <Typography variant="subtitle1">2. Параметры доставки</Typography>
           </Box>
           <CustomInput
             select
@@ -159,7 +161,9 @@ export const SettingAccount = () => {
             <Tooltip title={textBox} placement="right">
               <HelpOutlineTwoToneIcon color="primary" />
             </Tooltip>
-            <Typography variant="h6">3. Размеры и описание упаковки</Typography>
+            <Typography variant="subtitle1">
+              3. Размеры и описание упаковки
+            </Typography>
           </Box>
           <Box sx={{ mt: 1 }}>
             {boxes.map((box, index) => (
@@ -168,7 +172,7 @@ export const SettingAccount = () => {
                 sx={{
                   display: "flex",
                   justifyContent: "space-between",
-                  gap: 5,
+                  gap: 1,
                   mt: 2,
                 }}
               >
@@ -200,7 +204,7 @@ export const SettingAccount = () => {
               </Box>
             ))}
             <Box
-              sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}
+              sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}
             >
               <Button
                 variant="contained"
@@ -238,7 +242,7 @@ export const SettingAccount = () => {
         </Box>
 
         <Box>
-          <Typography sx={{ mt: 2 }}>
+          <Typography variant="subtitle2" sx={{ mt: 2 }}>
             3.1. Описание товаров в грузовом месте
           </Typography>
           <CustomInput

@@ -19,7 +19,14 @@ interface InputSettingProps {
 
 export const CustomInput = ({ label, ...props }: CustomInputProps) => {
   return (
-    <TextField fullWidth label={label} size="small" margin="dense" {...props} />
+    <TextField
+      fullWidth
+      label={label}
+      size="small"
+      margin="dense"
+      InputLabelProps={{ sx: { fontSize: "1.5vh",  } }}
+      {...props}
+    />
   );
 };
 
@@ -42,6 +49,9 @@ export const CustomInputBox = ({
           },
         "& input[type=number]": {
           MozAppearance: "textfield",
+        },
+        "& input::placeholder": {
+          fontSize: "1.5vh",
         },
       }}
       endAdornment={
