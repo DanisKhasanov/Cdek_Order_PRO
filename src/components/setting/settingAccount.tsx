@@ -261,7 +261,7 @@ export const SettingAccount = () => {
         </Box>
       </Box>
 
-      <Box>
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
         <FormControlLabel
           control={
             <Checkbox checked={isAgreementAccepted} onChange={agreement} />
@@ -279,7 +279,7 @@ export const SettingAccount = () => {
         />
         <Button
           variant="contained"
-          sx={{ mt: 1, borderRadius: 1, textTransform: "none" }}
+          sx={{ mt: 1, borderRadius: 1, textTransform: "none", width: "30%" }}
           disabled={!isAgreementAccepted}
           onClick={postSettingAccount}
         >

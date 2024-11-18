@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {  Box, Tabs, Tab } from "@mui/material";
+import { Box, Tabs, Tab } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import HelpIcon from "@mui/icons-material/Help";
 import { SettingAccount } from "./settingAccount";
@@ -12,14 +12,13 @@ const NotFoundPage = () => {
     setActiveTab(newValue);
   };
   return (
-    <Box sx={{ width: "40%", p: 2 }}>
-      <Tabs value={activeTab} onChange={handleTabChange} >
+    <Box sx={{ width: "30%", pl: 2 }}>
+      <Tabs value={activeTab} onChange={handleTabChange} sx={{ height: "7vh" }}>
         <Tab
           icon={<SettingsIcon />}
           iconPosition="start"
           label="Настройки"
           sx={{ textTransform: "none" }}
-          
         />
         <Tab
           icon={<HelpIcon />}

@@ -9,12 +9,11 @@ const Popups = () => {
   const domen = import.meta.env.VITE_DOMEN;
   useEffect(() => {
     const handleMessage = (event: any) => {
-      // if (event.data.name === "Open") {
-        // var id = event.data.objectId;
-        // setReceivedMessage(id);
-      // }
+      if (event.data.name === "Open") {
+        var id = event.data.objectId;
+        setReceivedMessage(id);
+      }
     };
-    setReceivedMessage("f5fdd842-a032-11ef-0a80-0bb5003b6ff6");
     window.addEventListener("message", handleMessage);
 
     return () => {
