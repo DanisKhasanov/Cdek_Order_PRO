@@ -8,13 +8,17 @@ import { useLocation } from "react-router-dom";
 
 const NotFoundPage = () => {
   const [activeTab, setActiveTab] = useState(0);
+  const location = useLocation();
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
 
   useEffect(() => {
+    const currentUrl = location.pathname; // Получаем текущий URL
+
+    console.log("Текущий URL:", currentUrl);
     const handleMessage = (event: any) => {
-      console.log(event);
+      console.log("Event", event);
     };
     window.addEventListener("message", handleMessage);
 
