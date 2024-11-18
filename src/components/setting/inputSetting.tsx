@@ -24,7 +24,18 @@ export const CustomInput = ({ label, ...props }: CustomInputProps) => {
       label={label}
       size="small"
       margin="dense"
-      InputLabelProps={{ sx: { fontSize: "1.5vh",  } }}
+      InputLabelProps={{ sx: { fontSize: "1.6vh",  } }}
+      inputProps={{
+        style: {
+          height: "2.3vh",
+          fontSize: "1.6vh",
+        },
+      }}
+      sx={{
+        "& .MuiInputBase-input": {
+          fontSize: "1.6vh",
+        },
+      }}
       {...props}
     />
   );
@@ -51,7 +62,10 @@ export const CustomInputBox = ({
           MozAppearance: "textfield",
         },
         "& input::placeholder": {
-          fontSize: "1.5vh",
+          fontSize: "1.6vh",
+        },
+        "& .MuiInputBase-input": {
+          fontSize: "1.6vh",
         },
       }}
       endAdornment={

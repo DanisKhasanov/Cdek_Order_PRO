@@ -109,9 +109,7 @@ export const SettingAccount = () => {
             <Tooltip title={textСonnection} placement="right">
               <HelpOutlineTwoToneIcon color="primary" />
             </Tooltip>
-            <Typography variant="subtitle1">
-              1. Подключение аккаунта
-            </Typography>
+            <Typography variant="subtitle1">1. Подключение аккаунта</Typography>
           </Box>
           <CustomInput
             label="Ключ API"
@@ -128,8 +126,19 @@ export const SettingAccount = () => {
             value={type_order}
             onChange={(e) => dispatch(setTypeOrder(e.target.value))}
           >
-            <MenuItem value="internet-shop">Интернет-магазин</MenuItem>
-            <MenuItem value="delivery">Доставка</MenuItem>
+            <MenuItem value="internet-shop" sx={{ fontSize: "1.5vh" }}>
+              Интернет-магазин
+            </MenuItem>
+            <MenuItem
+              value="delivery"
+              sx={{ fontSize: "1.5vh", 
+                "& .MuiInputBase-input": {
+                  fontSize: 16,
+                },
+              }}
+            >
+              Доставка
+            </MenuItem>
           </CustomInput>
         </Box>
 
@@ -146,8 +155,12 @@ export const SettingAccount = () => {
             value={type_shipment}
             onChange={(e) => dispatch(setTypeShipment(e.target.value))}
           >
-            <MenuItem value="warehouse">От склада</MenuItem>
-            <MenuItem value="door">От двери</MenuItem>
+            <MenuItem value="warehouse" sx={{ fontSize: "1.5vh" }}>
+              От склада
+            </MenuItem>
+            <MenuItem value="door" sx={{ fontSize: "1.5vh" }}>
+              От двери
+            </MenuItem>
           </CustomInput>
           <CustomInput
             label="Адрес отгрузки"
@@ -259,6 +272,21 @@ export const SettingAccount = () => {
               onChange={(e) =>
                 dispatch(setDeclaredCost(Number(e.target.value)))
               }
+              sx={{
+                "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
+                  {
+                    display: "none",
+                  },
+                "& input[type=number]": {
+                  MozAppearance: "textfield",
+                },
+                "& input::placeholder": {
+                  fontSize: "1.6vh",
+                },
+                "& .MuiInputBase-input": {
+                  fontSize: "1.6vh",
+                },
+              }}
             />
             <FormHelperText>Объявленная стоимость за ед. товара</FormHelperText>
           </FormControl>
