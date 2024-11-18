@@ -4,19 +4,18 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import HelpIcon from "@mui/icons-material/Help";
 import { SettingAccount } from "./settingAccount";
 import { Help } from "./help";
-import { useLocation } from "react-router-dom";
 
 const NotFoundPage = () => {
   const [activeTab, setActiveTab] = useState(0);
-  const location = useLocation();
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
 
   useEffect(() => {
-    const currentUrl = location.pathname; // Получаем текущий URL
+    const currentUrl = window.parent.location.href; // Получаем URL родительского окна
+    console.log("Текущий URL родительского окна:", currentUrl);
 
-    console.log("Текущий URL:", currentUrl);
+
     const handleMessage = (event: any) => {
       console.log("Event", event);
     };
