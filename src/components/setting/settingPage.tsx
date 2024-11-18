@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Tabs, Tab } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import HelpIcon from "@mui/icons-material/Help";
@@ -11,6 +11,17 @@ const NotFoundPage = () => {
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
+
+  useEffect(() => {
+    const handleMessage = (event: any) => {
+      console.log(event);
+    };
+    window.addEventListener("message", handleMessage);
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+  }, []);
   return (
     <Box sx={{ width: "30%", pl: 2 }}>
       <Tabs value={activeTab} onChange={handleTabChange} sx={{ height: "7vh" }}>
