@@ -12,13 +12,10 @@ const NotFoundPage = () => {
   };
 
   useEffect(() => {
-    const currentUrl = window.parent.location.href; // Получаем URL родительского окна
-    console.log("Текущий URL родительского окна:", currentUrl);
-
-
-    const handleMessage = (event: any) => {
-      console.log("Event", event);
+    const handleMessage = (event: MessageEvent) => {
+      console.log("Текущий URL родительского окна:", event.data);
     };
+
     window.addEventListener("message", handleMessage);
 
     return () => {
