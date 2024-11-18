@@ -1,36 +1,64 @@
 import {
-  TextField,
   Button,
   MenuItem,
   Typography,
   Box,
   Checkbox,
   FormControlLabel,
+  FormControl,
+  OutlinedInput,
+  InputAdornment,
+  FormHelperText,
 } from "@mui/material";
-import InputAdornment from "@mui/material/InputAdornment";
-import FormControl from "@mui/material/FormControl";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import FormHelperText from "@mui/material/FormHelperText";
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { removeBox, setBoxes } from "../../store/reducers/SettingReducer";
+import {
+  removeBox,
+  setAddressShipment,
+  setBoxes,
+  setDeclaredCost,
+  setKeyApi,
+  setNameProduct,
+  setPasswordApi,
+  setTypeOrder,
+  setTypeShipment,
+} from "../../store/reducers/SettingReducer";
 import { RootState } from "../../store/store";
 import IconButton from "@mui/material/IconButton";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import AddIcon from "@mui/icons-material/Add";
 import CheckIcon from "@mui/icons-material/Check";
+import { PostSettingAccount } from "../../api/api";
+import { useState } from "react";
+import { CustomInput, CustomInputBox } from "./inputSetting";
+import Tooltip from "@mui/material/Tooltip";
+import HelpOutlineTwoToneIcon from "@mui/icons-material/HelpOutlineTwoTone";
+import { textBox, textDelivery, textСonnection } from "./textTooltip";
 
 export const SettingAccount = () => {
   const dispatch = useDispatch();
   const [isAgreementAccepted, setIsAgreementAccepted] = useState(false);
-  const [typeOrder, setTypeOrder] = useState("");
-  const [typeShipment, setTypeShipment] = useState("");
-  const { boxes } = useSelector((state: RootState) => state.setting);
+  const {
+    boxes,
+    type_order,
+    type_shipment,
+    address_shipment,
+    name_product,
+    declared_cost,
+    key_api,
+    password_api,
+  } = useSelector((state: RootState) => state.setting);
   const [save, setSave] = useState(false);
-  const postData = async () => {
-    const response = await fetch("/api/setting/account", {
-      method: "POST",
-      body: JSON.stringify({ boxes, typeOrder, typeShipment }),
+
+  const postSettingAccount = async () => {
+    await PostSettingAccount({
+      key_api,
+      password_api,
+      boxes,
+      type_order,
+      type_shipment,
+      address_shipment,
+      name_product,
+      declared_cost,
     });
   };
 
@@ -71,181 +99,108 @@ export const SettingAccount = () => {
       <Box
         sx={{
           overflowY: "auto",
-          height: "75vh",
+          height: "77vh",
           scrollbarWidth: "none",
-          "&::-webkit-scrollbar": {
-            display: "none",
-          },
+          "&::-webkit-scrollbar": { display: "none" },
         }}
       >
         <Box>
-          <Typography variant="h6" sx={{ mt: 1 }}>
-            Подключение аккаунта
-          </Typography>
-
-          <TextField fullWidth label="Ключ API" size="small" margin="dense" />
-
-          <TextField
-            fullWidth
-            margin="dense"
-            label="Пароль API"
-            size="small"
-            type="password"
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
+            <Tooltip title={textСonnection} placement="right">
+              <HelpOutlineTwoToneIcon color="primary" />
+            </Tooltip>
+            <Typography variant="h6">1. Подключение аккаунта</Typography>
+          </Box>
+          <CustomInput
+            label="Ключ API"
+            onChange={(e) => dispatch(setKeyApi(e.target.value))}
           />
-
-          <TextField
-            fullWidth
+          <CustomInput
+            label="Пароль API"
+            type="password"
+            onChange={(e) => dispatch(setPasswordApi(e.target.value))}
+          />
+          <CustomInput
             select
-            size="small"
-            margin="dense"
             label="Тип заказа СДЭК"
-            value={typeOrder}
-            onChange={(e) => setTypeOrder(e.target.value)}
+            value={type_order}
+            onChange={(e) => dispatch(setTypeOrder(e.target.value))}
           >
             <MenuItem value="internet-shop">Интернет-магазин</MenuItem>
             <MenuItem value="delivery">Доставка</MenuItem>
-          </TextField>
+          </CustomInput>
         </Box>
 
         <Box>
-          <Typography variant="h6" sx={{ mt: 1 }}>
-            Параметры доставки
-          </Typography>
-
-          <TextField
-            fullWidth
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 3 }}>
+            <Tooltip title={textDelivery} placement="right">
+              <HelpOutlineTwoToneIcon color="primary" />
+            </Tooltip>
+            <Typography variant="h6">2. Параметры доставки</Typography>
+          </Box>
+          <CustomInput
             select
-            margin="dense"
             label="Тип отгрузки"
-            size="small"
-            value={typeShipment}
-            onChange={(e) => setTypeShipment(e.target.value)}
+            value={type_shipment}
+            onChange={(e) => dispatch(setTypeShipment(e.target.value))}
           >
             <MenuItem value="warehouse">От склада</MenuItem>
             <MenuItem value="door">От двери</MenuItem>
-          </TextField>
-
-          <TextField
-            fullWidth
-            margin="dense"
+          </CustomInput>
+          <CustomInput
             label="Адрес отгрузки"
-            size="small"
+            value={address_shipment}
+            onChange={(e) => dispatch(setAddressShipment(e.target.value))}
           />
         </Box>
 
         <Box>
-          <Typography variant="h6" sx={{ mt: 1 }}>
-            Размеры и описание упаковки (Грузовое место)
-          </Typography>
-
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 3 }}>
+            <Tooltip title={textBox} placement="right">
+              <HelpOutlineTwoToneIcon color="primary" />
+            </Tooltip>
+            <Typography variant="h6">3. Размеры и описание упаковки</Typography>
+          </Box>
           <Box sx={{ mt: 1 }}>
             {boxes.map((box, index) => (
-              <>
-                <Box
-                  key={box.id}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    gap: 5,
-                    mt: 2,
-                  }}
-                >
-                  <FormControl variant="outlined">
-                    <OutlinedInput
-                      size="small"
-                      type="number"
-                      placeholder="длина"
-                      value={box.length || ""}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        if (value === "" || Number(value) >= 0) {
-                          boxChange(e as any, index, "length");
-                        }
-                      }}
-                      sx={{
-                        "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
-                          {
-                            display: "none",
-                          },
-                        "& input[type=number]": {
-                          MozAppearance: "textfield",
-                        },
-                      }}
-                      endAdornment={
-                        <InputAdornment position="end">см</InputAdornment>
-                      }
-                    />
-                  </FormControl>
-
-                  <FormControl variant="outlined">
-                    <OutlinedInput
-                      size="small"
-                      type="number"
-                      placeholder="ширина"
-                      value={box.width || ""}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        if (value === "" || Number(value) >= 0) {
-                          boxChange(e as any, index, "width");
-                        }
-                      }}
-                      sx={{
-                        "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
-                          {
-                            display: "none",
-                          },
-                        "& input[type=number]": {
-                          MozAppearance: "textfield",
-                        },
-                      }}
-                      endAdornment={
-                        <InputAdornment position="end">см</InputAdornment>
-                      }
-                    />
-                  </FormControl>
-
-                  <FormControl variant="outlined">
-                    <OutlinedInput
-                      size="small"
-                      type="number"
-                      placeholder="высота"
-                      value={box.height || ""}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        if (value === "" || Number(value) >= 0) {
-                          boxChange(e as any, index, "height");
-                        }
-                      }}
-                      sx={{
-                        "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
-                          {
-                            display: "none",
-                          },
-                        "& input[type=number]": {
-                          MozAppearance: "textfield",
-                        },
-                      }}
-                      endAdornment={
-                        <InputAdornment position="end">см</InputAdornment>
-                      }
-                    />
-                  </FormControl>
-
-                  {boxes.length > 1 && (
-                    <IconButton
-                      onClick={() => {
-                        dispatch(removeBox(index));
-                        setSave(false);
-                      }}
-                    >
-                      <CancelRoundedIcon color="error" />
-                    </IconButton>
-                  )}
-                </Box>
-              </>
+              <Box
+                key={box.id}
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  gap: 5,
+                  mt: 2,
+                }}
+              >
+                <CustomInputBox
+                  value={box.length}
+                  onChange={(e) => boxChange(e, index, "length")}
+                  placeholder="длина"
+                />
+                <CustomInputBox
+                  value={box.width}
+                  onChange={(e) => boxChange(e, index, "width")}
+                  placeholder="ширина"
+                />
+                <CustomInputBox
+                  value={box.height}
+                  onChange={(e) => boxChange(e, index, "height")}
+                  placeholder="высота"
+                />
+                {boxes.length > 1 && (
+                  <IconButton
+                    onClick={() => {
+                      dispatch(removeBox(index));
+                      setSave(false);
+                    }}
+                  >
+                    <CancelRoundedIcon color="error" />
+                  </IconButton>
+                )}
+              </Box>
             ))}
             <Box
-              sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}
+              sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}
             >
               <Button
                 variant="contained"
@@ -283,23 +238,23 @@ export const SettingAccount = () => {
         </Box>
 
         <Box>
-          <Typography sx={{ mt: 1 }}>
-            Описание товаров в грузовом месте
+          <Typography sx={{ mt: 2 }}>
+            3.1. Описание товаров в грузовом месте
           </Typography>
-
-          <TextField
-            fullWidth
-            margin="dense"
+          <CustomInput
             label="Наименование товара"
-            size="small"
+            value={name_product}
+            onChange={(e) => dispatch(setNameProduct(e.target.value))}
           />
-
           <FormControl variant="outlined" sx={{ mt: 1 }}>
             <OutlinedInput
               size="small"
               type="number"
               placeholder="0"
               endAdornment={<InputAdornment position="end">₽</InputAdornment>}
+              onChange={(e) =>
+                dispatch(setDeclaredCost(Number(e.target.value)))
+              }
             />
             <FormHelperText>Объявленная стоимость за ед. товара</FormHelperText>
           </FormControl>
@@ -311,14 +266,22 @@ export const SettingAccount = () => {
           control={
             <Checkbox checked={isAgreementAccepted} onChange={agreement} />
           }
-          label="Согласен с условиями пользовательского соглашения и обработки персональных данных"
-          sx={{ mt: 2 }}
+          label={
+            <Typography sx={{ fontSize: 12, color: "gray" }}>
+              Используя данное приложения, Вы принимаете условия{" "}
+              <a href="#" target="_blank">
+                лицензионного соглашения
+              </a>{" "}
+              и даете согласие на обработку персональных данных
+            </Typography>
+          }
+          sx={{ mt: 1 }}
         />
         <Button
           variant="contained"
-          sx={{ mt: 2, borderRadius: 1, textTransform: "none" }}
+          sx={{ mt: 1, borderRadius: 1, textTransform: "none" }}
           disabled={!isAgreementAccepted}
-          onClick={postData}
+          onClick={postSettingAccount}
         >
           Подключить
         </Button>

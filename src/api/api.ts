@@ -233,3 +233,13 @@ export const RequestTemplateTariff = (orderData: any) => ({
     height: packageItem.height,
   })),
 });
+
+export const PostSettingAccount = async (payload: any) => {
+  try {
+    const response = await api.post("/setting/account", payload);
+    return response.data;
+  } catch (error) {
+    console.error("Ошибка при отправке данных на сервер:", error);
+    throw error;
+  }
+};
