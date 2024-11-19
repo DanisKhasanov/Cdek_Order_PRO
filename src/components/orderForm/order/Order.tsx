@@ -101,6 +101,7 @@ const OrderForm = () => {
       getAccountId();
 
       if (idOrder) {
+        console.log("111111");
         dispatch(updateOrderForm({ ...orderData, counterparty: true }));
         // getOrderData(idOrder);
         const settingAccount = async () => {
