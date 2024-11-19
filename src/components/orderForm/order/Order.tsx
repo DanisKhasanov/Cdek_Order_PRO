@@ -75,9 +75,9 @@ const OrderForm = () => {
     }
 
     window.addEventListener("message", handleMessage);
-
-    const accountId = async () => {
-      if (contextKey) {
+    console.log("contextKey", contextKey);
+    if (contextKey) {
+      const accountId = async () => {
         try {
           login();
           const response = await GetIdAccount({ contextKey });
@@ -85,10 +85,10 @@ const OrderForm = () => {
         } catch (error) {
           console.error("Ошибка при получении данных:", error);
         }
-      }
-    };
+      };
+      accountId();
+    }
 
-    accountId();
 
     return () => {
       window.removeEventListener("message", handleMessage);
