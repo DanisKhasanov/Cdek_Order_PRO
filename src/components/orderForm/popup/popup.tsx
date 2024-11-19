@@ -16,6 +16,12 @@ const Popups = () => {
     };
     window.addEventListener("message", handleMessage);
 
+    const queryParams = new URLSearchParams(window.location.search);
+    const contextKey = queryParams.get("contextKey");
+    if (contextKey) {
+      console.log("contextKey", contextKey);
+    }
+
     return () => {
       window.removeEventListener("message", handleMessage);
     };
