@@ -30,7 +30,7 @@ const OrderForm = () => {
   const CustomInput = forwardRef((props, ref: any) => (
     <StyledInput {...props} ref={ref} />
   ));
-  const [contextKey, setContextKey] = useState("");
+  const [contextKeyClient, setContextKeyClient] = useState("");
 
   const getOrderData = async (idOrder: any) => {
     try {
@@ -73,16 +73,16 @@ const OrderForm = () => {
     const queryParams = new URLSearchParams(window.location.search);
     const contextKey = queryParams.get("contextKey");
     if (contextKey) {
-      setContextKey(contextKey);
+      setContextKeyClient(contextKey);
     }
 
     window.addEventListener("message", handleMessage);
 
     const accountId = async () => {
-      if (contextKey) {
+      if (contextKeyClient) {
         try {
           login();
-          const response = await GetIdAccount({ contextKey });
+          const response = await GetIdAccount({ contextKeyClient });
           dispatch(setAccountId(response.accountId));
         } catch (error) {
           console.error("Ошибка при получении данных:", error);
@@ -102,8 +102,13 @@ const OrderForm = () => {
     if (idOrder) {
       dispatch(updateOrderForm({ ...orderData, counterparty: true }));
       // getOrderData(idOrder);
-      const settingAccount = GetSettingAccount(accountId);
-      console.log("Данные из настроек аккаунта:", settingAccount);
+      const settingAccount = async () => {
+        if (accountId) {
+          const response = await GetSettingAccount(accountId);
+          console.log("Данные из настроек аккаунта:", response);
+        }
+      };
+      settingAccount();
     }
   }, [idOrder]);
 
