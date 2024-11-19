@@ -5,10 +5,11 @@ import HelpOutlineTwoToneIcon from "@mui/icons-material/HelpOutlineTwoTone";
 const Popups = () => {
   const [receivedMessage, setReceivedMessage] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-
   const domen = import.meta.env.VITE_DOMEN;
+
   useEffect(() => {
     const handleMessage = (event: any) => {
+      console.log("event", event);
       if (event.data.name === "Open") {
         var id = event.data.objectId;
         setReceivedMessage(id);

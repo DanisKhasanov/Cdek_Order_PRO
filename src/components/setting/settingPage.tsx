@@ -13,14 +13,7 @@ const SettingPage = () => {
 
   useEffect(() => {
 
-    var oReq = new XMLHttpRequest();
-    oReq.addEventListener("load", function() {
-      const element = window.document.getElementById("object");
-      if (element) {
-        element.innerHTML = this.responseText;
-        console.log("element", element);
-      }
-    });
+ 
 
   
   }, []);
