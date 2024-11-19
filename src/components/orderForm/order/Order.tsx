@@ -106,6 +106,7 @@ const OrderForm = () => {
         // getOrderData(idOrder);
         const settingAccount = async () => {
           if (accountId) {
+            console.log("222222");
             const response = await GetSettingAccount(accountId);
             console.log("Данные из настроек аккаунта:", response);
           }
