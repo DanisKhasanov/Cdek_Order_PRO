@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Box, Tabs, Tab } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import HelpIcon from "@mui/icons-material/Help";
@@ -10,12 +10,16 @@ const SettingPage = () => {
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
-
   useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const contextKey = queryParams.get("contextKey");
 
- 
-
-  
+    if (contextKey) {
+      console.log("contextKey:", contextKey);
+      // Теперь вы можете использовать contextKey для дальнейших действий
+    } else {
+      console.error("contextKey не найден!");
+    }
   }, []);
 
   return (

@@ -9,7 +9,6 @@ const Popups = () => {
 
   useEffect(() => {
     const handleMessage = (event: any) => {
-      console.log("event", event);
       if (event.data.name === "Open") {
         var id = event.data.objectId;
         setReceivedMessage(id);
