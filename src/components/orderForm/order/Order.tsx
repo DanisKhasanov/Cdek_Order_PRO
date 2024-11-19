@@ -65,7 +65,6 @@ const OrderForm = () => {
       setIdOrder(message.id);
       setContextKey(message.contextKey);
     }
-    console.log("idOrder", idOrder, "contextKey", contextKey);
   };
 
   useEffect(() => {
@@ -77,7 +76,6 @@ const OrderForm = () => {
 
     window.addEventListener("message", handleMessage);
 
-
     return () => {
       window.removeEventListener("message", handleMessage);
     };
@@ -85,20 +83,9 @@ const OrderForm = () => {
 
   useEffect(() => {
     if (orderData.recipient.name) return;
-    // if (idOrder) {
-    //   dispatch(updateOrderForm({ ...orderData, counterparty: true }));
-    //   // getOrderData(idOrder);
-    //   const settingAccount = async () => {
-    //     if (accountId) {
-    //       const response = await GetSettingAccount(accountId);
-    //       console.log("Данные из настроек аккаунта:", response);
-    //     }
-    //   };
-    //   settingAccount();
-    // }
+
     if (contextKey) {
-      console.log("1111111");
-      const accountId = async () => {
+      const getAccountId = async () => {
         try {
           login();
           const response = await GetIdAccount({ contextKey });
@@ -107,9 +94,21 @@ const OrderForm = () => {
           console.error("Ошибка при получении данных:", error);
         }
       };
-      accountId();
+      getAccountId();
+      
+      
+      if (idOrder) {
+        dispatch(updateOrderForm({ ...orderData, counterparty: true }));
+        // getOrderData(idOrder);
+        const settingAccount = async () => {
+          if (accountId) {
+            const response = await GetSettingAccount(accountId);
+            console.log("Данные из настроек аккаунта:", response);
+          }
+        };
+        settingAccount();
+      }
     }
-
   }, [idOrder, contextKey]);
 
   const onSubmit = (values: any) => {
