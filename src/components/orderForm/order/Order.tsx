@@ -104,14 +104,11 @@ const OrderForm = () => {
         console.log("111111");
         dispatch(updateOrderForm({ ...orderData, counterparty: true }));
         // getOrderData(idOrder);
-        const settingAccount = async () => {
-          if (accountId) {
-            console.log("222222");
-            const response = await GetSettingAccount(accountId);
-            console.log("Данные из настроек аккаунта:", response);
-          }
-        };
-        settingAccount();
+        if (accountId) {
+          console.log("222222");
+          const response = GetSettingAccount(accountId);
+          console.log("Данные из настроек аккаунта:", response);
+        }
       }
     }
   }, [idOrder, contextKey]);
