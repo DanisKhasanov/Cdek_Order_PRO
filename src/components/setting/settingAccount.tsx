@@ -66,7 +66,7 @@ export const SettingAccount = () => {
       if (contextKey) {
         try {
           login();
-          const response = GetIdAccount(contextKey);
+          const response = GetIdAccount({contextKey});
           // dispatch(setAccountId(response.accountId));
           console.log("accountId", response);
         } catch (error) {
