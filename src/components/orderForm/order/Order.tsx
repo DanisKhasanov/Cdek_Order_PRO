@@ -72,6 +72,7 @@ const OrderForm = () => {
     }
     const queryParams = new URLSearchParams(window.location.search);
     const contextKey = queryParams.get("contextKey");
+    console.log("contextKey", contextKey);
     if (contextKey) {
       setContextKeyClient(contextKey);
     }
