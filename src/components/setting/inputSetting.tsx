@@ -34,7 +34,7 @@ export const CustomInput = ({ label, ...props }: CustomInputProps) => {
       sx={{
         "& .MuiInputBase-input": {
           fontSize: "1.6vh",
-          height: "2.3vh",
+          height: "2vh",
         },
       }}
       {...props}
