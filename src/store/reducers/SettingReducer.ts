@@ -8,6 +8,7 @@ interface Box {
 }
 
 interface SettingState {
+  contextKey: string;
   key_api: string;
   password_api: string;
   type_order: string;
@@ -19,6 +20,7 @@ interface SettingState {
 }
 
 const initialState: SettingState = {
+  contextKey: "",
   key_api: "",
   password_api: "",
   type_order: "",
@@ -33,6 +35,9 @@ const settingSlice = createSlice({
   name: "setting",
   initialState,
   reducers: {
+    setContextKey: (state, action: PayloadAction<string>) => {
+      state.contextKey = action.payload;
+    },
     setKeyApi: (state, action: PayloadAction<string>) => {
       state.key_api = action.payload;
     },
@@ -64,6 +69,7 @@ const settingSlice = createSlice({
 });
 
 export const {
+  setContextKey,
   setKeyApi,
   setPasswordApi,
   setTypeOrder,

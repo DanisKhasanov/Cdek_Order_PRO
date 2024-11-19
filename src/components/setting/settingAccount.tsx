@@ -15,6 +15,7 @@ import {
   removeBox,
   setAddressShipment,
   setBoxes,
+  setContextKey,
   setDeclaredCost,
   setKeyApi,
   setNameProduct,
@@ -48,16 +49,16 @@ export const SettingAccount = () => {
     password_api,
   } = useSelector((state: RootState) => state.setting);
   const [save, setSave] = useState(false);
-  
+
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
     const contextKey = queryParams.get("contextKey");
 
     if (contextKey) {
-      console.log("contextKey", contextKey);
+      dispatch(setContextKey(contextKey));
     }
   }, []);
-  
+
   const postSettingAccount = async () => {
     await PostSettingAccount({
       key_api,
@@ -140,7 +141,8 @@ export const SettingAccount = () => {
             </MenuItem>
             <MenuItem
               value="delivery"
-              sx={{ fontSize: "1.5vh", 
+              sx={{
+                fontSize: "1.5vh",
                 "& .MuiInputBase-input": {
                   fontSize: 16,
                 },
