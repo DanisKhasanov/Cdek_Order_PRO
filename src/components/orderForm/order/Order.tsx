@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/style.css";
 import { RootState } from "../../../store/store";
 import { validationSchema } from "./Validation";
-import { GetOrderData, login } from "../../../api/api";
+import { GetOrderData, GetSettingAccount, login } from "../../../api/api";
 import { AddressSuggestions, FioSuggestions } from "react-dadata";
 import { StyledInput } from "../styles/StyleInputAddressOrder";
 import "react-dadata/dist/react-dadata.css";
@@ -81,7 +81,9 @@ const OrderForm = () => {
     if (orderData.recipient.name) return;
     if (idOrder) {
       dispatch(updateOrderForm({ ...orderData, counterparty: true }));
-      getOrderData(idOrder);
+      // getOrderData(idOrder);
+      const settingAccount = GetSettingAccount();
+      console.log("Данные из настроек аккаунта:", settingAccount);
     }
   }, [idOrder]);
 

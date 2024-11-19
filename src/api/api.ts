@@ -239,8 +239,20 @@ export const PostSettingAccount = async (payload: any) => {
     const response = await api.get(`/moysklad/context/${payload.contextKey}`);
     const id = response.data.id;
     const accountId = response.data.accountId;
-    localStorage.setItem("settingAccount", JSON.stringify({ id, accountId }));
+    localStorage.setItem("id", id);
+    localStorage.setItem("accountId", accountId);
 
+    return response.data;
+  } catch (error) {
+    console.error("Ошибка при отправке данных на сервер:", error);
+    throw error;
+  }
+};
+
+export const GetSettingAccount = async () => {
+  try {
+    const accountId = localStorage.getItem("accountId");
+    const response = await api.get(`/moysklad/vendor/1.0/apps/${accountId}`);
     return response.data;
   } catch (error) {
     console.error("Ошибка при отправке данных на сервер:", error);
