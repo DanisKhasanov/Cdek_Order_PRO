@@ -11,7 +11,7 @@ interface SettingState {
   contextKey: string;
   key_api: string;
   password_api: string;
-  type_order: string;
+  type_order: string; //будет 1 или 2
   type_shipment: string;
   address_shipment: string;
   boxes: Box[];

@@ -28,7 +28,7 @@ import IconButton from "@mui/material/IconButton";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import AddIcon from "@mui/icons-material/Add";
 import CheckIcon from "@mui/icons-material/Check";
-import { PostSettingAccount } from "../../api/api";
+import { login, PostSettingAccount } from "../../api/api";
 import { useEffect, useState } from "react";
 import { CustomInput, CustomInputBox } from "./inputSetting";
 import Tooltip from "@mui/material/Tooltip";
@@ -47,28 +47,41 @@ export const SettingAccount = () => {
     declared_cost,
     key_api,
     password_api,
+    contextKey,
   } = useSelector((state: RootState) => state.setting);
   const [save, setSave] = useState(false);
+
+  const auth = async () => {
+    try {
+      await login();
+    } catch (error) {
+      console.error("Ошибка при получении данных:", error);
+    }
+  };
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
     const contextKey = queryParams.get("contextKey");
-
+    
     if (contextKey) {
       dispatch(setContextKey(contextKey));
     }
   }, []);
 
-  const postSettingAccount = async () => {
+  useEffect(() => {
+    if (contextKey) {
+      try {
+        auth();
+        postSettingAccount(contextKey);
+      } catch (error) {
+        console.error("Ошибка при получении данных:", error);
+      }
+    }
+  }, [contextKey]);
+
+  const postSettingAccount = async (context: string) => {
     await PostSettingAccount({
-      key_api,
-      password_api,
-      boxes,
-      type_order,
-      type_shipment,
-      address_shipment,
-      name_product,
-      declared_cost,
+      contextKey: context,
     });
   };
 
@@ -324,7 +337,7 @@ export const SettingAccount = () => {
           variant="contained"
           sx={{ mt: 1, borderRadius: 1, textTransform: "none", width: "30%" }}
           disabled={!isAgreementAccepted}
-          onClick={postSettingAccount}
+          onClick={() => postSettingAccount(contextKey)}
         >
           Подключить
         </Button>
