@@ -91,6 +91,7 @@ const OrderForm = () => {
           login();
           const response = await GetIdAccount({ contextKey });
           setAccountId(response.accountId);
+          console.log("accountId", accountId);
         } catch (error) {
           console.error("Ошибка при получении данных:", error);
         }
