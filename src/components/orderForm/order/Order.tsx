@@ -65,7 +65,7 @@ const OrderForm = () => {
       setIdOrder(message.id);
       setContextKey(message.contextKey);
     }
-    console.log("message", message);
+    console.log("idOrder", idOrder, "contextKey", contextKey);
   };
 
   useEffect(() => {
