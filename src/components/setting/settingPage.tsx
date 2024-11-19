@@ -5,11 +5,27 @@ import HelpIcon from "@mui/icons-material/Help";
 import { SettingAccount } from "./settingAccount";
 import { Help } from "./help";
 
-const NotFoundPage = () => {
+const SettingPage = () => {
   const [activeTab, setActiveTab] = useState(0);
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
+
+  useEffect(() => {
+    const handleLoad = (event: any) => {
+      console.log("eventLoad", event);
+    };
+    const handleMessage = (event: any) => {
+      console.log("eventMessage", event);
+    };
+    window.addEventListener("message", handleMessage);
+    window.addEventListener("load", handleLoad);
+
+    return () => {
+      window.removeEventListener("load", handleLoad);
+      window.removeEventListener("message", handleMessage);
+    };
+  }, []);
 
   return (
     <Box sx={{ width: "30%", pl: 2 }}>
@@ -33,4 +49,4 @@ const NotFoundPage = () => {
   );
 };
 
-export default NotFoundPage;
+export default SettingPage;
