@@ -30,7 +30,7 @@ const OrderForm = () => {
   const CustomInput = forwardRef((props, ref: any) => (
     <StyledInput {...props} ref={ref} />
   ));
-  const [contextKeyClient, setContextKeyClient] = useState("");
+  const [contextKey, setContextKey] = useState("");
 
   const getOrderData = async (idOrder: any) => {
     try {
@@ -61,8 +61,10 @@ const OrderForm = () => {
       return;
     }
     const message = event.data.popupParameters;
-    console.log("message", message);
-    if (message) setIdOrder(message);
+    if (message) {
+      setIdOrder(message.id);
+      setContextKey(message.contextKey);
+    }
   };
 
   useEffect(() => {
@@ -71,23 +73,22 @@ const OrderForm = () => {
     } else {
       setLoading(true);
     }
- 
 
     window.addEventListener("message", handleMessage);
 
-    // const accountId = async () => {
-    //   if (contextKeyClient) {
-    //     try {
-    //       login();
-    //       const response = await GetIdAccount({ contextKeyClient });
-    //       dispatch(setAccountId(response.accountId));
-    //     } catch (error) {
-    //       console.error("Ошибка при получении данных:", error);
-    //     }
-    //   }
-    // };
+    const accountId = async () => {
+      if (contextKey) {
+        try {
+          login();
+          const response = await GetIdAccount({ contextKey });
+          dispatch(setAccountId(response.accountId));
+        } catch (error) {
+          console.error("Ошибка при получении данных:", error);
+        }
+      }
+    };
 
-    // accountId();
+    accountId();
 
     return () => {
       window.removeEventListener("message", handleMessage);
