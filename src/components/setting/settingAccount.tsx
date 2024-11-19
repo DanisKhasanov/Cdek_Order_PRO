@@ -68,7 +68,6 @@ export const SettingAccount = () => {
           login();
           const response = await GetIdAccount({ contextKey });
           dispatch(setAccountId(response.accountId));
-          console.log("accountId", response);
         } catch (error) {
           console.error("Ошибка при получении данных:", error);
         }
