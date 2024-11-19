@@ -65,6 +65,7 @@ const OrderForm = () => {
       setIdOrder(message.id);
       setContextKey(message.contextKey);
     }
+    console.log("message", message);
   };
 
   useEffect(() => {
@@ -75,8 +76,8 @@ const OrderForm = () => {
     }
 
     window.addEventListener("message", handleMessage);
-    console.log("contextKey", contextKey);
     if (contextKey) {
+      console.log("1111111");
       const accountId = async () => {
         try {
           login();
