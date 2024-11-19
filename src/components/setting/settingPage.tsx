@@ -11,17 +11,6 @@ const NotFoundPage = () => {
     setActiveTab(newValue);
   };
 
-  useEffect(() => {
-    const handleMessage = (event: MessageEvent) => {
-      console.log("Текущий URL родительского окна:", event.data);
-    };
-
-    window.addEventListener("message", handleMessage);
-
-    return () => {
-      window.removeEventListener("message", handleMessage);
-    };
-  }, []);
   return (
     <Box sx={{ width: "30%", pl: 2 }}>
       <Tabs value={activeTab} onChange={handleTabChange} sx={{ height: "7vh" }}>

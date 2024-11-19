@@ -71,7 +71,7 @@ export const CustomInputBox = ({
       }}
       endAdornment={
         <InputAdornment position="end">
-          <Typography sx={{ fontSize: 14, color: "gray" }}>см.</Typography>
+          <Typography sx={{ fontSize: 12, color: "gray" }}>см.</Typography>
         </InputAdornment>
       }
     />
