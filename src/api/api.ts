@@ -237,6 +237,10 @@ export const RequestTemplateTariff = (orderData: any) => ({
 export const PostSettingAccount = async (payload: any) => {
   try {
     const response = await api.get(`/moysklad/context/${payload.contextKey}`);
+    const id = response.data.id;
+    const accountId = response.data.accountId;
+    localStorage.setItem("settingAccount", JSON.stringify({ id, accountId }));
+
     return response.data;
   } catch (error) {
     console.error("Ошибка при отправке данных на сервер:", error);
