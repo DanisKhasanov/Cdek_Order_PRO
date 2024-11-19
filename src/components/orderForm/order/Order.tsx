@@ -6,16 +6,23 @@ import { useNavigate } from "react-router-dom";
 import "../styles/style.css";
 import { RootState } from "../../../store/store";
 import { validationSchema } from "./Validation";
-import { GetOrderData, GetSettingAccount, login } from "../../../api/api";
+import {
+  GetIdAccount,
+  GetOrderData,
+  GetSettingAccount,
+  login,
+} from "../../../api/api";
 import { AddressSuggestions, FioSuggestions } from "react-dadata";
 import { StyledInput } from "../styles/StyleInputAddressOrder";
 import "react-dadata/dist/react-dadata.css";
 import CircularProgress from "@mui/material/CircularProgress";
+import { setAccountId } from "../../../store/reducers/SettingReducer";
 
 const OrderForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const orderData = useSelector((state: RootState) => state.orderForm);
+  const accountId = useSelector((state: RootState) => state.setting.accountId);
   const apiKey = import.meta.env.VITE_DADATA_API_KEY;
   const domen = import.meta.env.VITE_DOMEN;
   const [loading, setLoading] = useState(false);
@@ -23,14 +30,7 @@ const OrderForm = () => {
   const CustomInput = forwardRef((props, ref: any) => (
     <StyledInput {...props} ref={ref} />
   ));
-
-  const auth = async () => {
-    try {
-      await login();
-    } catch (error) {
-      console.error("Ошибка при получении данных:", error);
-    }
-  };
+  const [contextKey, setContextKey] = useState("");
 
   const getOrderData = async (idOrder: any) => {
     try {
@@ -70,8 +70,29 @@ const OrderForm = () => {
     } else {
       setLoading(true);
     }
+    const queryParams = new URLSearchParams(window.location.search);
+    const contextKey = queryParams.get("contextKey");
+    if (contextKey) {
+      setContextKey(contextKey);
+    }
+
     window.addEventListener("message", handleMessage);
-    auth();
+
+    const accountId = async () => {
+      if (contextKey) {
+        try {
+          login();
+          const response = await GetIdAccount(contextKey);
+
+          dispatch(setAccountId(response.accountId));
+        } catch (error) {
+          console.error("Ошибка при получении данных:", error);
+        }
+      }
+    };
+
+    accountId();
+
     return () => {
       window.removeEventListener("message", handleMessage);
     };
@@ -82,7 +103,7 @@ const OrderForm = () => {
     if (idOrder) {
       dispatch(updateOrderForm({ ...orderData, counterparty: true }));
       // getOrderData(idOrder);
-      const settingAccount = GetSettingAccount();
+      const settingAccount = GetSettingAccount(accountId);
       console.log("Данные из настроек аккаунта:", settingAccount);
     }
   }, [idOrder]);

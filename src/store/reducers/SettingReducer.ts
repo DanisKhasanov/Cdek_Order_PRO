@@ -8,7 +8,7 @@ interface Box {
 }
 
 interface SettingState {
-  contextKey: string;
+  accountId: string;
   key_api: string;
   password_api: string;
   type_order: string; //будет 1 или 2
@@ -20,7 +20,7 @@ interface SettingState {
 }
 
 const initialState: SettingState = {
-  contextKey: "",
+  accountId: "",
   key_api: "",
   password_api: "",
   type_order: "",
@@ -35,8 +35,8 @@ const settingSlice = createSlice({
   name: "setting",
   initialState,
   reducers: {
-    setContextKey: (state, action: PayloadAction<string>) => {
-      state.contextKey = action.payload;
+    setAccountId: (state, action: PayloadAction<string>) => {
+      state.accountId = action.payload;
     },
     setKeyApi: (state, action: PayloadAction<string>) => {
       state.key_api = action.payload;
@@ -69,7 +69,7 @@ const settingSlice = createSlice({
 });
 
 export const {
-  setContextKey,
+  setAccountId,
   setKeyApi,
   setPasswordApi,
   setTypeOrder,

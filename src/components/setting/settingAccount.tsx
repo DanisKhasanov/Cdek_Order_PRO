@@ -15,20 +15,20 @@ import {
   removeBox,
   setAddressShipment,
   setBoxes,
-  setContextKey,
   setDeclaredCost,
   setKeyApi,
   setNameProduct,
   setPasswordApi,
   setTypeOrder,
   setTypeShipment,
+  setAccountId,
 } from "../../store/reducers/SettingReducer";
 import { RootState } from "../../store/store";
 import IconButton from "@mui/material/IconButton";
 import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import AddIcon from "@mui/icons-material/Add";
 import CheckIcon from "@mui/icons-material/Check";
-import { login, PostSettingAccount } from "../../api/api";
+import { login, GetIdAccount } from "../../api/api";
 import { useEffect, useState } from "react";
 import { CustomInput, CustomInputBox } from "./inputSetting";
 import Tooltip from "@mui/material/Tooltip";
@@ -47,43 +47,36 @@ export const SettingAccount = () => {
     declared_cost,
     key_api,
     password_api,
-    contextKey,
+    accountId,
   } = useSelector((state: RootState) => state.setting);
   const [save, setSave] = useState(false);
-
-  const auth = async () => {
-    try {
-      await login();
-    } catch (error) {
-      console.error("Ошибка при получении данных:", error);
-    }
-  };
+  const [contextKey, setContextKey] = useState("");
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
     const contextKey = queryParams.get("contextKey");
-    
+
     if (contextKey) {
-      dispatch(setContextKey(contextKey));
+      setContextKey(contextKey);
     }
   }, []);
 
   useEffect(() => {
-    if (contextKey) {
-      try {
-        auth();
-        postSettingAccount(contextKey);
-      } catch (error) {
-        console.error("Ошибка при получении данных:", error);
+    const accountId = async () => {
+      if (contextKey) {
+        try {
+          login();
+          const response = await GetIdAccount(contextKey);
+          dispatch(setAccountId(response.accountId));
+        } catch (error) {
+          console.error("Ошибка при получении данных:", error);
+        }
       }
-    }
+    };
+    accountId();
   }, [contextKey]);
 
-  const postSettingAccount = async (context: string) => {
-    await PostSettingAccount({
-      contextKey: context,
-    });
-  };
+  const postSettingAccount = async () => {};
 
   const boxChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -337,7 +330,7 @@ export const SettingAccount = () => {
           variant="contained"
           sx={{ mt: 1, borderRadius: 1, textTransform: "none", width: "30%" }}
           disabled={!isAgreementAccepted}
-          onClick={() => postSettingAccount(contextKey)}
+          onClick={() => postSettingAccount()}
         >
           Подключить
         </Button>

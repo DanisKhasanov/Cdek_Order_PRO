@@ -234,14 +234,9 @@ export const RequestTemplateTariff = (orderData: any) => ({
   })),
 });
 
-export const PostSettingAccount = async (payload: any) => {
+export const GetIdAccount = async (payload: any) => {
   try {
     const response = await api.get(`/moysklad/context/${payload.contextKey}`);
-    const id = response.data.id;
-    const accountId = response.data.accountId;
-    localStorage.setItem("id", id);
-    localStorage.setItem("accountId", accountId);
-
     return response.data;
   } catch (error) {
     console.error("Ошибка при отправке данных на сервер:", error);
@@ -249,10 +244,9 @@ export const PostSettingAccount = async (payload: any) => {
   }
 };
 
-export const GetSettingAccount = async () => {
+export const GetSettingAccount = async (payload: string) => {
   try {
-    const accountId = localStorage.getItem("accountId");
-    const response = await api.get(`/moysklad/vendor/1.0/apps/${accountId}`);
+    const response = await api.get(`/moysklad/vendor/1.0/apps/${payload}`);
     return response.data;
   } catch (error) {
     console.error("Ошибка при отправке данных на сервер:", error);
