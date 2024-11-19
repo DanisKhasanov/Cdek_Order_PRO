@@ -28,7 +28,7 @@ import CancelRoundedIcon from "@mui/icons-material/CancelRounded";
 import AddIcon from "@mui/icons-material/Add";
 import CheckIcon from "@mui/icons-material/Check";
 import { PostSettingAccount } from "../../api/api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CustomInput, CustomInputBox } from "./inputSetting";
 import Tooltip from "@mui/material/Tooltip";
 import HelpOutlineTwoToneIcon from "@mui/icons-material/HelpOutlineTwoTone";
@@ -48,7 +48,16 @@ export const SettingAccount = () => {
     password_api,
   } = useSelector((state: RootState) => state.setting);
   const [save, setSave] = useState(false);
+  
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const contextKey = queryParams.get("contextKey");
 
+    if (contextKey) {
+      console.log("contextKey", contextKey);
+    }
+  }, []);
+  
   const postSettingAccount = async () => {
     await PostSettingAccount({
       key_api,
