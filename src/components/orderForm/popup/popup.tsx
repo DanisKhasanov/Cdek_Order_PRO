@@ -3,7 +3,10 @@ import Tooltip from "@mui/material/Tooltip";
 import HelpOutlineTwoToneIcon from "@mui/icons-material/HelpOutlineTwoTone";
 
 const Popups = () => {
-  const [receivedMessage, setReceivedMessage] = useState("");
+  const [receivedMessage, setReceivedMessage] = useState({
+    id: "",
+    contextKey: "",
+  });
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const domen = import.meta.env.VITE_DOMEN;
 
@@ -11,7 +14,7 @@ const Popups = () => {
     const handleMessage = (event: any) => {
       if (event.data.name === "Open") {
         var id = event.data.objectId;
-        setReceivedMessage(id);
+        setReceivedMessage((prev) => ({ ...prev, id: id }));
       }
     };
     window.addEventListener("message", handleMessage);
@@ -19,7 +22,7 @@ const Popups = () => {
     const queryParams = new URLSearchParams(window.location.search);
     const contextKey = queryParams.get("contextKey");
     if (contextKey) {
-      console.log("contextKey", contextKey);
+      setReceivedMessage((prev) => ({ ...prev, contextKey: contextKey }));
     }
 
     return () => {

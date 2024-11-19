@@ -61,6 +61,7 @@ const OrderForm = () => {
       return;
     }
     const message = event.data.popupParameters;
+    console.log("message", message);
     if (message) setIdOrder(message);
   };
 
@@ -70,28 +71,23 @@ const OrderForm = () => {
     } else {
       setLoading(true);
     }
-    const queryParams = new URLSearchParams(window.location.search);
-    const contextKey = queryParams.get("contextKey");
-    console.log("contextKey", contextKey);
-    if (contextKey) {
-      setContextKeyClient(contextKey);
-    }
+ 
 
     window.addEventListener("message", handleMessage);
 
-    const accountId = async () => {
-      if (contextKeyClient) {
-        try {
-          login();
-          const response = await GetIdAccount({ contextKeyClient });
-          dispatch(setAccountId(response.accountId));
-        } catch (error) {
-          console.error("Ошибка при получении данных:", error);
-        }
-      }
-    };
+    // const accountId = async () => {
+    //   if (contextKeyClient) {
+    //     try {
+    //       login();
+    //       const response = await GetIdAccount({ contextKeyClient });
+    //       dispatch(setAccountId(response.accountId));
+    //     } catch (error) {
+    //       console.error("Ошибка при получении данных:", error);
+    //     }
+    //   }
+    // };
 
-    accountId();
+    // accountId();
 
     return () => {
       window.removeEventListener("message", handleMessage);
