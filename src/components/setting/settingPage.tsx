@@ -12,19 +12,17 @@ const SettingPage = () => {
   };
 
   useEffect(() => {
-    const handleLoad = (event: any) => {
-      console.log("eventLoad", event);
-    };
-    const handleMessage = (event: any) => {
-      console.log("eventMessage", event);
-    };
-    window.addEventListener("message", handleMessage);
-    window.addEventListener("load", handleLoad);
 
-    return () => {
-      window.removeEventListener("load", handleLoad);
-      window.removeEventListener("message", handleMessage);
-    };
+    var oReq = new XMLHttpRequest();
+    oReq.addEventListener("load", function() {
+      const element = window.document.getElementById("object");
+      if (element) {
+        element.innerHTML = this.responseText;
+        console.log("element", element);
+      }
+    });
+
+  
   }, []);
 
   return (
