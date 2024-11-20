@@ -31,7 +31,7 @@ const Popups = () => {
   }, []);
 
   useEffect(() => {
-    if (receivedMessage) {
+    if (receivedMessage.id && receivedMessage.contextKey) {
       setIsButtonDisabled(false);
     }
   }, [receivedMessage]);
