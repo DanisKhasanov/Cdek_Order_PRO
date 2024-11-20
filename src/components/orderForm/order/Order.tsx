@@ -99,19 +99,22 @@ const OrderForm = () => {
         }
       };
       getAccountId();
-
-      if (idOrder) {
-        console.log("111111");
-        dispatch(updateOrderForm({ ...orderData, counterparty: true }));
-        // getOrderData(idOrder);
-        if (accountId) {
-          console.log("222222");
-          const response = GetSettingAccount(accountId);
-          console.log("Данные из настроек аккаунта:", response);
-        }
-      }
     }
-  }, [idOrder, contextKey]);
+  }, [ contextKey]);
+
+  useEffect(() => {
+    if (accountId) {
+      console.log("222222");
+
+      const response = GetSettingAccount(accountId);
+      console.log("Данные из настроек аккаунта:", response);
+    }
+    if (idOrder) {
+      console.log("111111");
+      dispatch(updateOrderForm({ ...orderData, counterparty: true }));
+      // getOrderData(idOrder);
+    }
+  }, [accountId]);
 
   const onSubmit = (values: any) => {
     const sellerPhone =
