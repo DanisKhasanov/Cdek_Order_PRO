@@ -56,9 +56,7 @@ const OrderForm = () => {
   };
 
   const handleMessage = async (event: any) => {
-    if (event.origin !== domen) {
-      return;
-    }
+    if (event.origin !== domen) return;
     const message = event.data.popupParameters;
     if (message) {
       setIdOrder(message.id);
@@ -67,17 +65,10 @@ const OrderForm = () => {
   };
 
   useEffect(() => {
-    if (orderData.recipient.name) {
-      return;
-    } else {
-      setLoading(true);
-    }
-
+    if (!orderData.recipient.name) setLoading(true);
+    login();
     window.addEventListener("message", handleMessage);
-
-    return () => {
-      window.removeEventListener("message", handleMessage);
-    };
+    return () => window.removeEventListener("message", handleMessage);
   }, []);
 
   useEffect(() => {
@@ -85,13 +76,8 @@ const OrderForm = () => {
 
     if (contextKey) {
       const getAccountId = async () => {
-        try {
-          login();
-          const response = await GetIdAccount({ contextKey });
-          setAccountId(response.accountId);
-        } catch (error) {
-          console.error("Ошибка при получении данных:", error);
-        }
+        const response = await GetIdAccount({ contextKey });
+        setAccountId(response.accountId);
       };
       getAccountId();
     }
@@ -100,7 +86,6 @@ const OrderForm = () => {
   useEffect(() => {
     if (accountId) {
       const response = GetSettingAccount(accountId);
-      
     }
     if (idOrder) {
       dispatch(updateOrderForm({ ...orderData, counterparty: true }));
