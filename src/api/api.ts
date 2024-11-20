@@ -9,45 +9,46 @@ const api = axios.create({
 const username = "danis_widget";
 const password = "FLX_cdekWidget5";
 
+let isRefreshing = false;
+let refreshSubscribers: Array<(token: string) => void> = [];
+
+const subscribeTokenRefresh = (callback: (token: string) => void) => {
+  refreshSubscribers.push(callback);
+};
+
+const onRefreshed = (token: string) => {
+  refreshSubscribers.forEach((callback) => callback(token));
+  refreshSubscribers = [];
+};
+
 export const login = async () => {
-  try {
-    const response = await api.post("auth/login/", {
-      username: username,
-      password: password,
-    });
+  const response = await api.post("/auth/login/", {
+    username,
+    password,
+  });
+  const { accessToken, refreshToken } = response.data;
 
-    const { accessToken, refreshToken } = response.data;
+  localStorage.setItem("accessToken", accessToken);
+  localStorage.setItem("refreshToken", refreshToken);
 
-    localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("refreshToken", refreshToken);
-
-    return accessToken;
-  } catch (error) {
-    console.error("Ошибка при авторизации:", error);
-    throw error;
-  }
+  return accessToken;
 };
 
 const refreshAccessToken = async () => {
   const refreshToken = localStorage.getItem("refreshToken");
 
   if (!refreshToken) {
-    throw new Error("Нет refresh токена");
+    throw new Error("Refresh токен отсутствует");
   }
 
-  try {
-    const response = await api.post("/auth/token", {
-      refreshToken: refreshToken,
-    });
-    const { accessToken } = response.data;
+  const response = await api.post("/auth/token", {
+    refreshToken,
+  });
 
-    localStorage.setItem("accessToken", accessToken);
+  const { accessToken } = response.data;
 
-    return accessToken;
-  } catch (error) {
-    console.error("Ошибка при обновлении токена:", error);
-    throw error;
-  }
+  localStorage.setItem("accessToken", accessToken);
+  return accessToken;
 };
 
 api.interceptors.request.use(
@@ -66,20 +67,38 @@ api.interceptors.request.use(
 );
 
 api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   async (error) => {
-    if (error.response && error.response.status === 401) {
-      try {
-        const accessToken = await refreshAccessToken();
-        error.config.headers["Authorization"] = `Bearer ${accessToken}`;
-        return axios(error.config);
-      } catch (refreshError) {
-        console.error("Не удалось обновить токен:", refreshError);
-        throw refreshError;
+    const originalRequest = error.config;
+
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      !originalRequest._retry
+    ) {
+      originalRequest._retry = true;
+
+      if (!isRefreshing) {
+        isRefreshing = true;
+        try {
+          const newToken = await refreshAccessToken();
+          isRefreshing = false;
+          onRefreshed(newToken);
+        } catch (refreshError) {
+          isRefreshing = false;
+          console.error("Не удалось обновить токен:", refreshError);
+          return Promise.reject(refreshError);
+        }
       }
+
+      return new Promise((resolve) => {
+        subscribeTokenRefresh((newToken) => {
+          originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
+          resolve(axios(originalRequest));
+        });
+      });
     }
+
     return Promise.reject(error);
   }
 );
