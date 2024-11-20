@@ -16,13 +16,11 @@ import { AddressSuggestions, FioSuggestions } from "react-dadata";
 import { StyledInput } from "../styles/StyleInputAddressOrder";
 import "react-dadata/dist/react-dadata.css";
 import CircularProgress from "@mui/material/CircularProgress";
-// import { setAccountId } from "../../../store/reducers/SettingReducer";
 
 const OrderForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const orderData = useSelector((state: RootState) => state.orderForm);
-  // const accountId = useSelector((state: RootState) => state.setting.accountId);
   const apiKey = import.meta.env.VITE_DADATA_API_KEY;
   const domen = import.meta.env.VITE_DOMEN;
   const [loading, setLoading] = useState(false);
@@ -90,9 +88,6 @@ const OrderForm = () => {
         try {
           login();
           const response = await GetIdAccount({ contextKey });
-          console.log("response", response);
-          console.log("accountId", response.accountId);
-
           setAccountId(response.accountId);
         } catch (error) {
           console.error("Ошибка при получении данных:", error);
@@ -104,15 +99,13 @@ const OrderForm = () => {
 
   useEffect(() => {
     if (accountId) {
-      console.log("222222");
 
       const response = GetSettingAccount(accountId);
       console.log("Данные из настроек аккаунта:", response);
     }
     if (idOrder) {
-      console.log("111111");
       dispatch(updateOrderForm({ ...orderData, counterparty: true }));
-      // getOrderData(idOrder);
+      getOrderData(idOrder);
     }
   }, [accountId]);
 
