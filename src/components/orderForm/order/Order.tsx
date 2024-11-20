@@ -31,16 +31,6 @@ const OrderForm = () => {
   const [contextKey, setContextKey] = useState("");
   const [accountId, setAccountId] = useState("");
 
-  const fetchAccountId = async (key: string) => {
-    try {
-      login();
-      const response = await GetIdAccount({ contextKey: key });
-      setAccountId(response.accountId);
-    } catch (error) {
-      console.error("Ошибка получения accountId:", error);
-    }
-  };
-
   const getOrderData = async (idOrder: any) => {
     try {
       if (idOrder === "") return;
@@ -65,37 +55,58 @@ const OrderForm = () => {
     }
   };
 
-  const handleMessage = (event: any) => {
-    if (event.origin !== domen) return;
-    const { id, contextKey } = event.data.popupParameters || {};
-    if (id) setIdOrder(id);
-    if (contextKey) setContextKey(contextKey);
+  const handleMessage = async (event: any) => {
+    if (event.origin !== domen) {
+      return;
+    }
+    const message = event.data.popupParameters;
+    if (message) {
+      setIdOrder(message.id);
+      setContextKey(message.contextKey);
+    }
   };
 
   useEffect(() => {
-    if (!orderData.recipient.name) setLoading(true);
+    if (orderData.recipient.name) {
+      return;
+    } else {
+      setLoading(true);
+    }
+
     window.addEventListener("message", handleMessage);
-    return () => window.removeEventListener("message", handleMessage);
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
   }, []);
 
   useEffect(() => {
     if (orderData.recipient.name) return;
-    if (contextKey) fetchAccountId(contextKey);
+
+    if (contextKey) {
+      const getAccountId = async () => {
+        try {
+          login();
+          const response = await GetIdAccount({ contextKey });
+          setAccountId(response.accountId);
+        } catch (error) {
+          console.error("Ошибка при получении данных:", error);
+        }
+      };
+      getAccountId();
+    }
   }, [contextKey]);
 
   useEffect(() => {
     if (accountId) {
-      GetSettingAccount(accountId)
-        .then((response) =>
-          console.log("Данные из настроек аккаунта:", response)
-        )
-        .catch((error) => console.error("Ошибка настроек аккаунта:", error));
+      const response = GetSettingAccount(accountId);
+      
     }
     if (idOrder) {
       dispatch(updateOrderForm({ ...orderData, counterparty: true }));
       getOrderData(idOrder);
     }
-  }, [accountId, idOrder]);
+  }, [accountId]);
 
   const onSubmit = (values: any) => {
     const sellerPhone =
