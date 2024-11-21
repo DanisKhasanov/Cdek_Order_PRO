@@ -16,6 +16,7 @@ import { AddressSuggestions, FioSuggestions } from "react-dadata";
 import { StyledInput } from "../styles/StyleInputAddressOrder";
 import "react-dadata/dist/react-dadata.css";
 import CircularProgress from "@mui/material/CircularProgress";
+import ModalSettings from "./modal";
 
 const OrderForm = () => {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ const OrderForm = () => {
   ));
   const [contextKey, setContextKey] = useState("");
   const [accountId, setAccountId] = useState("");
+  const [openModal, setOpenModal] = useState(false);
 
   const getOrderData = async (idOrder: any) => {
     try {
@@ -56,8 +58,12 @@ const OrderForm = () => {
   };
 
   const handleMessage = async (event: any) => {
-    if (event.origin !== domen) return;
-    const message = event.data.popupParameters;
+    // if (event.origin !== domen) return;
+    // const message = event.data.popupParameters;
+    const message = {
+      id: "98e8427a-a703-11ef-0a80-0fec0032d7d0",
+      contextKey: "1234567890",
+    };
     if (message) {
       setIdOrder(message.id);
       setContextKey(message.contextKey);
@@ -76,7 +82,8 @@ const OrderForm = () => {
 
     if (contextKey) {
       const getAccountId = async () => {
-        const response = await GetIdAccount({ contextKey });
+        // const response = await GetIdAccount({ contextKey });
+        const response = { accountId: "1111111" };
         setAccountId(response.accountId);
       };
       getAccountId();
@@ -85,13 +92,15 @@ const OrderForm = () => {
 
   useEffect(() => {
     if (accountId) {
-      const response = GetSettingAccount(accountId);
+      // const response = GetSettingAccount(accountId);
+      const response = { settingAccount: true };
+      response.settingAccount ? setOpenModal(false) : setOpenModal(true);
     }
     if (idOrder) {
       dispatch(updateOrderForm({ ...orderData, counterparty: true }));
       getOrderData(idOrder);
     }
-  }, [accountId]);
+  }, [accountId, idOrder]);
 
   const onSubmit = (values: any) => {
     const sellerPhone =
@@ -117,6 +126,8 @@ const OrderForm = () => {
           <CircularProgress size={25} />
           <p>Загрузка...</p>
         </div>
+      ) : openModal ? (
+        <ModalSettings openModal={openModal} />
       ) : (
         <Formik
           enableReinitialize

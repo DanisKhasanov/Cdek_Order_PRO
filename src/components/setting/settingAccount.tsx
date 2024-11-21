@@ -34,6 +34,8 @@ import { CustomInput, CustomInputBox } from "./inputSetting";
 import Tooltip from "@mui/material/Tooltip";
 import HelpOutlineTwoToneIcon from "@mui/icons-material/HelpOutlineTwoTone";
 import { textBox, textDelivery, textСonnection } from "./textTooltip";
+import InputMaskTelefon from "./maskTelefon.";
+import Autocomplete from "./autocomplete";
 
 export const SettingAccount = () => {
   const dispatch = useDispatch();
@@ -128,11 +130,11 @@ export const SettingAccount = () => {
             <Typography variant="subtitle1">1. Подключение аккаунта</Typography>
           </Box>
           <CustomInput
-            label="Ключ API"
+            label="Идентификатор клиента (Account)"
             onChange={(e) => dispatch(setKeyApi(e.target.value))}
           />
           <CustomInput
-            label="Пароль API"
+            label="Секретный ключ (Secure password)"
             type="password"
             onChange={(e) => dispatch(setPasswordApi(e.target.value))}
           />
@@ -142,16 +144,13 @@ export const SettingAccount = () => {
             value={type_order}
             onChange={(e) => dispatch(setTypeOrder(e.target.value))}
           >
-            <MenuItem value="internet-shop" sx={{ fontSize: "1.5vh" }}>
+            <MenuItem value="internet-shop" sx={{ fontSize: "14px" }}>
               Интернет-магазин
             </MenuItem>
             <MenuItem
               value="delivery"
               sx={{
-                fontSize: "1.5vh",
-                "& .MuiInputBase-input": {
-                  fontSize: 16,
-                },
+                fontSize: "14px",
               }}
             >
               Доставка
@@ -166,24 +165,69 @@ export const SettingAccount = () => {
             </Tooltip>
             <Typography variant="subtitle1">2. Параметры доставки</Typography>
           </Box>
+
+          <CustomInput
+            label="Название отправителя"
+            // value={}
+            // onChange={}
+          />
+
+          <InputMaskTelefon />
+          <Autocomplete />
+          {/* <CustomInput
+            label="Город отгрузки"
+            value={address_shipment}
+            onChange={(e) => dispatch(setAddressShipment(e.target.value))}
+          /> */}
           <CustomInput
             select
             label="Тип отгрузки"
-            value={type_shipment}
+            value={type_shipment || ""}
             onChange={(e) => dispatch(setTypeShipment(e.target.value))}
           >
-            <MenuItem value="warehouse" sx={{ fontSize: "1.5vh" }}>
+            <MenuItem value="warehouse" sx={{ fontSize: "14px" }}>
               От склада
             </MenuItem>
-            <MenuItem value="door" sx={{ fontSize: "1.5vh" }}>
+            <MenuItem value="door" sx={{ fontSize: "14px" }}>
               От двери
             </MenuItem>
           </CustomInput>
-          <CustomInput
-            label="Адрес отгрузки"
-            value={address_shipment}
-            onChange={(e) => dispatch(setAddressShipment(e.target.value))}
-          />
+
+          {type_shipment === "door" && (
+            <>
+              <Autocomplete />
+
+              {/* <CustomInput label="Адрес отгрузки" /> */}
+              <CustomInput select label="Дата отгрузки">
+                <MenuItem value="next" sx={{ fontSize: "14px" }}>
+                  На следующий день
+                </MenuItem>
+                <MenuItem value="today" sx={{ fontSize: "14px" }}>
+                  В этот же день (при заказе до 15:00)
+                </MenuItem>
+              </CustomInput>
+
+              <FormHelperText>
+                Время вызова курьера (c 09:00 до 22:00)
+              </FormHelperText>
+              <FormControl
+                sx={{
+                  display: "flex",
+                  gap: 1,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  "& .MuiInputBase-input": {
+                    fontSize: "1.6vh",
+                  },
+                }}
+              >
+                <OutlinedInput fullWidth size="small" type="time" />
+                {"-"}
+                <OutlinedInput fullWidth size="small" type="time" />
+              </FormControl>
+              <CustomInput label="Комментарий к заказу" />
+            </>
+          )}
         </Box>
 
         <Box>
@@ -207,19 +251,19 @@ export const SettingAccount = () => {
                 }}
               >
                 <CustomInputBox
+                  label="длина"
                   value={box.length}
                   onChange={(e) => boxChange(e, index, "length")}
-                  placeholder="длина"
                 />
                 <CustomInputBox
+                  label="ширина"
                   value={box.width}
                   onChange={(e) => boxChange(e, index, "width")}
-                  placeholder="ширина"
                 />
                 <CustomInputBox
+                  label="высота"
                   value={box.height}
                   onChange={(e) => boxChange(e, index, "height")}
-                  placeholder="высота"
                 />
                 {boxes.length > 1 && (
                   <IconButton
@@ -272,7 +316,7 @@ export const SettingAccount = () => {
         </Box>
 
         <Box>
-          <Typography variant="subtitle2" sx={{ mt: 2 }}>
+          <Typography variant="subtitle2" sx={{ mt: 2, ml: 1 }}>
             3.1. Описание товаров в грузовом месте
           </Typography>
           <CustomInput
@@ -298,10 +342,10 @@ export const SettingAccount = () => {
                   MozAppearance: "textfield",
                 },
                 "& input::placeholder": {
-                  fontSize: "1.6vh",
+                  fontSize: "14px",
                 },
                 "& .MuiInputBase-input": {
-                  fontSize: "1.6vh",
+                  fontSize: "14px",
                 },
               }}
             />

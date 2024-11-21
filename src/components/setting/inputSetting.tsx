@@ -5,36 +5,32 @@ import {
   Typography,
   TextField,
   TextFieldProps,
+  InputLabel,
 } from "@mui/material";
-
-type CustomInputProps = TextFieldProps & {
-  label: string;
-};
 
 interface InputSettingProps {
   value: number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder: string;
+  label: string;
 }
 
-export const CustomInput = ({ label, ...props }: CustomInputProps) => {
+// TODO: переделать на OutlinedInput
+export const CustomInput = ({ label, ...props }: TextFieldProps) => {
   return (
     <TextField
       fullWidth
       label={label}
       size="small"
       margin="dense"
-      InputLabelProps={{ sx: { fontSize: "1.6vh",  } }}
-      inputProps={{
-        style: {
-          height: "2.3vh",
-          fontSize: "1.6vh",
+      InputLabelProps={{
+        sx: {
+          fontSize: "14px",
+          color: "#a2a2a2",
         },
       }}
       sx={{
         "& .MuiInputBase-input": {
-          fontSize: "1.6vh",
-          height: "2vh",
+          fontSize: "14px",
         },
       }}
       {...props}
@@ -45,13 +41,22 @@ export const CustomInput = ({ label, ...props }: CustomInputProps) => {
 export const CustomInputBox = ({
   value,
   onChange,
-  placeholder,
+  label,
 }: InputSettingProps) => (
   <FormControl variant="outlined">
+    <InputLabel
+      sx={{
+        fontSize: "14px",
+        color: "#a2a2a2",
+        "&.MuiInputLabel-root": { mt: 0 },
+      }}
+    >
+      {label}
+    </InputLabel>
     <OutlinedInput
       size="small"
       type="number"
-      placeholder={placeholder}
+      label={label}
       value={value || ""}
       onChange={onChange}
       sx={{
@@ -63,10 +68,10 @@ export const CustomInputBox = ({
           MozAppearance: "textfield",
         },
         "& input::placeholder": {
-          fontSize: "1.6vh",
+          fontSize: "14px",
         },
         "& .MuiInputBase-input": {
-          fontSize: "1.6vh",
+          fontSize: "14px",
         },
       }}
       endAdornment={
