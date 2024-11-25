@@ -12,9 +12,9 @@ interface InputSettingProps {
   value: number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   label: string;
+  adorment?: string;
 }
 
-// TODO: переделать на OutlinedInput
 export const CustomInput = ({ label, ...props }: TextFieldProps) => {
   return (
     <TextField
@@ -42,13 +42,17 @@ export const CustomInputBox = ({
   value,
   onChange,
   label,
+  adorment,
 }: InputSettingProps) => (
   <FormControl variant="outlined">
     <InputLabel
       sx={{
         fontSize: "14px",
         color: "#a2a2a2",
-        "&.MuiInputLabel-root": { mt: 0 },
+        mt: "-8px",
+        "&.MuiInputLabel-shrink": {
+          transform: "translate(14px, -3px) scale(0.75)",
+        },
       }}
     >
       {label}
@@ -76,7 +80,9 @@ export const CustomInputBox = ({
       }}
       endAdornment={
         <InputAdornment position="end">
-          <Typography sx={{ fontSize: 12, color: "gray" }}>см.</Typography>
+          <Typography sx={{ fontSize: 12, color: "gray" }}>
+            {adorment ? adorment : "см."}
+          </Typography>
         </InputAdornment>
       }
     />
