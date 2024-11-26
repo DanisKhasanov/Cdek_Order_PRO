@@ -22,12 +22,15 @@ export const SettingAccount = () => {
   const [contextKey, setContextKey] = useState("");
   const { enqueueSnackbar } = useSnackbar();
   const setting = useSelector((state: RootState) => state.setting);
+  const [isConnected, setIsConnected] = useState(false);
+
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
     const contextKey = queryParams.get("contextKey");
 
     if (contextKey) {
       setContextKey(contextKey);
+      setIsConnected(true);
     }
   }, []);
 
@@ -80,11 +83,19 @@ export const SettingAccount = () => {
           "&::-webkit-scrollbar": { display: "none" },
         }}
       >
-        <ConnectingAccount />
+        {isConnected ? (
+          <>
+            <ConnectingAccount />
 
-        <DeliveryOptions />
+            <DeliveryOptions />
 
-        <PackagingParameters />
+            <PackagingParameters />
+          </>
+        ) : (
+          <Typography variant="h6" sx={{ mt: 2 }}>
+            У вас нет прав доступа к этой странице.
+          </Typography>
+        )}
       </Box>
 
       <Box sx={{ display: "flex", flexDirection: "column" }}>
