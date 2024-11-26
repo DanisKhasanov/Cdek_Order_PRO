@@ -78,8 +78,8 @@ const OrderForm = () => {
 
     if (contextKey) {
       const getAccountId = async () => {
-        // const response = await GetIdAccount({ contextKey });
-        const response = { accountId: "1111111" };
+        const response = await GetIdAccount({ contextKey });
+        console.log("Response id account", response);
         setAccountId(response.accountId);
       };
       getAccountId();
