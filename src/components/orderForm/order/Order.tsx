@@ -17,6 +17,7 @@ import { StyledInput } from "../styles/StyleInputAddressOrder";
 import "react-dadata/dist/react-dadata.css";
 import CircularProgress from "@mui/material/CircularProgress";
 import ModalSettings from "./modal";
+import { console } from "inspector";
 
 const OrderForm = () => {
   const navigate = useNavigate();
@@ -88,6 +89,7 @@ const OrderForm = () => {
 
   useEffect(() => {
     if (accountId) {
+      console.log("ID", accountId);
       // const response = GetSettingAccount(accountId);
       const response = { settingAccount: true };
       response.settingAccount ? setOpenModal(false) : setOpenModal(true);
