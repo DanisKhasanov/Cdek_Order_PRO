@@ -90,24 +90,24 @@ export const PackagingParameters = () => {
             >
               <CustomInputBox
                 label="вес"
-                value={box.weight}
+                value={box.weight || 0}
                 adorment={"кг."}
                 onChange={(e) => boxChange(e, index, "weight")}
               />
               <CustomInputBox
                 label="длина"
-                value={box.length}
+                value={box.length || 0}
                 onChange={(e) => boxChange(e, index, "length")}
               />
 
               <CustomInputBox
                 label="ширина"
-                value={box.width}
+                value={box.width || 0}
                 onChange={(e) => boxChange(e, index, "width")}
               />
               <CustomInputBox
                 label="высота"
-                value={box.height}
+                value={box.height || 0}
                 onChange={(e) => boxChange(e, index, "height")}
               />
               {boxes.length > 1 && (
@@ -190,9 +190,9 @@ export const PackagingParameters = () => {
             onChange={(e) => dispatch(setDeclaredCost(Number(e.target.value)))}
             sx={{
               "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
-                {
-                  display: "none",
-                },
+              {
+                display: "none",
+              },
               "& input[type=number]": {
                 MozAppearance: "textfield",
               },

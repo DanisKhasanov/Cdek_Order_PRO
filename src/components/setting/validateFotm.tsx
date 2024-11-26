@@ -33,9 +33,11 @@ export const validateForm = ({
     if (!comment) errorMessages.push("Введите комментарии");
   }
 
-  if (boxes.length === 0) errorMessages.push("Добавьте коробки");
+  if (!boxes.some((box) => box.height && box.length && box.weight && box.width))
+    errorMessages.push("Введите значения в коробках");
   if (!declared_cost || declared_cost < 0)
     errorMessages.push("Введите заявленную стоимость");
+  
 
   return errorMessages;
 };
