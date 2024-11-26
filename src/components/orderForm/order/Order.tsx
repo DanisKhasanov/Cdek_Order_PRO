@@ -58,12 +58,8 @@ const OrderForm = () => {
   };
 
   const handleMessage = async (event: any) => {
-    // if (event.origin !== domen) return;
-    // const message = event.data.popupParameters;
-    const message = {
-      id: "98e8427a-a703-11ef-0a80-0fec0032d7d0",
-      contextKey: "1234567890",
-    };
+    if (event.origin !== domen) return;
+    const message = event.data.popupParameters;
     if (message) {
       setIdOrder(message.id);
       setContextKey(message.contextKey);
