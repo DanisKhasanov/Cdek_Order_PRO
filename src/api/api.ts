@@ -265,8 +265,44 @@ export const GetIdAccount = async (payload: any) => {
 
 export const GetSettingAccount = async (payload: string) => {
   try {
-    const response = await api.get(`/moysklad/vendor/1.0/apps/${payload}`);
+    const response = await api.get(`/moysklad/vendor/1.0/apps/fe8d0f25-3e10-446b-be98-95fda422ef6f/${payload}`);
     return response.data;
+  } catch (error) {
+    console.error("Ошибка при отправке данных на сервер:", error);
+    throw error;
+  }
+};
+
+export const GetSetting = async (payload: string) => {
+  try {
+    const response = {
+      accountId: "",
+      key_api: "",
+      password_api: "",
+      type_order: "",
+      name_sender: "",
+      type_shipment: "",
+      date_shipment: "",
+      time_shipment: "",
+      comment: "",
+      city_shipment: "",
+      address_shipment: "",
+      phone: "",
+      boxes: [
+        {
+          id: 1,
+          weight: 0,
+          length: 0,
+          width: 0,
+          height: 0,
+        },
+      ],
+      name_product: "",
+      declared_cost: 0,
+    };
+
+    // const response = await api.get(`/setting/${payload}`);
+    return response;
   } catch (error) {
     console.error("Ошибка при отправке данных на сервер:", error);
     throw error;
