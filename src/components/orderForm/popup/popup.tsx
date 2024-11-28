@@ -9,13 +9,17 @@ const Popups = () => {
   });
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const domen = import.meta.env.VITE_DOMEN;
-
+  
   useEffect(() => {
     const handleMessage = (event: any) => {
-      if (event.data.name === "Open") {
-        const id = event.data.objectId;
-        setReceivedMessage((prev) => ({ ...prev, id: id }));
-      }
+      // if (event.data.name === "Open") {
+        // const id = event.data.objectId;
+        // setReceivedMessage((prev) => ({ ...prev, id: id }));
+      // }
+      setReceivedMessage({
+        id: "9a73939a-abd1-11ef-0a80-11b5004c0849",
+        contextKey: "142ab7cac19e3452b2eef7d9583bb42af932acd7",
+      });
     };
     window.addEventListener("message", handleMessage);
 

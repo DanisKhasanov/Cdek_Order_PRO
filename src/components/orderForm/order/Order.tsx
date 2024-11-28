@@ -9,6 +9,7 @@ import { validationSchema } from "./Validation";
 import {
   GetIdAccount,
   GetOrderData,
+  GetSetting,
   GetSettingAccount,
   login,
 } from "../../../api/api";
@@ -26,78 +27,82 @@ const OrderForm = () => {
   const domen = import.meta.env.VITE_DOMEN;
   const [loading, setLoading] = useState(false);
   const [idOrder, setIdOrder] = useState("");
+  const [contextKey, setContextKey] = useState("");
+  const [openModal, setOpenModal] = useState(false);
   const CustomInput = forwardRef((props, ref: any) => (
     <StyledInput {...props} ref={ref} />
   ));
-  const [contextKey, setContextKey] = useState("");
-  const [accountId, setAccountId] = useState("");
-  const [openModal, setOpenModal] = useState(false);
-
-  const getOrderData = async (idOrder: any) => {
-    try {
-      if (idOrder === "") return;
-      setLoading(true);
-      const response = await GetOrderData(idOrder);
-      dispatch(
-        updateOrderForm({
-          number: response.number,
-          recipient: {
-            name: response.recipient.name,
-            phones: [{ number: response.recipient.phones[0].number }],
-          },
-          comment: response.comment,
-          cod: response.cod,
-          sum: response.sum,
-        })
-      );
-    } catch (error) {
-      console.error("Ошибка при получении данных:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleMessage = async (event: any) => {
     if (event.origin !== domen) return;
-    const message = event.data.popupParameters;
+    // const message = event.data.popupParameters;
+    const message = {
+      id: "9a73939a-abd1-11ef-0a80-11b5004c0849",
+      contextKey: "addf105b2641d84425c1cf61e69a6dc696a6ce15",
+    };
     if (message) {
       setIdOrder(message.id);
       setContextKey(message.contextKey);
     }
   };
 
+  const handleRequests = async () => {
+    try {
+      setLoading(true);
+
+      if (!contextKey) {
+        return;
+      }
+
+      const accountResponse = await GetIdAccount({ contextKey });
+
+      const settingResponse = await GetSettingAccount(
+        accountResponse.accountId
+      );
+      if (settingResponse.status !== "Activated") {
+        setOpenModal(true);
+        return;
+      }
+
+      const settingAccount = await GetSetting("1");
+      if (settingAccount) {
+        localStorage.setItem("settingAccount", JSON.stringify(settingAccount));
+      }
+
+      if (idOrder) {
+        const orderResponse = await GetOrderData(idOrder);
+        dispatch(
+          updateOrderForm({
+            number: orderResponse.number,
+            recipient: {
+              name: orderResponse.recipient.name,
+              phones: [{ number: orderResponse.recipient.phones[0].number }],
+            },
+            comment: orderResponse.comment,
+            cod: orderResponse.cod,
+            sum: orderResponse.sum,
+            counterparty: true,
+          })
+        );
+      }
+    } catch (error) {
+      console.error("Ошибка выполнения запросов:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    if (!orderData.recipient.name) setLoading(true);
     login();
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
   }, []);
 
   useEffect(() => {
-    if (orderData.recipient.name) return;
-
     if (contextKey) {
-      const getAccountId = async () => {
-        const response = await GetIdAccount({ contextKey });
-        console.log("Response id account", response);
-        setAccountId(response.accountId);
-      };
-      getAccountId();
+      handleRequests();
     }
   }, [contextKey]);
-
-  useEffect(() => {
-    if (accountId) {
-      console.log("ID", accountId);
-      // const response = GetSettingAccount(accountId);
-      const response = { settingAccount: true };
-      response.settingAccount ? setOpenModal(false) : setOpenModal(true);
-    }
-    if (idOrder) {
-      dispatch(updateOrderForm({ ...orderData, counterparty: true }));
-      getOrderData(idOrder);
-    }
-  }, [accountId, idOrder]);
 
   const onSubmit = (values: any) => {
     const sellerPhone =
