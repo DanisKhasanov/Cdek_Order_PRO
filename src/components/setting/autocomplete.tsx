@@ -27,6 +27,7 @@ const CustomInput = forwardRef((props: any, ref) => (
         fontSize: "14px",
         padding: "0px",
         border: "none",
+        backgroundColor: "#fff",
       }}
       fullWidth
       label={props.label}
@@ -36,7 +37,7 @@ const CustomInput = forwardRef((props: any, ref) => (
 ));
 interface AutocompleteProps {
   onChange: (value: string) => void;
-  label: string;
+  label?: string;
 }
 
 export default function Autocomplete({ onChange, label }: AutocompleteProps) {
