@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { setNameProduct } from "./SettingReducer";
 
 interface PackageItem {
   name: string;
@@ -55,7 +56,7 @@ interface OrderFormState {
 
 const initialState: OrderFormState = {
   number: "",
-  account: "GRM",
+  account: "",
   sender: {
     phones: [{ number: "" }],
   },
@@ -97,6 +98,29 @@ const orderFormSlice = createSlice({
         ...state,
         ...action.payload,
       };
+    },
+
+    setAccount: (state, action: PayloadAction<string>) => {
+      state.account = action.payload;
+    },
+
+    setRecipientName: (state, action: PayloadAction<string>) => {
+      state.recipient.name = action.payload;
+    },
+
+    setRecipientPhone: (state, action: PayloadAction<string>) => {
+      state.recipient.phones[0].number = action.payload;
+    
+    },
+
+    setRecipientAddress: (state, action: PayloadAction<{
+      address: string;
+      postal_code: string;
+      city: string;
+    }>) => {
+      state.to_location.address = action.payload.address;
+      state.to_location.postal_code = action.payload.postal_code;
+      state.to_location.city = action.payload.city;
     },
 
     addCargoSpace: (
@@ -213,6 +237,10 @@ const orderFormSlice = createSlice({
 
 export const {
   updateOrderForm,
+  setAccount,
+  setRecipientName,
+  setRecipientPhone,
+  setRecipientAddress,
   addCargoSpace,
   removeCargoSpace,
   editCargoSpace,

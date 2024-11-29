@@ -265,7 +265,9 @@ export const GetIdAccount = async (payload: any) => {
 
 export const GetSettingAccount = async (payload: string) => {
   try {
-    const response = await api.get(`/moysklad/vendor/1.0/apps/fe8d0f25-3e10-446b-be98-95fda422ef6f/${payload}`);
+    const response = await api.get(
+      `/moysklad/vendor/1.0/apps/fe8d0f25-3e10-446b-be98-95fda422ef6f/${payload}`
+    );
     return response.data;
   } catch (error) {
     console.error("Ошибка при отправке данных на сервер:", error);
@@ -276,29 +278,40 @@ export const GetSettingAccount = async (payload: string) => {
 export const GetSetting = async (payload: string) => {
   try {
     const response = {
-      accountId: "",
-      key_api: "",
-      password_api: "",
-      type_order: "",
-      name_sender: "",
-      type_shipment: "",
-      date_shipment: "",
-      time_shipment: "",
-      comment: "",
-      city_shipment: "",
-      address_shipment: "",
-      phone: "",
+      type_order: "test",
+      name_sender: "test",
+      type_shipment: "test",
+      date_shipment: "test",
+      time_shipment: "test",
+      comment: "test",
+      city_shipment: "test",
+      address_shipment: "test",
+      phone: "test",
       boxes: [
         {
           id: 1,
-          weight: 0,
-          length: 0,
-          width: 0,
-          height: 0,
+          weight: 10,
+          length: 10,
+          width: 10,
+          height: 10,
+        },
+        {
+          id: 2,
+          weight: 20,
+          length: 20,
+          width: 20,
+          height: 20,
+        },
+        {
+          id: 3,
+          weight: 30,
+          length: 30,
+          width: 30,
+          height: 30,
         },
       ],
-      name_product: "",
-      declared_cost: 0,
+      name_product: "test",
+      declared_cost: 100,
     };
 
     // const response = await api.get(`/setting/${payload}`);

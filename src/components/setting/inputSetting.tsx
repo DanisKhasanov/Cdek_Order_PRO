@@ -15,11 +15,11 @@ interface InputSettingProps {
   adorment?: string;
 }
 
-export const CustomInput = ({ label, ...props }: TextFieldProps) => {
+export const CustomInput = ({  ...props }: TextFieldProps) => {
   return (
     <TextField
       fullWidth
-      label={label}
+      label={props.label}
       size="small"
       margin="dense"
       InputLabelProps={{
@@ -31,7 +31,9 @@ export const CustomInput = ({ label, ...props }: TextFieldProps) => {
       sx={{
         "& .MuiInputBase-input": {
           fontSize: "14px",
+          height: "20px",
         },
+        backgroundColor: "#fff",
       }}
       {...props}
     />

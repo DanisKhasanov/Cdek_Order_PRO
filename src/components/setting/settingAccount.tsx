@@ -83,7 +83,7 @@ export const SettingAccount = () => {
           "&::-webkit-scrollbar": { display: "none" },
         }}
       >
-        {isConnected ? (
+        {/* {isConnected ? ( */}
           <>
             <ConnectingAccount />
 
@@ -91,11 +91,11 @@ export const SettingAccount = () => {
 
             <PackagingParameters />
           </>
-        ) : (
-          <Typography variant="h6" sx={{ mt: 2 }}>
-            У вас нет прав доступа к этой странице.
-          </Typography>
-        )}
+        {/* ) : ( */}
+          {/* <Typography variant="h6" sx={{ mt: 2 }}> */}
+            {/* У вас нет прав доступа к этой странице. */}
+          {/* </Typography> */}
+        {/* )} */}
       </Box>
 
       <Box sx={{ display: "flex", flexDirection: "column" }}>

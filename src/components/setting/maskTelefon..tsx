@@ -4,7 +4,7 @@ import { FormControl, OutlinedInput, InputLabel } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { setPhone } from "../../store/reducers/SettingReducer";
 
-const TextMaskCustom = forwardRef<HTMLInputElement>(function TextMaskCustom(
+export const TextMaskCustom = forwardRef<HTMLInputElement>(function TextMaskCustom(
   props,
   ref
 ) {
@@ -47,6 +47,7 @@ export default function InputMaskTelefon() {
           "& .MuiInputBase-input": {
             fontSize: "14px",
           },
+          backgroundColor: "#fff",
         }}
       />
     </FormControl>
