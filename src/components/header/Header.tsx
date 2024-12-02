@@ -3,7 +3,7 @@ import Tariffs from "../orderForm/tariffs/Tariffs";
 import Waybill from "../orderForm/waybill/Waybill";
 import "./Header.css";
 import Cargo from "../orderForm/cargo/Cargo";
-import OrderForm from "../orderForm/order/Order";
+import OrderForm from "../../pages/Order";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import Popups from "../orderForm/popup/popup";
@@ -13,6 +13,8 @@ const Navigation = () => {
   const orderCreated = useSelector(
     (state: RootState) => state.orderForm.orderCreated
   );
+
+  // TODO: Сделать так, чтобы кнопки были неактивны если нет counterKey
 
   const location = useLocation();
 

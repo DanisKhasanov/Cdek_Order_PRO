@@ -51,7 +51,7 @@ interface OrderFormState {
     value: number;
   };
   orderCreated: boolean;
-  counterparty: boolean;
+  counterParty: boolean;
 }
 
 const initialState: OrderFormState = {
@@ -83,7 +83,7 @@ const initialState: OrderFormState = {
     value: 0,
   },
   orderCreated: false,
-  counterparty: false,
+  counterParty: false,
 };
 
 const orderFormSlice = createSlice({
@@ -104,20 +104,26 @@ const orderFormSlice = createSlice({
       state.account = action.payload;
     },
 
+    setPhoneAccount: (state, action: PayloadAction<string>) => {
+      state.sender.phones[0].number = action.payload;
+    },
+
     setRecipientName: (state, action: PayloadAction<string>) => {
       state.recipient.name = action.payload;
     },
 
     setRecipientPhone: (state, action: PayloadAction<string>) => {
       state.recipient.phones[0].number = action.payload;
-    
     },
 
-    setRecipientAddress: (state, action: PayloadAction<{
-      address: string;
-      postal_code: string;
-      city: string;
-    }>) => {
+    setRecipientAddress: (
+      state,
+      action: PayloadAction<{
+        address: string;
+        postal_code: string;
+        city: string;
+      }>
+    ) => {
       state.to_location.address = action.payload.address;
       state.to_location.postal_code = action.payload.postal_code;
       state.to_location.city = action.payload.city;
@@ -238,6 +244,7 @@ const orderFormSlice = createSlice({
 export const {
   updateOrderForm,
   setAccount,
+  setPhoneAccount,
   setRecipientName,
   setRecipientPhone,
   setRecipientAddress,

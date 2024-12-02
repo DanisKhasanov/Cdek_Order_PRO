@@ -20,7 +20,7 @@ const EditAddedACargo = ({
   });
   const [error, setError] = useState<string | null>(null);
 
-  const handleSave = () => {
+  const save = () => {
     const { weight, size } = editValues;
 
     const isValid = validateWeightAndSize(weight, size);
@@ -75,7 +75,7 @@ const EditAddedACargo = ({
             </option>
           ))}
         </select>
-        <button onClick={handleSave}>Сохранить</button>
+        <button onClick={save}>Сохранить</button>
         <button onClick={onCancel}>Отмена</button>
       </div>
       {error && (
