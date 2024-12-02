@@ -2,13 +2,18 @@ import  { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 
+
+//TODO: Решить проблему с отображением наложенного платежа
+
+
+
+
 const CashOnDelivery = () => {
   const orderData = useSelector((state: RootState) => state.orderForm);
   const [isEnabled, setIsEnabled] = useState(false);
   const [isAvailable, setIsAvailable] = useState(true);
 
   useEffect(() => {
-    console.log("Итоговый код наложенного платежа:", orderData.cod);
     if (orderData.cod===true) {
       setIsAvailable(true);
       setIsEnabled(true);

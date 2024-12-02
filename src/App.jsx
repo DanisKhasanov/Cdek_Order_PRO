@@ -7,10 +7,10 @@ import { SnackbarProvider } from "notistack";
 function App() {
   return (
     <Provider store={store}>
-         <SnackbarProvider maxSnack={5}>
-      <Router>
-        <Navigation />
-      </Router>
+      <SnackbarProvider maxSnack={5}>
+        <Router>
+          <Navigation />
+        </Router>
       </SnackbarProvider>
     </Provider>
   );

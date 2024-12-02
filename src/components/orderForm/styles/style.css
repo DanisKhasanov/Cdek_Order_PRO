@@ -187,32 +187,6 @@ input:checked + .slider:before {
   height: 72vh;
   overflow-y: auto;
 }
-.cargo-block {
-  margin-bottom: 10px;
-  border: 2px solid #d3d3d3;
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 10px;
-}
-.cargo-container {
-  width: 100%;
-  display: flex;
-  align-items: center;
-
-  padding-bottom: 5px;
-}
-
-.cargo-icon.box {
-  margin-right: 20px;
-  color: #9c6125;
-  font-size: 40px;
-}
-.cargo-text {
-  margin: 0;
-  flex: 1;
-  font-size: 22px;
-  font-weight: 500;
-}
 
 .cargo-info {
   margin-top: 13px;
@@ -239,21 +213,6 @@ input:checked + .slider:before {
   font-size: 13px;
   color: rgb(59, 59, 59);
   font-weight: 500;
-}
-.cargo-action-icon {
-  cursor: pointer;
-  margin-right: 25px;
-}
-
-.cargo-action-icon.delete {
-  color: rgb(245, 105, 105);
-  font-size: 33px;
-}
-
-.cargo-action-icon.edit,
-.cargo-action-icon.copy {
-  color: green;
-  font-size: 30px;
 }
 
 .cargo-edit {

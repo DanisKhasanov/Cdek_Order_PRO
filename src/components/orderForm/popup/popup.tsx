@@ -14,17 +14,16 @@ const Popups = () => {
     const handleMessage = (event: any) => {
       // if (event.data.name === "Open") {
         // const id = event.data.objectId;
-        // setReceivedMessage((prev) => ({ ...prev, id: id }));
+        const id = "9a73939a-abd1-11ef-0a80-11b5004c0849";
+        setReceivedMessage((prev) => ({ ...prev, id: id }));
       // }
-      setReceivedMessage({
-        id: "9a73939a-abd1-11ef-0a80-11b5004c0849",
-        contextKey: "142ab7cac19e3452b2eef7d9583bb42af932acd7",
-      });
     };
     window.addEventListener("message", handleMessage);
 
-    const queryParams = new URLSearchParams(window.location.search);
-    const contextKey = queryParams.get("contextKey");
+    // const queryParams = new URLSearchParams(window.location.search);
+    // const contextKey = queryParams.get("contextKey");
+    const contextKey = "142ab7cac19e3452b2eef7d9583bb42af932acd7";
+
     if (contextKey) {
       setReceivedMessage((prev) => ({ ...prev, contextKey: contextKey }));
     }
@@ -35,6 +34,7 @@ const Popups = () => {
   }, []);
 
   useEffect(() => {
+    console.log(receivedMessage);
     if (receivedMessage.id && receivedMessage.contextKey) {
       setIsButtonDisabled(false);
     }
@@ -42,7 +42,7 @@ const Popups = () => {
 
   const openModal = () => {
     const windowProps =
-      "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=760,height=720";
+      "toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=900,height=700";
     const url = domen + "/order";
     const popup = window.open(url, "Pop up window", windowProps);
 
@@ -69,7 +69,7 @@ const Popups = () => {
         <button
           className={`button ${isButtonDisabled ? "disabled" : ""}`}
           onClick={openModal}
-          disabled={isButtonDisabled}
+        //   disabled={isButtonDisabled}
         >
           {isButtonDisabled ? (
             <div

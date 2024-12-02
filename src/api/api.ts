@@ -279,7 +279,7 @@ export const GetSetting = async (payload: string) => {
   try {
     const response = {
       type_order: "test",
-      name_sender: "test",
+      name_sender: "Иванов Иван Иванович",
       type_shipment: "test",
       date_shipment: "test",
       time_shipment: "test",

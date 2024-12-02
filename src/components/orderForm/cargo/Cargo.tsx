@@ -1,20 +1,19 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field } from "formik";
 import { useNavigate } from "react-router-dom";
-import AddedCargo from "./AddedCargo";
+import AddedCargo from "../cargo/AddedCargo";
 import {
   addCargoSpace,
   updateOrderForm,
 } from "../../../store/reducers/OrderReducer";
 import { RootState } from "../../../store/store";
-import ButtonCustom from "./ButtonCustom";
-import { validationSchema, initialValues } from "./Validation";
+import ButtonCustom from "../cargo/ButtonCustom";
+import { validationSchema, initialValues } from "../cargo/Validation";
 import { CargoSizeOptions } from "../../../enum/CargoSize";
 import { GetDataCity } from "../../../api/api";
 import { useEffect, useState } from "react";
-import { RequestTemplateCargo } from "../../../api/requestTemplate/RequestTemplateCargo";
 import CircularProgress from "@mui/material/CircularProgress";
-
+import { Box } from "@mui/material";
 const Cargo = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,14 +22,20 @@ const Cargo = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (orderData.counterparty) {
-    getDataOrder();
+    if (orderData.counterParty) {
+      getDataOrder();
     }
   }, []);
 
   const getDataOrder = async () => {
     try {
-      const response = await GetDataCity(RequestTemplateCargo(orderData));
+      const response = await GetDataCity({
+        to_location: {
+          account: orderData.account,
+          postal_code: orderData.to_location.postal_code,
+          city: orderData.to_location.city,
+        },
+      });
       const cod = orderData.cod && response.cod ? true : false;
       if (response) {
         dispatch(
@@ -40,11 +45,9 @@ const Cargo = () => {
             cod: cod,
           })
         );
-      } else {
-        console.log("Response is empty");
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -77,12 +80,12 @@ const Cargo = () => {
   };
 
   return (
-    <div className="cargo-form">
-      {loading || !orderData.counterparty ? (
-        <div className="loading-container">
+    <Box padding={5}>
+      {loading ? (
+        <Box display="flex" flexDirection="column" alignItems="center">
           <CircularProgress size={25} />
           <p>Загрузка...</p>
-        </div>
+        </Box>
       ) : (
         <div className="form-container">
           <AddedCargo />
@@ -152,7 +155,7 @@ const Cargo = () => {
           </Formik>
         </div>
       )}
-    </div>
+    </Box>
   );
 };
 
