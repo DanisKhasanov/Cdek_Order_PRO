@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../store/store";
-import "../styles/style.css";
-import { GetBarcode, GetInvoice, PostOrderData } from "../../../api/api";
+import { RootState } from "../store/store";
+import "../components/styles/style.css";
+import { GetBarcode, GetInvoice, PostOrderData } from "../api/api";
 import { useEffect, useState } from "react";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CloseIcon from "@mui/icons-material/Close";
-import { RequestTemplateWaybill } from "../../../api/requestTemplate/RequestTemplateWaybill";
-import { RequestStatus } from "../../../enum/RequestStatus";
-import { updateOrderForm } from "../../../store/reducers/OrderReducer";
+import { RequestTemplateWaybill } from "../api/requestTemplate/RequestTemplateWaybill";
+import { RequestStatus } from "../enum/RequestStatus";
+import { updateOrderForm } from "../store/reducers/OrderReducer";
 import CircularProgress from "@mui/material/CircularProgress";
 const Waybill = () => {
   const orderData = useSelector((state: RootState) => state.orderForm);
@@ -23,7 +23,7 @@ const Waybill = () => {
   const [errors, setErrors] = useState<string[]>([]);
 
   useEffect(() => {
-    if (orderData.counterparty) {
+    if (orderData.counterParty) {
       postOrderData();
     }
   }, []);
@@ -81,7 +81,7 @@ const Waybill = () => {
 
   return (
     <div className="waybill-container">
-      {loading || !orderData.counterparty ? (
+      {loading || !orderData.counterParty ? (
         <div className="loading-container">
           <CircularProgress size={25} />
           <p>Загрузка...</p>

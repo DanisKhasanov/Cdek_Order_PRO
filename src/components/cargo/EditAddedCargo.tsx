@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { editCargoSpace } from "../../../store/reducers/OrderReducer";
-import { EditAddedCargoProps } from "../../../props/EditAddedCargoProps";
-import { CargoSizeOptions } from "../../../enum/CargoSize";
-import { RootState } from "../../../store/store";
+import { editCargoSpace } from "../../store/reducers/OrderReducer";
+import { EditAddedCargoProps } from "../../props/EditAddedCargoProps";
+import { CargoSizeOptions } from "../../enum/CargoSize";
+import { RootState } from "../../store/store";
 import { validateWeightAndSize } from "./Validation";
 
 const EditAddedACargo = ({

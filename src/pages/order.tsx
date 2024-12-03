@@ -9,10 +9,10 @@ import {
   GetSettingAccount,
   login,
 } from "../api/api";
-import CircularProgress from "@mui/material/CircularProgress";
-import ModalSettings from "../components/orderForm/order/modal";
 import { Box } from "@mui/material";
-import FormInputs from "../components/orderForm/order/formInputs";
+import { LoadingSpinner } from "../helpers/loadingSpinner";
+import ModalSettings from "../components/order/modal";
+import FormInputs from "../components/order/formInputs";
 
 const OrderForm = () => {
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ const OrderForm = () => {
   const [contextKey, setContextKey] = useState("");
   const [openModal, setOpenModal] = useState(false);
 
-  const handleMessage = async (event: any) => {
+  const handleMessage = (event: any) => {
     if (event.origin !== domen) return;
     // const message = event.data.popupParameters;
     const message = {
@@ -98,10 +98,7 @@ const OrderForm = () => {
   return (
     <Box padding={5}>
       {loading ? (
-        <Box display="flex" flexDirection="column" alignItems="center">
-          <CircularProgress size={25} />
-          <p>Загрузка...</p>
-        </Box>
+        <LoadingSpinner />
       ) : openModal ? (
         <ModalSettings openModal={openModal} />
       ) : (

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { updateOrderForm } from "../../../store/reducers/OrderReducer";
+import { updateOrderForm } from "../../store/reducers/OrderReducer";
 
 interface PaymentForDeliveryProps {
   selectedTariffSum: number | null;

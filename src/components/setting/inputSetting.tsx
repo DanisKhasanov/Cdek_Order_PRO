@@ -7,6 +7,8 @@ import {
   TextFieldProps,
   InputLabel,
 } from "@mui/material";
+import { forwardRef } from "react";
+
 
 interface InputSettingProps {
   value: number;
@@ -15,7 +17,7 @@ interface InputSettingProps {
   adorment?: string;
 }
 
-export const CustomInput = ({  ...props }: TextFieldProps) => {
+export const CustomInput = forwardRef((props: TextFieldProps, ref) => {
   return (
     <TextField
       fullWidth
@@ -38,7 +40,7 @@ export const CustomInput = ({  ...props }: TextFieldProps) => {
       {...props}
     />
   );
-};
+});
 
 export const CustomInputBox = ({
   value,
@@ -79,6 +81,7 @@ export const CustomInputBox = ({
         "& .MuiInputBase-input": {
           fontSize: "14px",
         },
+        backgroundColor: "#fff",
       }}
       endAdornment={
         <InputAdornment position="end">

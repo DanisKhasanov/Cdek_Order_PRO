@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../store/store";
+import { RootState } from "../../store/store";
 import { forwardRef, useState } from "react";
-import { updateOrderForm } from "../../../store/reducers/OrderReducer";
-import { TariffActionsProps } from "../../../props/TariffActionsProps";
-import { DELIVERY_MODE } from "../../../enum/DeliveryMode";
+import { updateOrderForm } from "../../store/reducers/OrderReducer";
+import { TariffActionsProps } from "../../props/TariffActionsProps";
+import { DELIVERY_MODE } from "../../enum/DeliveryMode";
 import DoorDelivery from "./DoorDelivery";
 import { AddressSuggestions } from "react-dadata";
 import { StyledInput } from "../styles/StyleInputAddressTariffs";
