@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { updateServices } from "../../../store/reducers/OrderReducer";
+import { updateServices } from "../../store/reducers/OrderReducer";
 import { useDispatch } from "react-redux";
-import { DOOR_DELIVERY } from "../../../enum/DoorDelivery";
+import { DOOR_DELIVERY } from "../../enum/DoorDelivery";
 
 const DoorDelivery = () => {
   const dispatch = useDispatch();

@@ -1,19 +1,19 @@
 import { Box, Typography, FormControl, OutlinedInput } from "@mui/material";
 import "react-dadata/dist/react-dadata.css";
-import { CustomInput } from "../../setting/inputSetting";
+import { CustomInput } from "../setting/inputSetting";
 import { AddressSuggestions, FioSuggestions } from "react-dadata";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "../../../store/store";
+import { RootState } from "../../store/store";
 import {
   setAccount,
   setPhoneAccount,
   setRecipientName,
   setRecipientPhone,
   setRecipientAddress,
-} from "../../../store/reducers/OrderReducer";
-import { TextMaskCustom } from "../../setting/maskTelefon.";
+} from "../../store/reducers/OrderReducer";
+import { TextMaskCustom } from "../setting/maskTelefon.";
 
 const FormInputs = () => {
   const dispatch = useDispatch();
@@ -41,6 +41,7 @@ const FormInputs = () => {
       });
     }
   };
+  
   return (
     <Box display="flex" flexDirection="column" gap={4}>
       <Box display="flex" alignItems="center" gap={2}>

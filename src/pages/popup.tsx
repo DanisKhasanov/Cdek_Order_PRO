@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Tooltip from "@mui/material/Tooltip";
 import HelpOutlineTwoToneIcon from "@mui/icons-material/HelpOutlineTwoTone";
+import "../components/header/Header.css";
 
 const Popups = () => {
   const [receivedMessage, setReceivedMessage] = useState({

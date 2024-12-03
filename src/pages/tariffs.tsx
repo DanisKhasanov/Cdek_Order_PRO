@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import "../styles/style.css";
-import { GetTariffData } from "../../../api/api";
-import { updateOrderForm } from "../../../store/reducers/OrderReducer";
+import "../components/styles/style.css";
+import { GetTariffData } from "../api/api";
+import { updateOrderForm } from "../store/reducers/OrderReducer";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../store/store";
-import UseCdekWidget from "./UseCdekWidget";
-import ButtonCustom from "../cargo/ButtonCustom";
+import { RootState } from "../store/store";
 import { useNavigate } from "react-router-dom";
-import { TariffProps, PickupPointProps } from "../../../props/TariffsProps";
-import TariffActions from "./TariffAction";
-import { DELIVERY_MODE } from "../../../enum/DeliveryMode";
-import { RequestTemplateTariff } from "../../../api/requestTemplate/RequestTemplateTariff";
-import PaymentForDelivery from "./PaymentForDelivery";
+import { TariffProps, PickupPointProps } from "../props/TariffsProps";
+import { DELIVERY_MODE } from "../enum/DeliveryMode";
+import { RequestTemplateTariff } from "../api/requestTemplate/RequestTemplateTariff";
 import CircularProgress from "@mui/material/CircularProgress";
+import UseCdekWidget from "../components/tariffs/UseCdekWidget";
+import TariffActions from "../components/tariffs/TariffAction";
+import ButtonCustom from "../components/cargo/ButtonCustom";
+import PaymentForDelivery from "../components/tariffs/PaymentForDelivery";
 
 const Tariffs = () => {
   const dispatch = useDispatch();
@@ -61,7 +61,7 @@ const Tariffs = () => {
   };
 
   useEffect(() => {
-    if (orderData.counterparty) {
+    if (orderData.counterParty) {
       getTariffData();
     }
   }, []);
@@ -96,7 +96,7 @@ const Tariffs = () => {
   return (
     <div style={{ padding: 30 }}>
       <div className="tariffs-container">
-        {loading || !orderData.counterparty ? (
+        {loading || !orderData.counterParty ? (
           <div className="loading-container">
             <CircularProgress size={25} />
             <p>Загрузка...</p>

@@ -202,6 +202,7 @@ export const PackagingParameters = () => {
               "& .MuiInputBase-input": {
                 fontSize: "14px",
               },
+              backgroundColor: "#fff",
             }}
           />
         </FormControl>

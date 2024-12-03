@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { CargoSize } from "../../../enum/CargoSize";
+import { CargoSize } from "../../enum/CargoSize";
 
 const validateWeightAndSize = (weight:number, size:any) => {
   if (size === CargoSize.SIZE_20X20X10 && weight > 2.7) {

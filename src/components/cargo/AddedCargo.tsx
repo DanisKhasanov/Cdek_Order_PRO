@@ -6,23 +6,47 @@ import DeleteIcon from "@mui/icons-material/DeleteForeverOutlined";
 import BoxIcon from "@mui/icons-material/ArchiveTwoTone";
 import ExpandLessTwoToneIcon from "@mui/icons-material/ExpandLessTwoTone";
 import ExpandMoreTwoToneIcon from "@mui/icons-material/ExpandMoreTwoTone";
-import { RootState } from "../../../store/store";
+import { RootState } from "../../store/store";
 import {
   removeCargoSpace,
   copyCargoSpace,
-} from "../../../store/reducers/OrderReducer";
+} from "../../store/reducers/OrderReducer";
 import EditAddedACargo from "./EditAddedCargo";
 import CashOnDelivery from "./CashOnDelivery";
-import { Box, Typography, TextField } from "@mui/material";
+import {
+  Box,
+  Typography,
+  TextField,
+  InputAdornment,
+  OutlinedInput,
+} from "@mui/material";
+
+const rowStyle = {
+  display: "flex",
+  alignItems: "center",
+  mt: 1,
+};
+
+const labelStyle = {
+  minWidth: 250,
+};
+
+const inputStyle = {
+  width: "35%",
+  "& .MuiInputBase-input": {
+    fontSize: 12,
+  },
+  "& .MuiTypography-root": { fontSize: "12px" },
+};
 
 const AddedCargo = () => {
   const dispatch = useDispatch();
   const packages = useSelector((state: RootState) => state.orderForm.packages);
   const [editId, setEditId] = useState<number | null>(null);
   const [showItemInfoId, setShowItemInfoId] = useState<number | null>(null);
-  const { name_product, declared_cost } = JSON.parse(
-    localStorage.getItem("settingAccount") || "{}"
-  );
+
+  const [nameProduct, setNameProduct] = useState<{ [key: number]: string }>({});
+
   const handleEdit = (id: number) => {
     setEditId(id);
   };
@@ -35,6 +59,12 @@ const AddedCargo = () => {
     setShowItemInfoId(showItemInfoId === id ? null : id);
   };
 
+  const changeNameProduct = (index: number, value: string) => {
+    setNameProduct((prev) => ({
+      ...prev,
+      [index]: value,
+    }));
+  };
   return (
     <Box
       height="65vh"
@@ -126,41 +156,84 @@ const AddedCargo = () => {
                 </Box>
 
                 {showItemInfoId === index && (
-                  <Box
-                    display="flex"
-                    flexDirection="column"
-                    mt={1}
-                    sx={{
-                      padding: "5px 10px 0px 10px",
-                      gap: 1,
-                    }}
-                  >
-                    <Typography
-                      variant="caption"
-                      sx={{ display: "flex", alignItems: "center" }}
-                    >
-                      Наименование товара:
+                  <Box display="flex" flexDirection="column" mt={1}>
+                    <Box sx={rowStyle}>
+                      <Typography variant="caption" sx={labelStyle}>
+                        Наименование товара:
+                      </Typography>
                       <TextField
-                        value={name_product}
-                        variant="standard"
-                    />
-                    </Typography>
-                    <Typography variant="caption">
-                      Код товара/артикул: 1
-                    </Typography>
-                    <Typography variant="caption">
-                      Маркировка: {index + 1}
-                    </Typography>
-                    <Typography variant="caption">
-                      Физический вес ед. товара: {cargo.weight} кг
-                    </Typography>
-                    <Typography variant="caption">
-                      Количество: 1
-                    </Typography>
-                    <Typography variant="caption">
-                      Объявленная стоимость за ед. товара:{" "}
-                      {(declared_cost / packages.length).toFixed(2)} руб.
-                    </Typography>
+                        size="small"
+                        value={nameProduct[index] ?? cargo.items[0].name}
+                        sx={inputStyle}
+                        onChange={(e) => {
+                          changeNameProduct(index, e.target.value);
+                        }}
+                      />
+                    </Box>
+                    <Box sx={rowStyle}>
+                      <Typography variant="caption" sx={labelStyle}>
+                        Код товара/артикул:
+                      </Typography>
+                      <TextField
+                        inputProps={{ readOnly: true }}
+                        size="small"
+                        value={1}
+                        sx={inputStyle}
+                      />
+                    </Box>
+                    <Box sx={rowStyle}>
+                      <Typography variant="caption" sx={labelStyle}>
+                        Маркировка:
+                      </Typography>
+                      <TextField
+                        inputProps={{ readOnly: true }}
+                        size="small"
+                        value={index + 1}
+                        sx={inputStyle}
+                      />
+                    </Box>
+                    <Box sx={rowStyle}>
+                      <Typography variant="caption" sx={labelStyle}>
+                        Физический вес ед. товара:
+                      </Typography>
+                      <OutlinedInput
+                        inputProps={{ readOnly: true }}
+                        size="small"
+                        value={cargo.weight}
+                        sx={inputStyle}
+                        endAdornment={
+                          <InputAdornment position="end">кг</InputAdornment>
+                        }
+                      />
+                    </Box>
+                    <Box sx={rowStyle}>
+                      <Typography variant="caption" sx={labelStyle}>
+                        Количество:
+                      </Typography>
+                      <OutlinedInput
+                        inputProps={{ readOnly: true }}
+                        size="small"
+                        value={1}
+                        sx={inputStyle}
+                        endAdornment={
+                          <InputAdornment position="end">шт.</InputAdornment>
+                        }
+                      />
+                    </Box>
+                    <Box sx={rowStyle}>
+                      <Typography variant="caption" sx={labelStyle}>
+                        Объявленная стоимость за ед. товара:
+                      </Typography>
+                      <OutlinedInput
+                        inputProps={{ readOnly: true }}
+                        size="small"
+                        endAdornment={
+                          <InputAdornment position="end">₽</InputAdornment>
+                        }
+                        value={cargo.items[0].cost}
+                        sx={inputStyle}
+                      />
+                    </Box>
                   </Box>
                 )}
               </>
@@ -168,9 +241,9 @@ const AddedCargo = () => {
           </Box>
         ))
       ) : (
-        <p style={{ textAlign: "center", fontSize: "20px" }}>
+        <Typography textAlign="center" fontSize={20}>
           Добавьте грузовое место
-        </p>
+        </Typography>
       )}
     </Box>
   );
