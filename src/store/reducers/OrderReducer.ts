@@ -141,23 +141,19 @@ const orderFormSlice = createSlice({
       const [length, width, height] = size.split("x").map(Number);
 
       const totalPackages = state.packages.length + 1;
-      const declaredCost =
-        JSON.parse(localStorage.getItem("settingAccount") || "{}")
-          .declared_cost || 0;
-      const costPerPackage =
-        totalPackages === 1 ? declaredCost : declaredCost / totalPackages;
 
-      // const items = {
-      //   name: action.payload.items.name,
-      //   ware_key: "1",
-      //   weight: weight,
-      //   marking: totalPackages.toString(),
-      //   amount: 1,
-      //   payment: {
-      //     value: state.cod === false ? 0 : state.sum,
-      //   },
-      //   cost: action.payload.items.cost,
-      // };
+
+      const items = {
+        name: action.payload.items.name,
+        ware_key: "1",
+        weight: weight,
+        marking: totalPackages.toString(),
+        amount: 1,
+        payment: {
+          value: state.cod === false ? 0 : state.sum,
+        },
+        cost: action.payload.items.cost,
+      };
 
       state.packages.push({
         number: totalPackages.toString(),
@@ -165,19 +161,10 @@ const orderFormSlice = createSlice({
         length,
         width,
         height,
-        items: [
-          {
-            ...action.payload.items,
-            cost: costPerPackage,
-          },
-        ],
+        items: [items],
       });
 
-      if (totalPackages > 1) {
-        state.packages.forEach((pkg) => {
-          pkg.items[0].cost = costPerPackage;
-        });
-      }
+      
     },
 
     removeCargoSpace: (state, action: PayloadAction<number>) => {

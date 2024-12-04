@@ -1,5 +1,4 @@
-import { MenuItem, Typography, Box } from "@mui/material";
-import Tooltip from "@mui/material/Tooltip";
+import { MenuItem, Typography, Box , Tooltip } from "@mui/material";
 import HelpOutlineTwoToneIcon from "@mui/icons-material/HelpOutlineTwoTone";
 import { CustomInput } from "./inputSetting";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,9 +7,8 @@ import {
   setPasswordApi,
   setTypeOrder,
 } from "../../store/reducers/SettingReducer";
-import { textСonnection } from "./textTooltip";
+import { textСonnection } from "../../helpers/textTooltip";
 import { RootState } from "../../store/store";
-import { useSnackbar } from "notistack";
 
 export const ConnectingAccount = () => {
   const dispatch = useDispatch();

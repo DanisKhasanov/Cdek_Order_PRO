@@ -1,4 +1,4 @@
-import { ButtonProps } from "../../../props/ButtonProps";
+import { ButtonProps } from "../../props/ButtonProps";
 
 const ButtonCustom = ({
   type = "button",

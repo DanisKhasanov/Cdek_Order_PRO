@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import HelpOutlineTwoToneIcon from "@mui/icons-material/HelpOutlineTwoTone";
 import { CustomInput } from "./inputSetting";
-import { textDelivery } from "./textTooltip";
+import { textDelivery } from "../../helpers/textTooltip";
 import InputMaskTelefon from "./maskTelefon.";
 import Autocomplete from "./autocomplete";
 import { useDispatch, useSelector } from "react-redux";

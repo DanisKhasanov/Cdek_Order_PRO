@@ -12,7 +12,7 @@ import {
 import { Box } from "@mui/material";
 import { LoadingSpinner } from "../helpers/loadingSpinner";
 import ModalSettings from "../components/order/modal";
-import FormInputs from "../components/order/formInputs";
+import FormInputs from "../components/order/formInputsOrder";
 
 const OrderForm = () => {
   const dispatch = useDispatch();
