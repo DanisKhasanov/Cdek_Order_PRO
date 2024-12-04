@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import HelpOutlineTwoToneIcon from "@mui/icons-material/HelpOutlineTwoTone";
 import { CustomInput, CustomInputBox } from "./inputSetting";
-import { textBox } from "./textTooltip";
+import { textBox } from "../../helpers/textTooltip";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import {

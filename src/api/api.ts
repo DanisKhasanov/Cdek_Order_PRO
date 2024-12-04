@@ -310,8 +310,8 @@ export const GetSetting = async (payload: string) => {
           height: 30,
         },
       ],
-      name_product: "test",
-      declared_cost: 100,
+      name_product: "Пластиковый ящик",
+      declared_cost: 200,
     };
 
     // const response = await api.get(`/setting/${payload}`);

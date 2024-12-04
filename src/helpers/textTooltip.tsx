@@ -31,6 +31,7 @@ export const textDelivery = (
     </p>
   </>
 );
+
 export const textBox = (
   <>
     <p>
@@ -38,3 +39,5 @@ export const textBox = (
     </p>
   </>
 );
+
+export const textNameProductCargo = "Данные для заполнения поля \"Наименование товара\" берутся из настроек виджета";

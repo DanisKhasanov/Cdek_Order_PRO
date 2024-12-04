@@ -36,7 +36,7 @@ const FormInputs = () => {
       navigate("/cargo");
     } else {
       enqueueSnackbar("Заполните все поля", {
-        anchorOrigin: { vertical: "top", horizontal: "left" },
+        anchorOrigin: { vertical: "top", horizontal: "right" },
         variant: "error",
       });
     }
