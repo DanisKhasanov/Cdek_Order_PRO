@@ -28,7 +28,7 @@ const OrderForm = () => {
     // const message = event.data.popupParameters;
     const message = {
       id: "9a73939a-abd1-11ef-0a80-11b5004c0849",
-      contextKey: "addf105b2641d84425c1cf61e69a6dc696a6ce15",
+      contextKey: "dbeb07fee3a0770572399963bc4c924c66f9afc4",
     };
     if (message) {
       setIdOrder(message.id);
@@ -44,15 +44,15 @@ const OrderForm = () => {
         return;
       }
 
-      // const accountResponse = await GetIdAccount({ contextKey });
+      const accountResponse = await GetIdAccount({ contextKey });
 
-      // const settingResponse = await GetSettingAccount(
-      //   accountResponse.accountId
-      // );
-      // if (settingResponse.status !== "Activated") {
-      //   setOpenModal(true);
-      //   return;
-      // }
+      const settingResponse = await GetSettingAccount(
+        accountResponse.accountId
+      );
+      if (settingResponse.status !== "Activated") {
+        setOpenModal(true);
+        return;
+      }
 
       const settingAccount = await GetSetting("1");
       if (settingAccount) {
@@ -84,7 +84,7 @@ const OrderForm = () => {
 
   useEffect(() => {
     if (orderData.recipient.name) return;
-    // login();
+    login();
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
   }, []);

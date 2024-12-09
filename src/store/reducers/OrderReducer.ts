@@ -142,7 +142,6 @@ const orderFormSlice = createSlice({
 
       const totalPackages = state.packages.length + 1;
 
-
       const items = {
         name: action.payload.items.name,
         ware_key: "1",
@@ -163,8 +162,6 @@ const orderFormSlice = createSlice({
         height,
         items: [items],
       });
-
-      
     },
 
     removeCargoSpace: (state, action: PayloadAction<number>) => {
@@ -190,7 +187,7 @@ const orderFormSlice = createSlice({
         // const costPerPackage = 100 / totalPackages;
 
         const items = {
-          name: action.payload.items.name,
+          name: state.packages[index].items[0].name,
           ware_key: "1",
           weight: weight,
           marking: (index + 1).toString(),

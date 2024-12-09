@@ -14,32 +14,24 @@
 .form-group {
   display: flex;
   align-items: center;
-  /* margin-bottom: 60px; */
 }
 
- /* .form-group.cargo {
-   margin-bottom: 0px; 
- }  */
-
 .form-group.cargo label {
-  width: 70px;
+  width: 80px;
 }
 
 .form-group input {
-  width: 185px;
+  width: 175px;
 }
 
 .form-group select {
-  width: 205px;
+  width: 200px;
   background-color: #ffffff;
 }
 
 .form-group label {
-  width: 170px;
   font-size: 15px;
-  color: #171717;
 }
-
 
 .form-control {
   flex: 1;

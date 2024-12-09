@@ -4,7 +4,8 @@ import { editCargoSpace } from "../../store/reducers/OrderReducer";
 import { EditAddedCargoProps } from "../../props/EditAddedCargoProps";
 import { RootState } from "../../store/store";
 import { validateWeightAndSize } from "./Validation";
-import { getCargoSizeOptions } from "../../enum/CargoSize";
+import { getCargoSizeOptions } from "./CargoSize";
+import { useSnackbar } from "notistack";
 
 const EditAddedACargo = ({
   id,
@@ -18,17 +19,21 @@ const EditAddedACargo = ({
     weight: weight,
     size: size,
   });
-  const [error, setError] = useState<string | null>(null);
   const { name_product, declared_cost } = JSON.parse(
     localStorage.getItem("settingAccount") || "{}"
   );
+  const { enqueueSnackbar } = useSnackbar();
   const cargoSizeOptions = getCargoSizeOptions();
+
   const save = () => {
     const { weight, size } = editValues;
 
     const isValid = validateWeightAndSize(weight, size);
     if (!isValid) {
-      setError("Введите число (кг) согласно размеру коробки");
+      enqueueSnackbar("Вес не соответствует размеру коробки", {
+        anchorOrigin: { vertical: "top", horizontal: "right" },
+        variant: "error",
+      });
       return;
     }
 
@@ -60,7 +65,7 @@ const EditAddedACargo = ({
   return (
     <>
       <div className="cargo-edit">
-          <input
+        <input
           type="number"
           min={0}
           step={0.01}
@@ -84,9 +89,6 @@ const EditAddedACargo = ({
         <button onClick={save}>Сохранить</button>
         <button onClick={onCancel}>Отмена</button>
       </div>
-      {error && (
-        <p style={{ color: "red", marginBottom: 0, fontSize: 13 }}>{error}</p>
-      )}
     </>
   );
 };

@@ -20,10 +20,9 @@ const Popups = () => {
       // }
     };
     window.addEventListener("message", handleMessage);
-
     // const queryParams = new URLSearchParams(window.location.search);
     // const contextKey = queryParams.get("contextKey");
-    const contextKey = "142ab7cac19e3452b2eef7d9583bb42af932acd7";
+    const contextKey = "dbeb07fee3a0770572399963bc4c924c66f9afc4";
 
     if (contextKey) {
       setReceivedMessage((prev) => ({ ...prev, contextKey: contextKey }));
