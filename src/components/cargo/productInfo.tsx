@@ -1,5 +1,4 @@
 import { Box, Typography, Tooltip } from "@mui/material";
-import CashOnDelivery from "./CashOnDelivery";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { useState } from "react";
@@ -77,8 +76,6 @@ export const ProductInfo = ({
 
   return (
     <Box>
-      <CashOnDelivery />
-
       <Box display="flex" gap={10} mt={1}>
         <Typography variant="caption">Вес: {cargo.weight} кг. </Typography>
 
@@ -113,7 +110,7 @@ export const ProductInfo = ({
                 display: "flex",
                 alignItems: "center",
                 gap: 0.5,
-                mb: 1,
+                mb: 2,
               }}
             >
               Наименование товара
@@ -163,7 +160,7 @@ export const ProductInfo = ({
               size="small"
               value={cargo.weight}
               sx={inputStyle}
-              endAdornment={<InputAdornment position="end">кг</InputAdornment>}
+              endAdornment={<InputAdornment position="end">кг.</InputAdornment>}
             />
           </Box>
           <Box sx={rowStyle}>

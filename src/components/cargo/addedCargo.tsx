@@ -5,6 +5,7 @@ import EditAddedACargo from "./editAddedCargo";
 import { Box, Typography } from "@mui/material";
 import { ProductInfo } from "./productInfo";
 import { HeaderAddedCargo } from "./headerAddedCargo";
+import CashOnDelivery from "./CashOnDelivery";
 
 const AddedCargo = () => {
   const packages = useSelector((state: RootState) => state.orderForm.packages);
@@ -55,8 +56,9 @@ const AddedCargo = () => {
                 onCancel={handleCancelEdit}
               />
             ) : (
-              <ProductInfo cargo={cargo} index={index} />
+              <CashOnDelivery />
             )}
+            <ProductInfo cargo={cargo} index={index} />
           </Box>
         ))
       ) : (

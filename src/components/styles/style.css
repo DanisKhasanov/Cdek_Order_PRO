@@ -14,24 +14,23 @@
 .form-group {
   display: flex;
   align-items: center;
-  margin-bottom: 60px;
+  /* margin-bottom: 60px; */
 }
 
-.form-group.cargo {
-  margin-bottom: 0px;
-}
+ /* .form-group.cargo {
+   margin-bottom: 0px; 
+ }  */
 
 .form-group.cargo label {
-  width: 80px;
+  width: 70px;
 }
 
-.form-group.cargo input {
-  width: 100%;
+.form-group input {
+  width: 185px;
 }
 
 .form-group select {
-  width: 250px;
-  height: 39px;
+  width: 205px;
   background-color: #ffffff;
 }
 
@@ -41,9 +40,7 @@
   color: #171717;
 }
 
-.form-group input {
-  height: 14px;
-}
+
 .form-control {
   flex: 1;
   padding: 10px;
@@ -80,9 +77,8 @@ button.next {
 
 .buttons {
   display: flex;
-  gap: 80px;
   justify-content: space-between;
-  margin-top: 20px;
+  margin-top: 8px;
 }
 .buttons-tariffs {
   display: flex;
@@ -183,29 +179,29 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-.add-cargo {
+/* .add-cargo {
   height: 72vh;
   overflow-y: auto;
-}
+} */
 
-.cargo-info {
+/* .cargo-info {
   margin-top: 13px;
   margin-bottom: 1px;
   font-size: 14px;
   color: rgb(129, 128, 128);
   font-weight: 500;
-}
+} */
 
-.cargo-info.item {
+/* .cargo-info.item {
   margin-top: 1px;
   display: flex;
 }
 .cargo-info.item p {
   margin-top: 10px;
   margin-bottom: 1px;
-}
+} */
 
-.item-info {
+/* .item-info {
   margin: 0 5px 5px 5px;
 }
 .item-info p {
@@ -213,14 +209,15 @@ input:checked + .slider:before {
   font-size: 13px;
   color: rgb(59, 59, 59);
   font-weight: 500;
-}
+} */
 
 .cargo-edit {
   display: flex;
   gap: 20px;
-  border-radius: 5px;
-  background-color: #f9f9f9;
   margin-top: 10px;
+  text-align: center;
+  padding-bottom: 14px;
+  border-bottom: 2px solid #d3d3d3;
 }
 
 .cargo-edit input,
@@ -233,20 +230,18 @@ input:checked + .slider:before {
 }
 
 .cargo-edit button {
-  padding: 8px 12px;
+  min-width: 80px;
+  padding: 10px;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   background-color: #1ab248;
   color: white;
   font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
 .cargo-edit button:last-child {
   background-color: rgb(236, 120, 120);
-  color: black;
-  border: 1px solid silver;
 }
 
 .tariffs-container {

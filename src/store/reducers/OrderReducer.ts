@@ -186,11 +186,11 @@ const orderFormSlice = createSlice({
       const [length, width, height] = size.split("x").map(Number);
 
       if (state.packages[index]) {
-        const totalPackages = state.packages.length;
-        const costPerPackage = 100 / totalPackages;
+        // const totalPackages = state.packages.length;
+        // const costPerPackage = 100 / totalPackages;
 
         const items = {
-          name: "Стеклянные флаконы",
+          name: action.payload.items.name,
           ware_key: "1",
           weight: weight,
           marking: (index + 1).toString(),
@@ -198,7 +198,7 @@ const orderFormSlice = createSlice({
           payment: {
             value: state.cod === false ? 0 : state.sum,
           },
-          cost: costPerPackage,
+          cost: action.payload.items.cost,
         };
 
         state.packages[index] = {

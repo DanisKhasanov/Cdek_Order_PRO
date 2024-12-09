@@ -41,14 +41,17 @@ const FormInputs = () => {
       });
     }
   };
-  
+
   return (
     <Box display="flex" flexDirection="column" gap={4}>
       <Box display="flex" alignItems="center" gap={2}>
         <Typography sx={{ minWidth: 200, fontSize: "14px" }}>
           Договор СДЭК:
         </Typography>
-        <CustomInput value={name_sender || ""} />
+        <CustomInput
+          value={name_sender || ""}
+          placeholder="Введите данные договора"
+        />
       </Box>
 
       <Box display="flex" alignItems="center" gap={2}>
