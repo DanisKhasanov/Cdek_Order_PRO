@@ -1,18 +1,20 @@
 import { Formik, Form, Field } from "formik";
 import { initialValues, validationSchema } from "./Validation";
 import ButtonCustom from "./ButtonCustom";
-import { CargoSizeOptions } from "../../enum/CargoSize";
+// import { CargoSizeOptions } from "../../enum/CargoSize";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addCargoSpace } from "../../store/reducers/OrderReducer";
 import { useSnackbar } from "notistack";
+import { getCargoSizeOptions } from "../../enum/CargoSize";
 
 const FormInputsCargo = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
+  const cargoSizeOptions = getCargoSizeOptions();
   const packages = useSelector((state: RootState) => state.orderForm.packages);
   const orderData = useSelector((state: RootState) => state.orderForm);
   const { name_product, declared_cost } = JSON.parse(
@@ -62,14 +64,16 @@ const FormInputsCargo = () => {
           <div
             style={{
               display: "flex",
-              marginTop: 5,
               justifyContent: "space-between",
+              marginTop: 16,
             }}
           >
             <div className="form-group cargo">
-              <label htmlFor="weight">* Вес (кг):</label>
+              <label htmlFor="weight">Вес (кг):</label>
               <Field
                 type="number"
+                min={0}
+                step={0.01}
                 id="weight"
                 name="weight"
                 className={`form-control ${
@@ -91,7 +95,7 @@ const FormInputsCargo = () => {
                   errors.size && touched.size ? "error" : ""
                 }`}
               >
-                {CargoSizeOptions.map((option) => (
+                {cargoSizeOptions.map((option: any) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
                   </option>

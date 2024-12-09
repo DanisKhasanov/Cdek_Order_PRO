@@ -84,7 +84,7 @@ const OrderForm = () => {
 
   useEffect(() => {
     if (orderData.recipient.name) return;
-    login();
+    // login();
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
   }, []);

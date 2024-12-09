@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { editCargoSpace } from "../../store/reducers/OrderReducer";
 import { EditAddedCargoProps } from "../../props/EditAddedCargoProps";
-import { CargoSizeOptions } from "../../enum/CargoSize";
 import { RootState } from "../../store/store";
 import { validateWeightAndSize } from "./Validation";
+import { getCargoSizeOptions } from "../../enum/CargoSize";
 
 const EditAddedACargo = ({
   id,
@@ -19,7 +19,10 @@ const EditAddedACargo = ({
     size: size,
   });
   const [error, setError] = useState<string | null>(null);
-
+  const { name_product, declared_cost } = JSON.parse(
+    localStorage.getItem("settingAccount") || "{}"
+  );
+  const cargoSizeOptions = getCargoSizeOptions();
   const save = () => {
     const { weight, size } = editValues;
 
@@ -30,7 +33,8 @@ const EditAddedACargo = ({
     }
 
     const totalPackages = orderData.packages.length;
-    const costPerPackage = totalPackages > 0 ? 100 / totalPackages : 0;
+    const costPerPackage =
+      totalPackages > 0 ? declared_cost / totalPackages : 0;
 
     dispatch(
       editCargoSpace({
@@ -38,7 +42,7 @@ const EditAddedACargo = ({
         weight: weight,
         size: size,
         items: {
-          name: "Стеклянные флаконы",
+          name: name_product,
           ware_key: "1",
           marking: (id + 1).toString(),
           weight: weight,
@@ -56,8 +60,10 @@ const EditAddedACargo = ({
   return (
     <>
       <div className="cargo-edit">
-        <input
+          <input
           type="number"
+          min={0}
+          step={0.01}
           value={editValues.weight}
           onChange={(e) =>
             setEditValues({ ...editValues, weight: parseFloat(e.target.value) })
@@ -69,7 +75,7 @@ const EditAddedACargo = ({
             setEditValues({ ...editValues, size: e.target.value })
           }
         >
-          {CargoSizeOptions.map((option) => (
+          {cargoSizeOptions.map((option: any) => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>
