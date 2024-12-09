@@ -1,4 +1,4 @@
-import { Box } from "../components/cargo/Validation";
+import { Box } from "./Validation";
 
 export const getCargoSizeOptions = () => {
   const settingAccount = JSON.parse(
