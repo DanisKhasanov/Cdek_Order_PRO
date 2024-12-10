@@ -4,7 +4,7 @@ import { editCargoSpace } from "../../store/reducers/OrderReducer";
 import { EditAddedCargoProps } from "../../props/EditAddedCargoProps";
 import { RootState } from "../../store/store";
 import { validateWeightAndSize } from "./Validation";
-import { getCargoSizeOptions } from "./CargoSize";
+import { getCargoSizeOptions } from "./cargoSize";
 import { useSnackbar } from "notistack";
 
 const EditAddedACargo = ({

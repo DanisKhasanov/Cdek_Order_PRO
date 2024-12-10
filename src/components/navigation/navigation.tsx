@@ -5,7 +5,7 @@ import OrderForm from "../../pages/order";
 import Cargo from "../../pages/cargo";
 import Tariffs from "../../pages/tariffs";
 import Waybill from "../../pages/waybill";
-
+import "../styles/navigationStyle.css";
 const Navigation = () => {
   const orderCreated = useSelector(
     (state: RootState) => state.orderForm.orderCreated

@@ -173,8 +173,42 @@ export const GetDataCity = async (payment: any) => {
 
 export const GetTariffData = async (payload: any) => {
   try {
-    const response = await api.post("/tarifflist", payload);
-    return response.data;
+    // const response = await api.post("/tarifflist", payload);
+    const response = {
+      tariff_codes: [
+        {
+          tariff_code: 1,
+          tariff_name: "Экспресс лайт дверь-дверь",
+          tariff_description:
+            "Классическая экспресс-доставка документов и грузов по всей территории России по принципу «от двери до двери» со стандартными сроками доставки",
+          delivery_mode: 3,
+          delivery_sum: 1135.0,
+          period_min: 2,
+          period_max: 2,
+        },
+        {
+          tariff_code: 10,
+          tariff_name: "Экспресс лайт склад-склад",
+          tariff_description:
+            "Отправитель самостоятельно доставляет груз/документы в офис СД «Экспресс-курьер», получатель самостоятельно забирает груз/документы в офисе СД «Экспресс-курьер»",
+          delivery_mode: 4,
+          delivery_sum: 960.0,
+          period_min: 2,
+          period_max: 2,
+        },
+        {
+          tariff_code: 11,
+          tariff_name: "Экспресс лайт склад-дверь",
+          tariff_description:
+            "Отправитель самостоятельно доставляет груз/документы в офис СД «Экспресс-курьер», получатель самостоятельно забирает груз/документы в офисе СД «Экспресс-курьер»",
+          delivery_mode: 7,
+          delivery_sum: 1135.0,
+          period_min: 2,
+          period_max: 2,
+        },
+      ],
+    };
+    return response;
   } catch (error) {
     console.error("Ошибка при отправке данных на сервер:", error);
     throw error;

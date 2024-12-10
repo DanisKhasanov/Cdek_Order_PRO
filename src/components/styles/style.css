@@ -320,16 +320,7 @@ input:checked + .slider:before {
     opacity: 0;
   }
 }
-.address-input {
-  margin-top: 5px;
-  margin-bottom: 5px;
-  margin-right: 10px;
-  padding: 8px;
-  width: 280px;
-  height: 25px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
+
 .address-button {
   width: 200px;
   height: 30px;
@@ -352,14 +343,15 @@ input:checked + .slider:before {
   background-color: #f4f4f4;
 }
 .save-btn {
-  padding: 8px 12px;
+  margin-top: 10px;
+  padding: 8px;
   border: none;
   border-radius: 8px;
   background-color: #1ab248;
   color: white;
   font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  width: 11vw;
   height: 35px;
 }
 

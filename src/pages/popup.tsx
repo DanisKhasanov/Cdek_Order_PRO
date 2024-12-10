@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import Tooltip from "@mui/material/Tooltip";
 import HelpOutlineTwoToneIcon from "@mui/icons-material/HelpOutlineTwoTone";
-import "../components/header/Header.css";
-
+import '../components/styles/navigationStyle.css'
 const Popups = () => {
   const [receivedMessage, setReceivedMessage] = useState({
     id: "",
@@ -10,13 +9,13 @@ const Popups = () => {
   });
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const domen = import.meta.env.VITE_DOMEN;
-  
+
   useEffect(() => {
     const handleMessage = (event: any) => {
       // if (event.data.name === "Open") {
-        // const id = event.data.objectId;
-        const id = "9a73939a-abd1-11ef-0a80-11b5004c0849";
-        setReceivedMessage((prev) => ({ ...prev, id: id }));
+      // const id = event.data.objectId;
+      const id = "9a73939a-abd1-11ef-0a80-11b5004c0849";
+      setReceivedMessage((prev) => ({ ...prev, id: id }));
       // }
     };
     window.addEventListener("message", handleMessage);
@@ -34,7 +33,6 @@ const Popups = () => {
   }, []);
 
   useEffect(() => {
-    console.log(receivedMessage);
     if (receivedMessage.id && receivedMessage.contextKey) {
       setIsButtonDisabled(false);
     }
@@ -69,7 +67,7 @@ const Popups = () => {
         <button
           className={`button ${isButtonDisabled ? "disabled" : ""}`}
           onClick={openModal}
-        //   disabled={isButtonDisabled}
+          //   disabled={isButtonDisabled}
         >
           {isButtonDisabled ? (
             <div
