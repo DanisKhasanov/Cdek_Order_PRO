@@ -3,7 +3,7 @@ import { updateServices } from "../../store/reducers/OrderReducer";
 import { useDispatch } from "react-redux";
 import { DOOR_DELIVERY } from "../../enum/DoorDelivery";
 
-const DoorDelivery = () => {
+const LiftCargo = () => {
   const dispatch = useDispatch();
   const [isEnabled, setIsEnabled] = useState(false);
   const [isAvailable, setIsAvailable] = useState(true);
@@ -78,6 +78,7 @@ const DoorDelivery = () => {
           <div className="manual-input-container">
             <input
               type="number"
+              min={1}
               value={manual}
               onChange={handleInputChange}
               placeholder={
@@ -92,4 +93,4 @@ const DoorDelivery = () => {
   );
 };
 
-export default DoorDelivery;
+export default LiftCargo;

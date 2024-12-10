@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addCargoSpace } from "../../store/reducers/OrderReducer";
 import { useSnackbar } from "notistack";
-import { getCargoSizeOptions } from "./CargoSize";
+import { getCargoSizeOptions } from "./cargoSize";
 
 const FormInputsCargo = () => {
   const navigate = useNavigate();

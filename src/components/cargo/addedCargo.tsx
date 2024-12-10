@@ -5,7 +5,7 @@ import EditAddedACargo from "./editAddedCargo";
 import { Box, Typography } from "@mui/material";
 import { ProductInfo } from "./productInfo";
 import { HeaderAddedCargo } from "./headerAddedCargo";
-import CashOnDelivery from "./CashOnDelivery";
+import CashOnDelivery from "./cashOnDelivery";
 
 const AddedCargo = () => {
   const packages = useSelector((state: RootState) => state.orderForm.packages);

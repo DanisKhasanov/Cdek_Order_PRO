@@ -8,11 +8,12 @@ import { useNavigate } from "react-router-dom";
 import { TariffProps, PickupPointProps } from "../props/TariffsProps";
 import { DELIVERY_MODE } from "../enum/DeliveryMode";
 import { RequestTemplateTariff } from "../api/requestTemplate/RequestTemplateTariff";
-import CircularProgress from "@mui/material/CircularProgress";
 import UseCdekWidget from "../components/tariffs/UseCdekWidget";
-import TariffActions from "../components/tariffs/TariffAction";
+import TariffToDoor from "../components/tariffs/tariffToDoor";
 import ButtonCustom from "../components/cargo/ButtonCustom";
-import PaymentForDelivery from "../components/tariffs/PaymentForDelivery";
+import PaymentForDelivery from "../components/tariffs/paymentForDelivery";
+import { LoadingSpinner } from "../helpers/loadingSpinner";
+import { TariffDescription } from "../components/tariffs/tariffDescription";
 
 const Tariffs = () => {
   const dispatch = useDispatch();
@@ -28,20 +29,15 @@ const Tariffs = () => {
   const [selectedPickupPoint, setSelectedPickupPoint] =
     useState<PickupPointProps>({});
 
+  useEffect(() => {
+    // if (orderData.counterParty) {
+    getTariffData();
+    // }
+  }, []);
+
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
-
-  const selectedTariffType =
-    tariff.find((t) => t.tariff_code === selectedTariff)?.delivery_mode ===
-    DELIVERY_MODE.POSTAMAT
-      ? "POSTAMAT"
-      : "PVZ";
-
-  const { handleOpenWidget } = UseCdekWidget(
-    (selected: any) => setSelectedPickupPoint(selected),
-    selectedTariffType
-  );
 
   const getTariffData = async () => {
     try {
@@ -59,12 +55,6 @@ const Tariffs = () => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (orderData.counterParty) {
-      getTariffData();
-    }
-  }, []);
 
   const submit = async () => {
     if (selectedTariff) {
@@ -94,13 +84,10 @@ const Tariffs = () => {
   };
 
   return (
-    <div style={{ padding: 30 }}>
+    <div style={{ padding: 28 }}>
       <div className="tariffs-container">
-        {loading || !orderData.counterParty ? (
-          <div className="loading-container">
-            <CircularProgress size={25} />
-            <p>Загрузка...</p>
-          </div>
+        {loading ? (
+          <LoadingSpinner />
         ) : (
           tariff.map((tariff) => (
             <div
@@ -127,64 +114,13 @@ const Tariffs = () => {
                 />
               </div>
 
-              <div className="tariff-description">
-                <span className="tariff-title">{tariff.tariff_name}</span>
-                <div>
-                  <p>
-                    <b>Сроки: </b>
-                    {tariff.period_min}-{tariff.period_max} раб. дн.
-                  </p>
-                </div>
-
-                <div>
-                  {tariff.delivery_mode !== DELIVERY_MODE.DOOR && (
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <button
-                        className="tariff-button"
-                        onClick={handleOpenWidget}
-                      >
-                        Выбрать на карте
-                      </button>
-                      {!selectedPickupPoint.type &&
-                        selectedTariff === tariff.tariff_code && (
-                          <div
-                            style={{
-                              color: "red",
-                              marginLeft: "10px",
-                              fontSize: 13,
-                            }}
-                          >
-                            Выберите пункт выдачи!
-                          </div>
-                        )}
-                    </div>
-                  )}
-                </div>
-
-                <div>
-                  {tariff.delivery_mode === DELIVERY_MODE.DOOR && (
-                    <>
-                      <p>
-                        <b>Адрес: </b> {orderData.to_location.address}
-                      </p>
-                      {!orderData.cod && (
-                        <p style={{ color: "red", fontSize: 13 }}>
-                          В данном регионе отсутствует прием наложенного платежа
-                          или контрагент оплатил заказ
-                        </p>
-                      )}
-
-                      <TariffActions
-                        selectedTariff={selectedTariff}
-                        tariffCode={tariff.tariff_code}
-                        deliveryName={tariff.delivery_mode}
-                      />
-                    </>
-                  )}
-                </div>
-              </div>
+              <TariffDescription
+                tariff={tariff}
+                selectedTariff={selectedTariff}
+              />
 
               <div className="tariff-cost">
+                {/* TODO: Убрать +100 ??????*/}
                 <span>{(tariff.delivery_sum + 100).toFixed(2)} руб.</span>
                 <p>{tariff.delivery_sum.toFixed(2)} руб.</p>
               </div>

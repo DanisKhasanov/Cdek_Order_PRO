@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../store/store";
+import { RootState } from "../../store/store";
 
 const UseCdekWidget = (
   setSelectedPickupPoint: any,
