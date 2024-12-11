@@ -24,13 +24,14 @@ const validateWeightAndSize = (weight: number, size: string) => {
   return weight <= matchingBox.weight;
 };
 
-
 const getInitialValues = () => {
   const firstBox = settingAccount.boxes?.[0];
 
   return {
     weight: "",
-    size: `${firstBox.length}x${firstBox.width}x${firstBox.height}`,
+    size: firstBox
+      ? `${firstBox.length}x${firstBox.width}x${firstBox.height}`
+      : "",
   };
 };
 
