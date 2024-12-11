@@ -14,20 +14,22 @@ const Cargo = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // if (orderData.counterParty) {
-    getDataOrder();
-    // }
+    if (orderData.counterParty) {
+      getDataOrder();
+    }
   }, []);
 
   const getDataOrder = async () => {
     try {
-      const response = await GetDataCity({
-        to_location: {
-          account: orderData.account,
-          postal_code: orderData.to_location.postal_code,
-          city: orderData.to_location.city,
+      const response = await GetDataCity(
+        {
+          toLocation: {
+            postalCode: orderData.to_location.postal_code,
+            city: orderData.to_location.city,
+          },
         },
-      });
+        orderData.accountId
+      );
       const cod = orderData.cod && response.cod ? true : false;
       if (response) {
         dispatch(

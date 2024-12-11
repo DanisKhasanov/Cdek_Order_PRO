@@ -25,11 +25,13 @@ const OrderForm = () => {
 
   const handleMessage = (event: any) => {
     if (event.origin !== domen) return;
-    // const message = event.data.popupParameters;
-    const message = {
-      id: "ab1e5aaa-b6ec-11ef-0a80-0992004b9cd4",
-      contextKey: "e57e8ea24c1c55c8c0753fb5c0ab32f148d490f8",
-    };
+    const message = event.data.popupParameters;
+    // const message = {
+      // id: "7222522d-b78c-11ef-0a80-114b00041f00",
+      // contextKey: "751b4fdde1c039bdcb1bc1a6b14c75ad5c6eadb9",
+    // };
+
+
     if (message) {
       setIdOrder(message.id);
       setContextKey(message.contextKey);
@@ -37,13 +39,11 @@ const OrderForm = () => {
   };
   const handleRequests = async () => {
     try {
-      setLoading(true);
-
-      if (!contextKey) {
-        return;
-      }
-
       const accountResponse = await GetIdAccount({ contextKey });
+
+      if (accountResponse.accountId) {
+        dispatch(updateOrderForm({ accountId: accountResponse.accountId }));
+      }
 
       const settingResponse = await GetSettingAccount(
         accountResponse.accountId
@@ -59,7 +59,10 @@ const OrderForm = () => {
       }
 
       if (idOrder) {
-        const orderResponse = await GetOrderData(idOrder);
+        const orderResponse = await GetOrderData(
+          idOrder,
+          accountResponse.accountId
+        );
         dispatch(
           updateOrderForm({
             number: orderResponse.number,
@@ -83,6 +86,7 @@ const OrderForm = () => {
 
   useEffect(() => {
     if (orderData.recipient.name) return;
+    setLoading(true);
     login();
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);

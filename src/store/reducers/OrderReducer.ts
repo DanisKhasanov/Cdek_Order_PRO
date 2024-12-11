@@ -25,6 +25,7 @@ interface Package {
 interface OrderFormState {
   number: string;
   account: string;
+  accountId: string;
   sender: {
     phones: [{ number: string }];
   };
@@ -57,6 +58,7 @@ interface OrderFormState {
 const initialState: OrderFormState = {
   number: "",
   account: "",
+  accountId: "",
   sender: {
     phones: [{ number: "" }],
   },

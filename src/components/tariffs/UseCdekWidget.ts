@@ -10,6 +10,10 @@ const UseCdekWidget = (
   const servicePath = import.meta.env.VITE_CDEK_SERVICE_PATH;
   const widgetRef = useRef<any>();
   const orderData = useSelector((state: RootState) => state.orderForm);
+  const { city_shipment } = JSON.parse(
+    localStorage.getItem("settingAccount") || "{}"
+  );
+
   const initializeWidget = async () => {
     try {
       if ((window as any).CDEKWidget && selectedTariffType) {
@@ -17,7 +21,7 @@ const UseCdekWidget = (
           apiKey: apiKey,
           servicePath: servicePath,
           popup: true,
-          from: "Казань",
+          from: city_shipment,
           defaultLocation: orderData.to_location.address,
           hideFilters: {
             have_cashless: true,
