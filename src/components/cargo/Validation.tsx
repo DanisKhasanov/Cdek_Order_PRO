@@ -10,7 +10,9 @@ const settingAccount = JSON.parse(
   localStorage.getItem("settingAccount") || "{}"
 );
 const validateWeightAndSize = (weight: number, size: string) => {
-  const boxes = settingAccount.boxes;
+  const boxes = settingAccount?.boxes || [];
+  if (!size) return false;
+  
   const [length, width, height] = size.split("x").map(Number);
   const matchingBox = boxes.find(
     (box: Box) =>
