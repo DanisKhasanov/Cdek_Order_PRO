@@ -18,6 +18,7 @@ import { TariffDescription } from "../components/tariffs/tariffDescription";
 const Tariffs = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const accountId = import.meta.env.VITE_ACCOUNT_ID;
   const orderData = useSelector((state: RootState) => state.orderForm);
   const [tariff, setTariff] = useState<TariffProps[]>([]);
   const [loading, setLoading] = useState(true);
@@ -30,9 +31,9 @@ const Tariffs = () => {
     useState<PickupPointProps>({});
 
   useEffect(() => {
-    // if (orderData.counterParty) {
-    getTariffData();
-    // }
+    if (orderData.counterParty) {
+      getTariffData();
+    }
   }, []);
 
   const handleCheckboxChange = () => {
@@ -41,7 +42,10 @@ const Tariffs = () => {
 
   const getTariffData = async () => {
     try {
-      const data = await GetTariffData(RequestTemplateTariff(orderData));
+      const data = await GetTariffData(
+        RequestTemplateTariff(orderData),
+        orderData.accountId
+      );
       const filterTariffs = data.tariff_codes.filter((tariff: any) =>
         Object.values(DELIVERY_MODE).includes(tariff.delivery_mode)
       );
@@ -101,7 +105,11 @@ const Tariffs = () => {
               key={tariff.tariff_code}
               onClick={() => {
                 setSelectedTariff(tariff.tariff_code);
-                setSelectedTariffSum(tariff.delivery_sum + 100);
+                if (accountId === orderData.accountId) {
+                  setSelectedTariffSum(tariff.delivery_sum + 100);
+                } else {
+                  setSelectedTariffSum(tariff.delivery_sum);
+                }
               }}
             >
               <div>
@@ -120,8 +128,11 @@ const Tariffs = () => {
               />
 
               <div className="tariff-cost">
-                {/* TODO: Убрать +100 ??????*/}
-                <span>{(tariff.delivery_sum + 100).toFixed(2)} руб.</span>
+                {accountId === orderData.accountId ? (
+                  <span>{(tariff.delivery_sum + 100).toFixed(2)} руб.</span>
+                ) : (
+                  ""
+                )}
                 <p>{tariff.delivery_sum.toFixed(2)} руб.</p>
               </div>
             </div>

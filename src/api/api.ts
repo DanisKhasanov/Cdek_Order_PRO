@@ -151,9 +151,11 @@ export const GetInvoice = async (id: number, account: string, name: string) => {
   }
 };
 
-export const GetOrderData = async (id: string) => {
+export const GetOrderData = async (id: string, account: string) => {
   try {
-    const response = await api.get(`/ms/order/${id}`);
+    const response = await api.get(
+      `/moysklad/order/${id}?accountId=${account}`
+    );
     return response.data;
   } catch (error) {
     console.error("Ошибка при отправке данных на сервер:", error);
@@ -161,9 +163,9 @@ export const GetOrderData = async (id: string) => {
   }
 };
 
-export const GetDataCity = async (payment: any) => {
+export const GetDataCity = async (payment: any, accountId: string) => {
   try {
-    const response = await api.post("/cod", payment);
+    const response = await api.post(`/cod?accountId=${accountId}`, payment);
     return response.data;
   } catch (error) {
     console.error("Ошибка при отправке данных на сервер:", error);
@@ -171,44 +173,11 @@ export const GetDataCity = async (payment: any) => {
   }
 };
 
-export const GetTariffData = async (payload: any) => {
+export const GetTariffData = async (payload: any, accountId: string) => {
   try {
-    // const response = await api.post("/tarifflist", payload);
-    const response = {
-      tariff_codes: [
-        {
-          tariff_code: 1,
-          tariff_name: "Экспресс лайт дверь-дверь",
-          tariff_description:
-            "Классическая экспресс-доставка документов и грузов по всей территории России по принципу «от двери до двери» со стандартными сроками доставки",
-          delivery_mode: 3,
-          delivery_sum: 1135.0,
-          period_min: 2,
-          period_max: 2,
-        },
-        {
-          tariff_code: 10,
-          tariff_name: "Экспресс лайт склад-склад",
-          tariff_description:
-            "Отправитель самостоятельно доставляет груз/документы в офис СД «Экспресс-курьер», получатель самостоятельно забирает груз/документы в офисе СД «Экспресс-курьер»",
-          delivery_mode: 4,
-          delivery_sum: 960.0,
-          period_min: 2,
-          period_max: 2,
-        },
-        {
-          tariff_code: 11,
-          tariff_name: "Экспресс лайт склад-дверь",
-          tariff_description:
-            "Отправитель самостоятельно доставляет груз/документы в офис СД «Экспресс-курьер», получатель самостоятельно забирает груз/документы в офисе СД «Экспресс-курьер»",
-          delivery_mode: 7,
-          delivery_sum: 1135.0,
-          period_min: 2,
-          period_max: 2,
-        },
-      ],
-    };
-    return response;
+    const response = await api.post(`/tarifflist?accountId=${accountId}`, payload);
+
+    return response.data;
   } catch (error) {
     console.error("Ошибка при отправке данных на сервер:", error);
     throw error;
@@ -318,7 +287,7 @@ export const GetSetting = async (payload: string) => {
       date_shipment: "test",
       time_shipment: "test",
       comment: "test",
-      city_shipment: "test",
+      city_shipment: "г.Москва",
       address_shipment: "test",
       phone: "test",
       boxes: [

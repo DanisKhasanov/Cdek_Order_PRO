@@ -12,16 +12,16 @@ const Popups = () => {
 
   useEffect(() => {
     const handleMessage = (event: any) => {
-      // if (event.data.name === "Open") {
-      // const id = event.data.objectId;
-      const id = "9a73939a-abd1-11ef-0a80-11b5004c0849";
+      if (event.data.name === "Open") {
+      const id = event.data.objectId;
+      // const id = "9a73939a-abd1-11ef-0a80-11b5004c0849";
       setReceivedMessage((prev) => ({ ...prev, id: id }));
-      // }
+      }
     };
     window.addEventListener("message", handleMessage);
-    // const queryParams = new URLSearchParams(window.location.search);
-    // const contextKey = queryParams.get("contextKey");
-    const contextKey = "dbeb07fee3a0770572399963bc4c924c66f9afc4";
+    const queryParams = new URLSearchParams(window.location.search);
+    const contextKey = queryParams.get("contextKey");
+    // const contextKey = "dbeb07fee3a0770572399963bc4c924c66f9afc4";
 
     if (contextKey) {
       setReceivedMessage((prev) => ({ ...prev, contextKey: contextKey }));
