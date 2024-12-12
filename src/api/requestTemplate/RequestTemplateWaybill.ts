@@ -16,16 +16,16 @@ export const RequestTemplateWaybill = (orderData: any) => {
         number: phone.number,
       })),
     },
-    tariff_code: orderData.tariff_code,
+    tariffCode: orderData.tariff_code,
     recipient: orderData.recipient,
     ...(orderData.to_location && {
-      to_location: {
+      toLocation: {
         code: orderData.to_location.code,
         address: orderData.to_location.address,
       },
     }),
     ...(orderData.delivery_point && {
-      delivery_point: orderData.delivery_point,
+      deliveryPoint: orderData.delivery_point,
     }),
 
     packages: orderData.packages.map((pkg: any, index: number) => ({
@@ -36,7 +36,7 @@ export const RequestTemplateWaybill = (orderData: any) => {
       height: pkg.height,
       items: pkg.items.map((item: any) => ({
         name: item.name,
-        ware_key: item.ware_key,
+        wareKey: item.ware_key,
         marking: item.marking,
         weight: item.weight * 1000,
         amount: item.amount,
@@ -49,6 +49,6 @@ export const RequestTemplateWaybill = (orderData: any) => {
     })),
     comment: orderData.comment_delivery,
     services: orderData.services,
-    delivery_recipient_cost: orderData.delivery_recipient_cost,
+    deliveryRecipientCost: orderData.delivery_recipient_cost,
   };
 };

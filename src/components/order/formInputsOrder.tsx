@@ -21,17 +21,17 @@ const FormInputs = () => {
   const orderData = useSelector((state: RootState) => state.orderForm);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const { name_sender, phone } = JSON.parse(
+  const { sender } = JSON.parse(
     localStorage.getItem("settingAccount") || "{}"
   );
 
   const onSubmit = () => {
-    dispatch(setAccount(name_sender));
-    dispatch(setPhoneAccount(phone));
+    dispatch(setAccount(sender.company));
+    dispatch(setPhoneAccount(sender.phones[0].number));
     if (
       orderData.recipient.name &&
       orderData.recipient.phones[0].number &&
-      orderData.to_location.address.length > 0
+      orderData.toLocation.address.length > 0
     ) {
       navigate("/cargo");
     } else {
@@ -49,7 +49,7 @@ const FormInputs = () => {
           Договор СДЭК:
         </Typography>
         <CustomInput
-          value={name_sender || ""}
+          value={sender.company || ""}
           placeholder="Введите данные договора"
         />
       </Box>
@@ -129,7 +129,7 @@ const FormInputs = () => {
             inputProps={{
               placeholder: "Введите адрес",
             }}
-            defaultQuery={orderData.to_location.address}
+            defaultQuery={orderData.toLocation.address}
             count={5}
             customInput={CustomInput}
           />

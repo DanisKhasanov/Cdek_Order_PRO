@@ -3,7 +3,7 @@ import { setNameProduct } from "./SettingReducer";
 
 interface PackageItem {
   name: string;
-  ware_key: string;
+  wareKey: string;
   marking: string;
   weight: number;
   amount: number;
@@ -33,22 +33,22 @@ interface OrderFormState {
     name: string;
     phones: [{ number: string }];
   };
-  to_location: {
+  toLocation: {
     code: number;
     city: string;
-    postal_code: string;
+    postalCode: string;
     address: string;
   };
   packages: Package[];
   comment: string;
-  comment_delivery: string;
-  delivery_point: string;
-  delivery_point_address: any;
-  tariff_code: number;
+  commentDelivery: string;
+  deliveryPoint: string;
+  deliveryPointAddress: any;
+  tariffCode: number;
   services: { code: string; parameter: string }[] | [];
   cod: boolean;
   sum: number;
-  delivery_recipient_cost: {
+  deliveryRecipientCost: {
     value: number;
   };
   orderCreated: boolean;
@@ -66,26 +66,26 @@ const initialState: OrderFormState = {
     name: "",
     phones: [{ number: "" }],
   },
-  to_location: {
+  toLocation: {
     code: 0,
     city: "",
-    postal_code: "",
+    postalCode: "",
     address: "",
   },
   packages: [],
   comment: "",
-  comment_delivery: "",
-  delivery_point: "",
-  delivery_point_address: {},
-  tariff_code: 0,
+  commentDelivery: "",
+  deliveryPoint: "",
+  deliveryPointAddress: {},
+  tariffCode: 0,
   services: [],
   cod: false,
   sum: 0,
-  delivery_recipient_cost: {
+  deliveryRecipientCost: {
     value: 0,
   },
   orderCreated: false,
-  counterParty: false,
+  counterParty: true,
 };
 
 const orderFormSlice = createSlice({
@@ -126,9 +126,9 @@ const orderFormSlice = createSlice({
         city: string;
       }>
     ) => {
-      state.to_location.address = action.payload.address;
-      state.to_location.postal_code = action.payload.postal_code;
-      state.to_location.city = action.payload.city;
+      state.toLocation.address = action.payload.address;
+      state.toLocation.postalCode = action.payload.postal_code;
+      state.toLocation.city = action.payload.city;
     },
 
     addCargoSpace: (
@@ -146,7 +146,7 @@ const orderFormSlice = createSlice({
 
       const items = {
         name: action.payload.items.name,
-        ware_key: "1",
+        wareKey: "1",
         weight: weight,
         marking: totalPackages.toString(),
         amount: 1,
@@ -190,7 +190,7 @@ const orderFormSlice = createSlice({
 
         const items = {
           name: state.packages[index].items[0].name,
-          ware_key: "1",
+          wareKey: "1",
           weight: weight,
           marking: (index + 1).toString(),
           amount: 1,

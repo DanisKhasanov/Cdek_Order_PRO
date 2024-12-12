@@ -10,38 +10,38 @@ interface Box {
 
 interface SettingState {
   accountId: string;
-  key_api: string;
-  password_api: string;
-  name_sender: string;
-  type_order: string; //будет 1 или 2
-  type_shipment: string;
-  date_shipment: string;
-  time_shipment: string;
+  keyApi: string;
+  passwordApi: string;
+  nameSender: string;
+  typeOrder: string; //будет 1 или 2
+  typeShipment: string;
+  dateShipment: string;
+  timeShipment: string;
   comment: string;
-  city_shipment: string;
-  address_shipment: string;
+  cityShipment: string;
+  addressShipment: string;
   phone: string;
   boxes: Box[];
-  name_product: string;
-  declared_cost: number;
+  nameProduct: string;
+  declaredCost: number;
 }
 
 const initialState: SettingState = {
   accountId: "",
-  key_api: "",
-  password_api: "",
-  type_order: "",
-  name_sender: "",
-  type_shipment: "",
-  date_shipment: "",
-  time_shipment: "",
+  keyApi: "",
+  passwordApi: "",
+  typeOrder: "",
+  nameSender: "",
+  typeShipment: "",
+  dateShipment: "",
+  timeShipment: "",
   comment: "",
-  city_shipment: "",
-  address_shipment: "",
+  cityShipment: "",
+  addressShipment: "",
   phone: "",
   boxes: [{ id: 1, weight: 0, length: 0, width: 0, height: 0 }],
-  name_product: "",
-  declared_cost: 0,
+  nameProduct: "",
+  declaredCost: 0,
 };
 
 const settingSlice = createSlice({
@@ -52,34 +52,34 @@ const settingSlice = createSlice({
       state.accountId = action.payload;
     },
     setKeyApi: (state, action: PayloadAction<string>) => {
-      state.key_api = action.payload;
+      state.keyApi = action.payload;
     },
     setPasswordApi: (state, action: PayloadAction<string>) => {
-      state.password_api = action.payload;
+      state.passwordApi = action.payload;
     },
     setTypeOrder: (state, action: PayloadAction<string>) => {
-      state.type_order = action.payload;
+      state.typeOrder = action.payload;
     },
     setNameSender: (state, action: PayloadAction<string>) => {
-      state.name_sender = action.payload;
+      state.nameSender = action.payload;
     },
     setTypeShipment: (state, action: PayloadAction<string>) => {
-      state.type_shipment = action.payload;
+      state.typeShipment = action.payload;
     },
     setDateShipment: (state, action: PayloadAction<string>) => {
-      state.date_shipment = action.payload;
+      state.dateShipment = action.payload;
     },
     setTimeShipter: (state, action: PayloadAction<string>) => {
-      state.time_shipment = action.payload;
+      state.timeShipment = action.payload;
     },
     setComment: (state, action: PayloadAction<string>) => {
       state.comment = action.payload;
     },
     setCityShipment: (state, action: PayloadAction<string>) => {
-      state.city_shipment = action.payload;
+      state.cityShipment = action.payload;
     },
     setAddressShipment: (state, action: PayloadAction<string>) => {
-      state.address_shipment = action.payload;
+      state.addressShipment = action.payload;
     },
     setPhone: (state, action: PayloadAction<string>) => {
       state.phone = action.payload;
@@ -91,10 +91,10 @@ const settingSlice = createSlice({
       state.boxes = state.boxes.filter((_, index) => index !== action.payload);
     },
     setNameProduct: (state, action: PayloadAction<string>) => {
-      state.name_product = action.payload;
+      state.nameProduct = action.payload;
     },
     setDeclaredCost: (state, action: PayloadAction<number>) => {
-      state.declared_cost = action.payload;
+      state.declaredCost = action.payload;
     },
   },
 });

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import {
   Box,
   Typography,
@@ -11,7 +11,7 @@ import HelpOutlineTwoToneIcon from "@mui/icons-material/HelpOutlineTwoTone";
 import { CustomInput } from "./inputSetting";
 import { textDelivery } from "../../helpers/textTooltip";
 import InputMaskTelefon from "./maskTelefon.";
-import Autocomplete from "./autocomplete";
+import AutocompleteAddress from "./autoCompleteAddress";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import {
@@ -25,7 +25,7 @@ import {
 } from "../../store/reducers/SettingReducer";
 
 export const DeliveryOptions = () => {
-  const { type_shipment, name_sender, date_shipment } = useSelector(
+  const { typeShipment, nameSender, dateShipment } = useSelector(
     (state: RootState) => state.setting
   );
   const dispatch = useDispatch();
@@ -48,13 +48,13 @@ export const DeliveryOptions = () => {
 
       <CustomInput
         label="Название отправителя"
-        value={name_sender}
+        value={nameSender}
         onChange={(e) => dispatch(setNameSender(e.target.value))}
       />
 
       <InputMaskTelefon />
 
-      <Autocomplete
+      <AutocompleteAddress
         label="Город отправления"
         onChange={(city) => dispatch(setCityShipment(city))}
       />
@@ -62,7 +62,7 @@ export const DeliveryOptions = () => {
       <CustomInput
         select
         label="Тип отгрузки"
-        value={type_shipment || ""}
+        value={typeShipment || ""}
         onChange={(e) => dispatch(setTypeShipment(e.target.value))}
       >
         <MenuItem value="warehouse" sx={{ fontSize: "14px" }}>
@@ -73,7 +73,7 @@ export const DeliveryOptions = () => {
         </MenuItem>
       </CustomInput>
 
-      {type_shipment === "door" && (
+      {/* {typeShipment === "door" && (
         <>
           <Typography variant="subtitle2" sx={{ mt: 1, ml: 1 }}>
             2.1. Настройки вызова курьера
@@ -87,7 +87,7 @@ export const DeliveryOptions = () => {
           <CustomInput
             select
             label="Дата отгрузки"
-            value={date_shipment || ""}
+            value={dateShipment || ""}
             onChange={(e) => dispatch(setDateShipment(e.target.value))}
           >
             <MenuItem value="next" sx={{ fontSize: "14px" }}>
@@ -141,7 +141,7 @@ export const DeliveryOptions = () => {
             onChange={(e) => dispatch(setComment(e.target.value))}
           />
         </>
-      )}
+      )} */}
     </Box>
   );
 };

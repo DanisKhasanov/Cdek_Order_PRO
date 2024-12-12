@@ -17,7 +17,7 @@ const FormInputsCargo = () => {
   const cargoSizeOptions = getCargoSizeOptions();
   const packages = useSelector((state: RootState) => state.orderForm.packages);
   const orderData = useSelector((state: RootState) => state.orderForm);
-  const { name_product, declared_cost } = JSON.parse(
+  const { nameProduct, declaredCost } = JSON.parse(
     localStorage.getItem("settingAccount") || "{}"
   );
   const emptyNames = packages.some((pkg) => !pkg.items[0].name.trim());
@@ -28,15 +28,15 @@ const FormInputsCargo = () => {
         weight: values.weight,
         size: values.size,
         items: {
-          name: name_product,
-          ware_key: "1",
+          name: nameProduct,
+          wareKey: "1",
           weight: values.weight,
           marking: (packages.length + 1).toString(),
           amount: 1,
           payment: {
             value: orderData.cod === false ? 0 : orderData.sum,
           },
-          cost: declared_cost,
+          cost: declaredCost,
         },
       })
     );

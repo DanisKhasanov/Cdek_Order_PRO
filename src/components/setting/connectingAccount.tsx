@@ -12,7 +12,7 @@ import { RootState } from "../../store/store";
 
 export const ConnectingAccount = () => {
   const dispatch = useDispatch();
-  const { type_order } = useSelector((state: RootState) => state.setting);
+  const { typeOrder } = useSelector((state: RootState) => state.setting);
 
   return (
     <Box>
@@ -34,7 +34,7 @@ export const ConnectingAccount = () => {
       <CustomInput
         select
         label="Тип заказа СДЭК"
-        value={type_order}
+        value={typeOrder}
         onChange={(e) => dispatch(setTypeOrder(e.target.value))}
       >
         <MenuItem value="internet-shop" sx={{ fontSize: "14px" }}>

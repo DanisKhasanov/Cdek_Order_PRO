@@ -25,13 +25,11 @@ const OrderForm = () => {
 
   const handleMessage = (event: any) => {
     if (event.origin !== domen) return;
-    const message = event.data.popupParameters;
-    // const message = {
-      // id: "7222522d-b78c-11ef-0a80-114b00041f00",
-      // contextKey: "751b4fdde1c039bdcb1bc1a6b14c75ad5c6eadb9",
-    // };
-
-
+    // const message = event.data.popupParameters;
+    const message = {
+      id: "bd0ae34d-b854-11ef-0a80-1a9d0004f140",
+      contextKey: "9ba667fdeeefb752ec4cc522b0cf6c8b0a613fb9",
+    };
     if (message) {
       setIdOrder(message.id);
       setContextKey(message.contextKey);
@@ -53,7 +51,7 @@ const OrderForm = () => {
         return;
       }
 
-      const settingAccount = await GetSetting("1");
+      const settingAccount = await GetSetting(accountResponse.accountId);
       if (settingAccount) {
         localStorage.setItem("settingAccount", JSON.stringify(settingAccount));
       }

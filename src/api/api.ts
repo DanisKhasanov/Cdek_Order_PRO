@@ -108,7 +108,10 @@ api.interceptors.response.use(
 export const PostOrderData = async (payload: any, accountId: string) => {
   const requestTemplate = RequestTemplateWaybill(payload);
   try {
-    const response = await api.post(`/order?accountId=${accountId}`, requestTemplate);
+    const response = await api.post(
+      `/order?accountId=${accountId}`,
+      requestTemplate
+    );
     return response.data;
   } catch (error) {
     console.error("Ошибка при отправке данных на сервер:", error);
@@ -213,47 +216,10 @@ export const GetSettingAccount = async (payload: string) => {
   }
 };
 
-export const GetSetting = async (payload: string) => {
+export const GetSetting = async (accountId: string) => {
   try {
-    const response = {
-      type_order: "test",
-      name_sender: "Иванов Иван Иванович",
-      type_shipment: "test",
-      date_shipment: "test",
-      time_shipment: "test",
-      comment: "test",
-      city_shipment: "г.Москва",
-      address_shipment: "test",
-      phone: "test",
-      boxes: [
-        {
-          id: 1,
-          weight: 11,
-          length: 11,
-          width: 11,
-          height: 11,
-        },
-        {
-          id: 2,
-          weight: 22,
-          length: 22,
-          width: 22,
-          height: 22,
-        },
-        {
-          id: 3,
-          weight: 33,
-          length: 33,
-          width: 33,
-          height: 33,
-        },
-      ],
-      name_product: "Пластиковый ящик",
-      declared_cost: 200,
-    };
-
-    // const response = await api.get(`/setting/${payload}`);
-    return response;
+    const response = await api.get(`/moysklad/settings?accountId=${accountId}`);
+    return response.data;
   } catch (error) {
     console.error("Ошибка при отправке данных на сервер:", error);
     throw error;

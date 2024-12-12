@@ -26,7 +26,7 @@ import { useState } from "react";
 import { setBoxes } from "../../store/reducers/SettingReducer";
 
 export const PackagingParameters = () => {
-  const { boxes, name_product } = useSelector(
+  const { boxes, nameProduct } = useSelector(
     (state: RootState) => state.setting
   );
   const dispatch = useDispatch();
@@ -166,7 +166,7 @@ export const PackagingParameters = () => {
         </Typography>
         <CustomInput
           label="Наименование товара"
-          value={name_product}
+          value={nameProduct}
           onChange={(e) => dispatch(setNameProduct(e.target.value))}
         />
         <FormControl variant="outlined" sx={{ mt: 1 }}>

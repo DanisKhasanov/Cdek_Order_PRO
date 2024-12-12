@@ -9,6 +9,7 @@ import { RequestStatus } from "../enum/RequestStatus";
 import { updateOrderForm } from "../store/reducers/OrderReducer";
 import CircularProgress from "@mui/material/CircularProgress";
 import { LoadingSpinner } from "../helpers/loadingSpinner";
+import { formatDateTime } from "../helpers/formatDateTime";
 
 const Waybill = () => {
   const orderData = useSelector((state: RootState) => state.orderForm);
@@ -28,22 +29,20 @@ const Waybill = () => {
       postOrderData();
     }
   }, []);
-
   const postOrderData = async () => {
     try {
       const data = await PostOrderData(orderData, orderData.accountId);
-
       setResponse(data);
-
-      if (data.requests && data.requests[0].errors) {
-        setErrors(data.requests[0].errors.map((err: any) => err.message));
-        setOrderCreated(false);
-      } else {
-        setOrderCreated(true);
-        dispatch(updateOrderForm({ ...orderData, orderCreated: true }));
-      }
+      setOrderCreated(true);
+      dispatch(updateOrderForm({ ...orderData, orderCreated: true }));
     } catch (error: any) {
-      console.error("Ошибка при отправке данных на сервер:", error);
+      setOrderCreated(false);
+      if (error.requests?.[0]?.errors) {
+        setErrors(error.requests[0].errors.map((err: any) => err.message));
+      } else {
+        setErrors([error.message || "Произошла ошибка при отправке данных"]);
+        console.error("Ошибка при отправке данных на сервер:", error);
+      }
     } finally {
       setLoading(false);
     }
@@ -69,16 +68,6 @@ const Waybill = () => {
     } finally {
       setLoadingInvoice(false);
     }
-  };
-
-  const formatDateTime = (dateTimeString: string) => {
-    const date = new Date(dateTimeString);
-    const dateFormatted = date.toLocaleDateString("ru-RU");
-    const timeFormatted = date.toLocaleTimeString("ru-RU", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-    return `${dateFormatted} в ${timeFormatted}`;
   };
 
   return (

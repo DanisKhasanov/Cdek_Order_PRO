@@ -19,7 +19,7 @@ const EditAddedACargo = ({
     weight: weight,
     size: size,
   });
-  const { name_product, declared_cost } = JSON.parse(
+  const { nameProduct, declaredCost } = JSON.parse(
     localStorage.getItem("settingAccount") || "{}"
   );
   const { enqueueSnackbar } = useSnackbar();
@@ -39,7 +39,7 @@ const EditAddedACargo = ({
 
     const totalPackages = orderData.packages.length;
     const costPerPackage =
-      totalPackages > 0 ? declared_cost / totalPackages : 0;
+      totalPackages > 0 ? declaredCost / totalPackages : 0;
 
     dispatch(
       editCargoSpace({
@@ -47,8 +47,8 @@ const EditAddedACargo = ({
         weight: weight,
         size: size,
         items: {
-          name: name_product,
-          ware_key: "1",
+          name: nameProduct,
+          wareKey: "1",
           marking: (id + 1).toString(),
           weight: weight,
           amount: 1,

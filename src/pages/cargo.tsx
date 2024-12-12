@@ -24,8 +24,8 @@ const Cargo = () => {
       const response = await GetDataCity(
         {
           toLocation: {
-            postalCode: orderData.to_location.postal_code,
-            city: orderData.to_location.city,
+            postalCode: orderData.toLocation.postalCode,
+            city: orderData.toLocation.city,
           },
         },
         orderData.accountId
@@ -35,7 +35,7 @@ const Cargo = () => {
         dispatch(
           updateOrderForm({
             ...orderData,
-            to_location: { ...orderData.to_location, code: response.code },
+            toLocation: { ...orderData.toLocation, code: response.code },
             cod: cod,
           })
         );
