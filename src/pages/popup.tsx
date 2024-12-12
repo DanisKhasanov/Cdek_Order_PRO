@@ -67,7 +67,7 @@ const Popups = () => {
         <button
           className={`button ${isButtonDisabled ? "disabled" : ""}`}
           onClick={openModal}
-          //   disabled={isButtonDisabled}
+            disabled={isButtonDisabled}
         >
           {isButtonDisabled ? (
             <div

@@ -5,10 +5,11 @@ import { GetBarcode, GetInvoice, PostOrderData } from "../api/api";
 import { useEffect, useState } from "react";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CloseIcon from "@mui/icons-material/Close";
-import { RequestTemplateWaybill } from "../api/requestTemplate/RequestTemplateWaybill";
 import { RequestStatus } from "../enum/RequestStatus";
 import { updateOrderForm } from "../store/reducers/OrderReducer";
 import CircularProgress from "@mui/material/CircularProgress";
+import { LoadingSpinner } from "../helpers/loadingSpinner";
+
 const Waybill = () => {
   const orderData = useSelector((state: RootState) => state.orderForm);
   const dispatch = useDispatch();
@@ -30,7 +31,8 @@ const Waybill = () => {
 
   const postOrderData = async () => {
     try {
-      const data = await PostOrderData(RequestTemplateWaybill(orderData));
+      const data = await PostOrderData(orderData, orderData.accountId);
+
       setResponse(data);
 
       if (data.requests && data.requests[0].errors) {
@@ -81,11 +83,8 @@ const Waybill = () => {
 
   return (
     <div className="waybill-container">
-      {loading || !orderData.counterParty ? (
-        <div className="loading-container">
-          <CircularProgress size={25} />
-          <p>Загрузка...</p>
-        </div>
+      {loading ? (
+        <LoadingSpinner />
       ) : (
         <div className="waybill-content">
           {orderCreated ? (

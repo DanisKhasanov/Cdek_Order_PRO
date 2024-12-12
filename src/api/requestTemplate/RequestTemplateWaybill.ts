@@ -1,5 +1,8 @@
 export const RequestTemplateWaybill = (orderData: any) => {
-  const defaultCost = 100;
+  const { declared_cost } = JSON.parse(
+    localStorage.getItem("settingAccount") || "{}"
+  );
+  const defaultCost = declared_cost || 0;
   const numberOfPackages = orderData.packages.length;
   const value = orderData.sum;
   const costPerPackage =
@@ -37,9 +40,10 @@ export const RequestTemplateWaybill = (orderData: any) => {
         marking: item.marking,
         weight: item.weight * 1000,
         amount: item.amount,
-        payment: orderData.cod === true && index === 0 
-          ? { value: value }
-          : { value: 0 }, 
+        payment:
+          orderData.cod === true && index === 0
+            ? { value: value }
+            : { value: 0 },
         cost: costPerPackage,
       })),
     })),

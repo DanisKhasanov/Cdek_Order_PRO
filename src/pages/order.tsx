@@ -18,7 +18,7 @@ const OrderForm = () => {
   const dispatch = useDispatch();
   const orderData = useSelector((state: RootState) => state.orderForm);
   const domen = import.meta.env.VITE_DOMEN;
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [idOrder, setIdOrder] = useState("");
   const [contextKey, setContextKey] = useState("");
   const [openModal, setOpenModal] = useState(false);
@@ -86,7 +86,6 @@ const OrderForm = () => {
 
   useEffect(() => {
     if (orderData.recipient.name) return;
-    setLoading(true);
     login();
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);

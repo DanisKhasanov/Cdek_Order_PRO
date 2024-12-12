@@ -7,9 +7,6 @@ import { RootState } from "../store/store";
 import { useNavigate } from "react-router-dom";
 import { TariffProps, PickupPointProps } from "../props/TariffsProps";
 import { DELIVERY_MODE } from "../enum/DeliveryMode";
-import { RequestTemplateTariff } from "../api/requestTemplate/RequestTemplateTariff";
-import UseCdekWidget from "../components/tariffs/UseCdekWidget";
-import TariffToDoor from "../components/tariffs/tariffToDoor";
 import ButtonCustom from "../components/cargo/ButtonCustom";
 import PaymentForDelivery from "../components/tariffs/paymentForDelivery";
 import { LoadingSpinner } from "../helpers/loadingSpinner";
@@ -43,7 +40,7 @@ const Tariffs = () => {
   const getTariffData = async () => {
     try {
       const data = await GetTariffData(
-        RequestTemplateTariff(orderData),
+        orderData,
         orderData.accountId
       );
       const filterTariffs = data.tariff_codes.filter((tariff: any) =>
