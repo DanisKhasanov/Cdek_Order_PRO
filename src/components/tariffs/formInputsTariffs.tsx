@@ -35,7 +35,7 @@ export const FormInputsTariffs = ({
     dispatch(
       updateOrderForm({
         ...orderData,
-        comment_delivery: comment,
+        commentDelivery: comment,
       })
     );
     setShowComment(false);
@@ -50,7 +50,7 @@ export const FormInputsTariffs = ({
     dispatch(
       updateOrderForm({
         ...orderData,
-        to_location: { ...orderData.to_location, address: address },
+        toLocation: { ...orderData.toLocation, address: address },
       })
     );
     setShowAddressInput(false);
@@ -100,7 +100,7 @@ export const FormInputsTariffs = ({
               }}
               count={3}
               customInput={CustomInput}
-              defaultQuery={orderData.to_location.city}
+              defaultQuery={orderData.toLocation?.city}
             />
           </div>
 

@@ -15,12 +15,21 @@ const FormInputsCargo = () => {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const cargoSizeOptions = getCargoSizeOptions();
-  const packages = useSelector((state: RootState) => state.orderForm.packages);
+  const packages =
+    useSelector((state: RootState) => state.orderForm.packages) || [];
   const orderData = useSelector((state: RootState) => state.orderForm);
-  const { nameProduct, declaredCost } = JSON.parse(
+  const settingAccount = JSON.parse(
     localStorage.getItem("settingAccount") || "{}"
   );
-  const emptyNames = packages.some((pkg) => !pkg.items[0].name.trim());
+  const defaultProductName = settingAccount?.defaultProductName || "";
+  const defaultDeclaredCost = settingAccount?.defaultDeclaredCost || 0;
+
+  const emptyNames =
+    packages.length > 0 &&
+    packages.some((pkg) => {
+      if (!pkg?.items?.[0]?.name) return true;
+      return pkg.items[0].name.trim() === "";
+    });
 
   const addCargo = (values: any) => {
     dispatch(
@@ -28,7 +37,7 @@ const FormInputsCargo = () => {
         weight: values.weight,
         size: values.size,
         items: {
-          name: nameProduct,
+          name: defaultProductName,
           wareKey: "1",
           weight: values.weight,
           marking: (packages.length + 1).toString(),
@@ -36,7 +45,7 @@ const FormInputsCargo = () => {
           payment: {
             value: orderData.cod === false ? 0 : orderData.sum,
           },
-          cost: declaredCost,
+          cost: defaultDeclaredCost,
         },
       })
     );
@@ -69,6 +78,9 @@ const FormInputsCargo = () => {
             }}
           >
             <div className="form-group cargo">
+              {errors.weight && touched.weight && (
+                <div className="error-message-top">{errors.weight}</div>
+              )}
               <label htmlFor="weight">Вес (кг):</label>
               <Field
                 type="number"
@@ -79,13 +91,14 @@ const FormInputsCargo = () => {
                 className={`form-control ${
                   errors.weight && touched.weight ? "error" : ""
                 }`}
-                placeholder={
-                  touched.weight && errors.weight ? errors.weight : ""
-                }
+                placeholder="Введите вес"
               />
             </div>
 
             <div className="form-group cargo">
+              {errors.size && touched.size && (
+                <div className="error-message-top">{errors.size}</div>
+              )}
               <label htmlFor="size">Размеры коробки:</label>
               <Field
                 as="select"
@@ -94,6 +107,7 @@ const FormInputsCargo = () => {
                 className={`form-control ${
                   errors.size && touched.size ? "error" : ""
                 }`}
+                
               >
                 {cargoSizeOptions.map((option: any) => (
                   <option key={option.value} value={option.value}>

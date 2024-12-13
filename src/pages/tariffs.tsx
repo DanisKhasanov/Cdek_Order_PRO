@@ -10,7 +10,8 @@ import { DELIVERY_MODE } from "../enum/DeliveryMode";
 import ButtonCustom from "../components/cargo/ButtonCustom";
 import PaymentForDelivery from "../components/tariffs/paymentForDelivery";
 import { LoadingSpinner } from "../helpers/loadingSpinner";
-import { TariffDescription } from "../components/tariffs/tariffDescription";
+import UseCdekWidget from "../components/tariffs/UseCdekWidget";
+import SelectedTariff from "../components/tariffs/tariffToDoor";
 
 const Tariffs = () => {
   const dispatch = useDispatch();
@@ -27,22 +28,9 @@ const Tariffs = () => {
   const [selectedPickupPoint, setSelectedPickupPoint] =
     useState<PickupPointProps>({});
 
-  useEffect(() => {
-    if (orderData.counterParty) {
-      getTariffData();
-    }
-  }, []);
-
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
-  };
-
   const getTariffData = async () => {
     try {
-      const data = await GetTariffData(
-        orderData,
-        orderData.accountId
-      );
+      const data = await GetTariffData(orderData, orderData.accountId);
       const filterTariffs = data.tariff_codes.filter((tariff: any) =>
         Object.values(DELIVERY_MODE).includes(tariff.delivery_mode)
       );
@@ -57,6 +45,27 @@ const Tariffs = () => {
     }
   };
 
+  useEffect(() => {
+    if (orderData.counterParty) {
+      getTariffData();
+    }
+  }, []);
+
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
+  };
+  const selectedTariffType =
+    tariff.find((t) => t.tariff_code === selectedTariff)?.delivery_mode ===
+    DELIVERY_MODE.POSTAMAT
+      ? "POSTAMAT"
+      : "PVZ";
+
+  const { handleOpenWidget } = UseCdekWidget(
+    (selected: any) => setSelectedPickupPoint(selected),
+    selectedTariffType
+  );
+  
+  
   const submit = async () => {
     if (selectedTariff) {
       const selected = tariff.find((t) => t.tariff_code === selectedTariff);
@@ -66,17 +75,17 @@ const Tariffs = () => {
       dispatch(
         updateOrderForm({
           ...orderData,
-          tariff_code: selected?.tariff_code,
-          to_location:
+          tariffCode: selected?.tariff_code,
+          toLocation:
             selected?.delivery_mode === DELIVERY_MODE.DOOR
-              ? orderData.to_location
+              ? orderData.toLocation
               : undefined,
-          delivery_point:
+          deliveryPoint:
             selected?.delivery_mode === DELIVERY_MODE.POSTAMAT ||
             selected?.delivery_mode === DELIVERY_MODE.PVZ
               ? selectedPickupPoint.address.code
               : undefined,
-          delivery_point_address: selectedPickupPoint.address,
+          deliveryPointAddress: selectedPickupPoint.address,
         })
       );
 
@@ -119,10 +128,55 @@ const Tariffs = () => {
                 />
               </div>
 
-              <TariffDescription
-                tariff={tariff}
-                selectedTariff={selectedTariff}
-              />
+              <div className="tariff-description">
+                <span className="tariff-title">{tariff.tariff_name}</span>
+
+                <p>
+                  <b>Сроки: </b>
+                  {tariff.period_min} - {tariff.period_max} раб.дн.
+                </p>
+
+                <div>
+                  {tariff.delivery_mode !== DELIVERY_MODE.DOOR && (
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <button
+                        className="tariff-button"
+                        onClick={handleOpenWidget}
+                      >
+                        Выбрать на карте
+                      </button>
+                      {!selectedPickupPoint.type &&
+                        selectedTariff === tariff.tariff_code && (
+                          <div
+                            style={{
+                              color: "red",
+                              marginLeft: "10px",
+                              fontSize: 13,
+                            }}
+                          >
+                            Выберите пункт выдачи!
+                          </div>
+                        )}
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  {tariff.delivery_mode === DELIVERY_MODE.DOOR && (
+                    <>
+                      <p>
+                        <b>Адрес: </b> {orderData.toLocation?.address}
+                      </p>
+
+                      <SelectedTariff
+                        selectedTariff={selectedTariff}
+                        tariffCode={tariff.tariff_code}
+                        deliveryName={tariff.delivery_mode}
+                      />
+                    </>
+                  )}
+                </div>
+              </div>
 
               <div className="tariff-cost">
                 {accountId === orderData.accountId ? (

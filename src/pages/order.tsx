@@ -27,9 +27,10 @@ const OrderForm = () => {
     if (event.origin !== domen) return;
     // const message = event.data.popupParameters;
     const message = {
-      id: "bd0ae34d-b854-11ef-0a80-1a9d0004f140",
-      contextKey: "9ba667fdeeefb752ec4cc522b0cf6c8b0a613fb9",
+      id: "1fd37907-b889-11ef-0a80-0e56000ed841",
+      contextKey: "cf2e86a31e2afba49e85de0aec3a5a744325f6a9",
     };
+
     if (message) {
       setIdOrder(message.id);
       setContextKey(message.contextKey);
@@ -83,7 +84,10 @@ const OrderForm = () => {
   };
 
   useEffect(() => {
-    if (orderData.recipient.name) return;
+    if (orderData.recipient.name) {
+      setLoading(false);
+      return;
+    }
     login();
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);

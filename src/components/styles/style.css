@@ -220,7 +220,20 @@ input:checked + .slider:before {
   font-size: 14px;
   background-color: #ffffff;
 }
+.form-group.cargo {
+  position: relative;
+}
 
+.error-message-top {
+  position: absolute;
+  top: -20px;
+  color: red;
+  font-size: 12px;
+}
+
+.form-control.error {
+  border-color: red;
+}
 .cargo-edit button {
   min-width: 80px;
   padding: 10px;

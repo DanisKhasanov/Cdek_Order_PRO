@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 
 export interface Box {
-  weight: number;
+  maxWeight: number;
   length: number;
   width: number;
   height: number;
@@ -10,7 +10,7 @@ const settingAccount = JSON.parse(
   localStorage.getItem("settingAccount") || "{}"
 );
 const validateWeightAndSize = (weight: number, size: string) => {
-  const boxes = settingAccount?.boxes || [];
+  const boxes = settingAccount?.boxesTypes || [];
   if (!size) return false;
 
   const [length, width, height] = size.split("x").map(Number);
@@ -23,11 +23,20 @@ const validateWeightAndSize = (weight: number, size: string) => {
     return false;
   }
 
-  return weight <= matchingBox.weight;
+ const sortedBoxes = boxes.sort((a: Box, b: Box) => a.maxWeight - b.maxWeight);
+ const currentBoxIndex = sortedBoxes.findIndex(
+   (box: Box) => box.maxWeight === matchingBox.maxWeight
+ );
+ const prevBox = currentBoxIndex > 0 ? sortedBoxes[currentBoxIndex - 1] : null;
+
+ const minWeight = prevBox ? prevBox.maxWeight / 1000 : 0;
+ const maxWeight = matchingBox.maxWeight / 1000;
+
+ return weight > minWeight && weight <= maxWeight;
 };
 
 const getInitialValues = () => {
-  const firstBox = settingAccount.boxes?.[0];
+  const firstBox = settingAccount.boxesTypes?.[0];
 
   return {
     weight: "",
@@ -41,13 +50,41 @@ const initialValues = getInitialValues();
 
 const validationSchema = Yup.object().shape({
   weight: Yup.number()
-    .required("Введите вес")
+    .required(" ")
     .test(
       "weight-size-validation",
-      "Вес не соответствует выбранному размеру коробки",
-      function (value) {
+      function(value) {
         const { size } = this.parent;
-        return validateWeightAndSize(value, size);
+        if (!size) {
+          return true; 
+        }
+        const boxes = settingAccount?.boxesTypes || [];
+        const [length, width, height] = size.split("x").map(Number);
+        const matchingBox = boxes.find(
+          (box: Box) =>
+            box.length === length && box.width === width && box.height === height
+        );
+        
+        if (matchingBox) {
+          const sortedBoxes = boxes.sort((a: Box, b: Box) => a.maxWeight - b.maxWeight);
+          const currentBoxIndex = sortedBoxes.findIndex(
+            (box: Box) => box.maxWeight === matchingBox.maxWeight
+          );
+          const prevBox = currentBoxIndex > 0 ? sortedBoxes[currentBoxIndex - 1] : null;
+          const minWeight = prevBox ? prevBox.maxWeight / 1000 : 0;
+          
+          if (value <= minWeight) {
+            return this.createError({
+              message: `Вес должен быть больше ${minWeight} кг для этой коробки`
+            });
+          }
+          if (value > matchingBox.maxWeight / 1000) {
+            return this.createError({
+              message: `Вес не должен превышать ${matchingBox.maxWeight / 1000} кг`
+            });
+          }
+        }
+        return true;
       }
     ),
   size: Yup.string().required("Выберите размер коробки"),

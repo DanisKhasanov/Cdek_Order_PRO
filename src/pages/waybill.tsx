@@ -116,22 +116,22 @@ const Waybill = () => {
                 </span>
               </div>
               <div className="waybill-item">
-                {orderData.to_location?.address ? (
+                {orderData.toLocation?.address ? (
                   <>
                     <span>Накладная в город: </span>
                     <span>
-                      <u>{orderData.to_location.address}</u>
+                      <u>{orderData.toLocation.address}</u>
                     </span>
                   </>
                 ) : (
                   <>
                     <span>
-                      Накладная в {orderData.delivery_point_address?.type}:{" "}
+                      Накладная в {orderData.deliveryPointAddress?.type}:{" "}
                     </span>
                     <span>
                       <u>
-                        <b>{orderData.delivery_point_address?.city || ""}</b>,{" "}
-                        {orderData.delivery_point_address.address}
+                        <b>{orderData.deliveryPointAddress?.city || ""}</b>,{" "}
+                        {orderData.deliveryPointAddress?.address}
                       </u>
                     </span>
                   </>

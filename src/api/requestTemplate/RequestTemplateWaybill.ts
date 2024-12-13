@@ -1,14 +1,20 @@
 export const RequestTemplateWaybill = (orderData: any) => {
-  const { declared_cost } = JSON.parse(
+  const { defaultDeclaredCost } = JSON.parse(
     localStorage.getItem("settingAccount") || "{}"
   );
-  const defaultCost = declared_cost || 0;
+  const defaultCost = defaultDeclaredCost || 0;
   const numberOfPackages = orderData.packages.length;
   const value = orderData.sum;
   const costPerPackage =
     numberOfPackages > 0 ? defaultCost / numberOfPackages : 0;
-
+  const { fromLocation, orderType } = JSON.parse(
+    localStorage.getItem("settingAccount") || "{}"
+  );
   return {
+    type: orderType,
+    fromLocation: {
+      code: fromLocation.code,
+    },
     number: orderData.number,
     account: orderData.account,
     sender: {
@@ -16,16 +22,16 @@ export const RequestTemplateWaybill = (orderData: any) => {
         number: phone.number,
       })),
     },
-    tariffCode: orderData.tariff_code,
+    tariffCode: orderData.tariffCode,
     recipient: orderData.recipient,
-    ...(orderData.to_location && {
+    ...(orderData.toLocation && {
       toLocation: {
-        code: orderData.to_location.code,
-        address: orderData.to_location.address,
+        code: orderData.toLocation.code,
+        address: orderData.toLocation.address,
       },
     }),
-    ...(orderData.delivery_point && {
-      deliveryPoint: orderData.delivery_point,
+    ...(orderData.deliveryPoint && {
+      deliveryPoint: orderData.deliveryPoint,
     }),
 
     packages: orderData.packages.map((pkg: any, index: number) => ({
@@ -36,7 +42,7 @@ export const RequestTemplateWaybill = (orderData: any) => {
       height: pkg.height,
       items: pkg.items.map((item: any) => ({
         name: item.name,
-        wareKey: item.ware_key,
+        wareKey: item.wareKey,
         marking: item.marking,
         weight: item.weight * 1000,
         amount: item.amount,
@@ -47,8 +53,8 @@ export const RequestTemplateWaybill = (orderData: any) => {
         cost: costPerPackage,
       })),
     })),
-    comment: orderData.comment_delivery,
+    comment: orderData.commentDelivery,
     services: orderData.services,
-    deliveryRecipientCost: orderData.delivery_recipient_cost,
+    deliveryRecipientCost: orderData.deliveryRecipientCost,
   };
 };
