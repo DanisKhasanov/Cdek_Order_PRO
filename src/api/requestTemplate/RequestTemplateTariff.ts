@@ -4,7 +4,7 @@ const { fromLocation, orderType } = JSON.parse(
 
 export const RequestTemplateTariff = (orderData: any) => ({
   fromLocation: {
-    code: fromLocation.code,
+    code: fromLocation?.code,
   },
   type: orderType,
   toLocation: {
