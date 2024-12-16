@@ -36,13 +36,18 @@ const validateWeightAndSize = (weight: number, size: string) => {
 };
 
 const getInitialValues = () => {
-  const firstBox = settingAccount.boxesTypes?.[0];
+  const firstBox = settingAccount?.boxesTypes?.[0];
+
+  if (!firstBox) {
+    return {
+      weight: "",
+      size: ""
+    };
+  }
 
   return {
     weight: "",
-    size: firstBox
-      ? `${firstBox.length}x${firstBox.width}x${firstBox.height}`
-      : "",
+    size: `${firstBox?.length}x${firstBox?.width}x${firstBox?.height}`
   };
 };
 
@@ -58,6 +63,7 @@ const validationSchema = Yup.object().shape({
         if (!size) {
           return true; 
         }
+
         const boxes = settingAccount?.boxesTypes || [];
         const [length, width, height] = size.split("x").map(Number);
         const matchingBox = boxes.find(

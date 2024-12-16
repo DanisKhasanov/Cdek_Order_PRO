@@ -119,26 +119,40 @@ export const PostOrderData = async (payload: any, accountId: string) => {
   }
 };
 
-export const GetBarcode = async (id: number, account: string, name: string) => {
+export const GetBarcode = async (
+  accountId: string,
+  orderUUID: string,
+  nameRecipient: string
+) => {
   try {
-    const response = await api.get(`/barcode/${id}?account=${account}`, {
-      responseType: "blob",
-    });
-    const fileURL = URL.createObjectURL(response.data);
-    const link = document.createElement("a");
-    link.href = fileURL;
-    const date = new Date();
-    const dateFormatted = date.toLocaleDateString("ru-RU");
-    link.download = `Штрихкод_${name}_${dateFormatted}.pdf`;
-    link.click();
-    URL.revokeObjectURL(fileURL);
+    const response = await api.post(
+      `/barcode?accountId=${accountId}`,
+      {
+        orderUUID,
+      },
+  
+    );
+    return response.data;
+    // const fileURL = URL.createObjectURL(response.data);
+    // const link = document.createElement("a");
+    // link.href = fileURL;
+    // const date = new Date();
+    // const dateFormatted = date.toLocaleDateString("ru-RU");
+    // link.download = `Штрихкод_${nameRecipient}_${dateFormatted}.pdf`;
+    // link.click();
+    // URL.revokeObjectURL(fileURL);
   } catch (error) {
     console.error("Ошибка при получении шрихкодов:", error);
     throw error;
   }
 };
 
-export const GetInvoice = async (id: number, account: string, name: string) => {
+
+export const GetInvoice = async (
+  id: number,
+  account: string,
+  nameRecipient: string
+) => {
   try {
     const response = await api.get(`/invoice/${id}?account=${account}`, {
       responseType: "blob",
@@ -148,7 +162,7 @@ export const GetInvoice = async (id: number, account: string, name: string) => {
     link.href = fileURL;
     const date = new Date();
     const dateFormatted = date.toLocaleDateString("ru-RU");
-    link.download = `Накладная_${name}_${dateFormatted}.pdf`;
+    link.download = `Накладная_${nameRecipient}_${dateFormatted}.pdf`;
     link.click();
     URL.revokeObjectURL(fileURL);
   } catch (error) {

@@ -10,6 +10,7 @@ import { updateOrderForm } from "../store/reducers/OrderReducer";
 import CircularProgress from "@mui/material/CircularProgress";
 import { LoadingSpinner } from "../helpers/loadingSpinner";
 import { formatDateTime } from "../helpers/formatDateTime";
+import { connectSocket, disconnectSocket, socket } from "../api/socket";
 
 const Waybill = () => {
   const orderData = useSelector((state: RootState) => state.orderForm);
@@ -21,37 +22,83 @@ const Waybill = () => {
   const [loadingInvoice, setLoadingInvoice] = useState(false);
   const [loadingBarcode, setLoadingBarcode] = useState(false);
   const account = orderData.account;
-  const name = orderData.recipient.name;
+  const nameRecipient = orderData.recipient.name;
   const [errors, setErrors] = useState<string[]>([]);
+  const [currentRequestId, setCurrentRequestId] = useState<string | null>(null);
+
 
   useEffect(() => {
     if (orderData.counterParty) {
       postOrderData();
     }
   }, []);
+
+  useEffect(() => {
+    connectSocket();
+
+    socket.on('connect', () => {
+      console.log('Connected to WebSocket');
+    });
+
+    socket.on('printFormReady', (data) => {
+      if (data.requestId === currentRequestId) {
+        const { base64, mimeType, type } = data;
+        
+        // Создаем blob из base64
+        const byteCharacters = atob(base64);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: mimeType });
+        
+        // Создаем ссылку для скачивания
+        const fileURL = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = fileURL;
+        const date = new Date().toLocaleDateString('ru-RU');
+        const fileName = type === 'BARCODE' 
+          ? `Штрихкод_${nameRecipient}_${date}.pdf`
+          : `Накладная_${nameRecipient}_${date}.pdf`;
+        
+        link.download = fileName;
+        link.click();
+        URL.revokeObjectURL(fileURL);
+      }
+    });
+
+    return () => {
+      disconnectSocket();
+      socket.off('printFormReady');
+    };
+  }, [currentRequestId]);
+
   const postOrderData = async () => {
     try {
       const data = await PostOrderData(orderData, orderData.accountId);
+
       setResponse(data);
       setOrderCreated(true);
       dispatch(updateOrderForm({ ...orderData, orderCreated: true }));
     } catch (error: any) {
       setOrderCreated(false);
-      if (error.requests?.[0]?.errors) {
-        setErrors(error.requests[0].errors.map((err: any) => err.message));
+      if (error.response?.data?.errors) {
+        setErrors(error.response.data.errors.map((err: any) => err.msg));
       } else {
         setErrors([error.message || "Произошла ошибка при отправке данных"]);
-        console.error("Ошибка при отправке данных на сервер:", error);
       }
     } finally {
       setLoading(false);
     }
   };
 
-  const getBarcode = async (id: number) => {
+  const getBarcode = async (accountId: string, orderUUID: string) => {
     setLoadingBarcode(true);
     try {
-      await GetBarcode(id, account, name);
+      const response = await GetBarcode(accountId, orderUUID, nameRecipient);
+      setCurrentRequestId(response.requestId);
+      console.log(currentRequestId)
     } catch (error) {
       console.error("Ошибка при получении шрихкодов:", error);
     } finally {
@@ -62,7 +109,7 @@ const Waybill = () => {
   const getInvoice = async (id: number) => {
     setLoadingInvoice(true);
     try {
-      await GetInvoice(id, account, name);
+      await GetInvoice(id, account, nameRecipient);
     } catch (error) {
       console.error("Ошибка при получении счета:", error);
     } finally {
@@ -76,33 +123,13 @@ const Waybill = () => {
         <LoadingSpinner />
       ) : (
         <div className="waybill-content">
-          {orderCreated ? (
+          {orderCreated && response.requests[0].state === "SUCCESSFUL" ? (
             <div className="order-check">
               <CheckCircleOutlineIcon
                 style={{ fontSize: 60, color: "#4caf50" }}
               />
               <p className="success-message">Заказ успешно создан!</p>
-            </div>
-          ) : (
-            <div className="order-check">
-              <CloseIcon style={{ fontSize: 60, color: "red" }} />
-              <p className="fail-message">Не удалось создать заказ.</p>
-            </div>
-          )}
 
-          {errors.length > 0 && (
-            <div className="error-messages">
-              <p style={{ color: "red" }}>Ошибки при создании заказа:</p>
-              <ul>
-                {errors.map((error, index) => (
-                  <li key={index}>{error}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {orderCreated && (
-            <>
               <div className="waybill-item">
                 <span>
                   По документу создана накладная
@@ -115,6 +142,7 @@ const Waybill = () => {
                   от {formatDateTime(response.date)}
                 </span>
               </div>
+
               <div className="waybill-item">
                 {orderData.toLocation?.address ? (
                   <>
@@ -137,6 +165,7 @@ const Waybill = () => {
                   </>
                 )}
               </div>
+
               <div className="waybill-item">
                 <span>Последний статус по накладной: </span>
                 <span>
@@ -144,7 +173,8 @@ const Waybill = () => {
                     <b>
                       {
                         RequestStatus[
-                          response.state as keyof typeof RequestStatus
+                          response.requests[0]
+                            .state as keyof typeof RequestStatus
                         ]
                       }
                     </b>{" "}
@@ -168,7 +198,11 @@ const Waybill = () => {
                     </div>
                   ) : (
                     <a href={"#"}>
-                      <span onClick={() => getBarcode(response.uuid)}>
+                      <span
+                        onClick={() =>
+                          getBarcode(orderData.accountId, response.uuid)
+                        }
+                      >
                         Печати на штрихкоды
                       </span>
                     </a>
@@ -182,7 +216,32 @@ const Waybill = () => {
                   <p>Загрузка накладной...</p>
                 </div>
               )}
-            </>
+            </div>
+          ) : (
+            <div className="order-check">
+              <CloseIcon style={{ fontSize: 60, color: "red" }} />
+              <p className="fail-message">Не удалось создать заказ</p>
+
+              {response?.requests?.[0]?.errors && (
+                <div className="error-messages">
+                  <ul>
+                    {response.requests[0].errors.map((error: any) => (
+                      <li key={error.code}>{error.message}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {errors.length > 0 && (
+                <div className="error-messages">
+                  <ul>
+                    {errors.map((error, index) => (
+                      <li key={index}>{error}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
           )}
         </div>
       )}

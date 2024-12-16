@@ -25,11 +25,19 @@ const OrderForm = () => {
 
   const handleMessage = (event: any) => {
     if (event.origin !== domen) return;
-    // const message = event.data.popupParameters;
-    const message = {
-      id: "1fd37907-b889-11ef-0a80-0e56000ed841",
-      contextKey: "cf2e86a31e2afba49e85de0aec3a5a744325f6a9",
-    };
+    const message = event.data.popupParameters;
+    // const message = {
+      // id: "1fd37907-b889-11ef-0a80-0e56000ed841",
+      // contextKey: "afc7c6b229372ad89d781508d86f4898221b8a56",
+    // };
+
+
+
+
+
+
+
+
 
     if (message) {
       setIdOrder(message.id);
