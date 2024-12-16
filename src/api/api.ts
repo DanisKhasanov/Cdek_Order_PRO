@@ -143,7 +143,7 @@ export const GetInvoice = async (
   socketId: string
 ) => {
   try {
-    const response = await api.post(`/invoice/?accountId=${accountId}`, {
+    const response = await api.post(`/waybill/?accountId=${accountId}`, {
       orderUUID,
       socketId,
     });

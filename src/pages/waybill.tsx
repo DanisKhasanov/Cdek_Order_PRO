@@ -45,7 +45,7 @@ const Waybill = () => {
       handlePrintForm(base64, mimeType, type);
     });
 
-    return () => {
+  return () => {
       disconnectSocket();
       socket.off("connect");
       socket.off("printFormReady");
@@ -223,7 +223,7 @@ const Waybill = () => {
                 </div>
               )}
             </div>
-          ) 
+          )
           : (
             <div className="order-check">
               <CloseIcon style={{ fontSize: 60, color: "red" }} />
