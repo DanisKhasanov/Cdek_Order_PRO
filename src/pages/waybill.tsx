@@ -41,10 +41,9 @@ const Waybill = () => {
     });
 
     socket.on('printFormReady', (data) => {
-      if (data.requestId === currentRequestId) {
+      console.log(data)
         const { base64, mimeType, type } = data;
         
-        // Создаем blob из base64
         const byteCharacters = atob(base64);
         const byteNumbers = new Array(byteCharacters.length);
         for (let i = 0; i < byteCharacters.length; i++) {
@@ -65,7 +64,6 @@ const Waybill = () => {
         link.download = fileName;
         link.click();
         URL.revokeObjectURL(fileURL);
-      }
     });
 
     return () => {
@@ -98,7 +96,6 @@ const Waybill = () => {
     try {
       const response = await GetBarcode(accountId, orderUUID, nameRecipient);
       setCurrentRequestId(response.requestId);
-      console.log(currentRequestId)
     } catch (error) {
       console.error("Ошибка при получении шрихкодов:", error);
     } finally {

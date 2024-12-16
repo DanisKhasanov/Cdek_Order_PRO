@@ -104,8 +104,8 @@ const FormInputs = () => {
           multiline
           rows={4}
           placeholder="Комментарий к заказу"
-          onChange={() => {}}
-        />
+          value={orderData.comment}
+/>
       </Box>
 
       <Box display="flex" alignItems="center" gap={2}>
