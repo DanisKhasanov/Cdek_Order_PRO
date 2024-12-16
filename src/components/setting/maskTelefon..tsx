@@ -13,7 +13,7 @@ export const TextMaskCustom = forwardRef<HTMLInputElement>(function TextMaskCust
   return (
     <IMaskInput
       {...other}
-      mask="+7 (000) 000-00-00"
+      mask="+7(000)000-00-00"
       definitions={{
         "#": /[0-9]/,
       }}
