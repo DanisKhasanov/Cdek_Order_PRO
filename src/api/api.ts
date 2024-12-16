@@ -1,3 +1,4 @@
+import { socket } from "./socket";
 import axios from "axios";
 import { RequestTemplateTariff } from "./requestTemplate/RequestTemplateTariff";
 import { RequestTemplateWaybill } from "./requestTemplate/RequestTemplateWaybill";
@@ -122,49 +123,31 @@ export const PostOrderData = async (payload: any, accountId: string) => {
 export const GetBarcode = async (
   accountId: string,
   orderUUID: string,
-  nameRecipient: string
+  socketId: string
 ) => {
   try {
-    const response = await api.post(
-      `/barcode?accountId=${accountId}`,
-      {
-        orderUUID,
-      },
-  
-    );
+    const response = await api.post(`/barcode?accountId=${accountId}`, {
+      orderUUID,
+      socketId,
+    });
     return response.data;
-    // const fileURL = URL.createObjectURL(response.data);
-    // const link = document.createElement("a");
-    // link.href = fileURL;
-    // const date = new Date();
-    // const dateFormatted = date.toLocaleDateString("ru-RU");
-    // link.download = `Штрихкод_${nameRecipient}_${dateFormatted}.pdf`;
-    // link.click();
-    // URL.revokeObjectURL(fileURL);
   } catch (error) {
     console.error("Ошибка при получении шрихкодов:", error);
     throw error;
   }
 };
 
-
 export const GetInvoice = async (
-  id: number,
-  account: string,
-  nameRecipient: string
+  accountId: string,
+  orderUUID: string,
+  socketId: string
 ) => {
   try {
-    const response = await api.get(`/invoice/${id}?account=${account}`, {
-      responseType: "blob",
+    const response = await api.post(`/invoice/?accountId=${accountId}`, {
+      orderUUID,
+      socketId,
     });
-    const fileURL = URL.createObjectURL(response.data);
-    const link = document.createElement("a");
-    link.href = fileURL;
-    const date = new Date();
-    const dateFormatted = date.toLocaleDateString("ru-RU");
-    link.download = `Накладная_${nameRecipient}_${dateFormatted}.pdf`;
-    link.click();
-    URL.revokeObjectURL(fileURL);
+    return response.data;
   } catch (error) {
     console.error("Ошибка при получении счета:", error);
     throw error;

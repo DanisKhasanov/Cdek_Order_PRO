@@ -10,7 +10,11 @@ import { updateOrderForm } from "../store/reducers/OrderReducer";
 import CircularProgress from "@mui/material/CircularProgress";
 import { LoadingSpinner } from "../helpers/loadingSpinner";
 import { formatDateTime } from "../helpers/formatDateTime";
-import { connectSocket, disconnectSocket, socket } from "../api/socket";
+import {
+  connectSocket,
+  disconnectSocket,
+  socket,
+} from "../api/socket";
 
 const Waybill = () => {
   const orderData = useSelector((state: RootState) => state.orderForm);
@@ -21,56 +25,55 @@ const Waybill = () => {
   const [response, setResponse] = useState<any>();
   const [loadingInvoice, setLoadingInvoice] = useState(false);
   const [loadingBarcode, setLoadingBarcode] = useState(false);
-  const account = orderData.account;
   const nameRecipient = orderData.recipient.name;
   const [errors, setErrors] = useState<string[]>([]);
-  const [currentRequestId, setCurrentRequestId] = useState<string | null>(null);
-
-
-  useEffect(() => {
-    if (orderData.counterParty) {
-      postOrderData();
-    }
-  }, []);
+  const [socketId, setSocketId] = useState<string | null>(null);
 
   useEffect(() => {
     connectSocket();
 
-    socket.on('connect', () => {
-      console.log('Connected to WebSocket');
+    socket.on("connect", () => {
+      setSocketId(socket.id ?? null);
     });
 
-    socket.on('printFormReady', (data) => {
-      console.log(data)
-        const { base64, mimeType, type } = data;
-        
-        const byteCharacters = atob(base64);
-        const byteNumbers = new Array(byteCharacters.length);
-        for (let i = 0; i < byteCharacters.length; i++) {
-          byteNumbers[i] = byteCharacters.charCodeAt(i);
-        }
-        const byteArray = new Uint8Array(byteNumbers);
-        const blob = new Blob([byteArray], { type: mimeType });
-        
-        // Создаем ссылку для скачивания
-        const fileURL = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = fileURL;
-        const date = new Date().toLocaleDateString('ru-RU');
-        const fileName = type === 'BARCODE' 
-          ? `Штрихкод_${nameRecipient}_${date}.pdf`
-          : `Накладная_${nameRecipient}_${date}.pdf`;
-        
-        link.download = fileName;
-        link.click();
-        URL.revokeObjectURL(fileURL);
+    if (orderData.counterParty) {
+      postOrderData();
+    }
+
+    socket.on("printFormReady", (data) => {
+      const { base64, mimeType, type } = data;
+      handlePrintForm(base64, mimeType, type);
     });
 
     return () => {
       disconnectSocket();
-      socket.off('printFormReady');
+      socket.off("connect");
+      socket.off("printFormReady");
     };
-  }, [currentRequestId]);
+  }, []);
+
+  const handlePrintForm = (base64: string, mimeType: string, type: string) => {
+    const byteCharacters = atob(base64);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: mimeType });
+
+    const fileURL = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = fileURL;
+    const date = new Date().toLocaleDateString("ru-RU");
+    const fileName =
+      type === "BARCODE"
+        ? `Штрихкод_${nameRecipient}_${date}.pdf`
+        : `Накладная_${nameRecipient}_${date}.pdf`;
+
+    link.download = fileName;
+    link.click();
+    URL.revokeObjectURL(fileURL);
+  };
 
   const postOrderData = async () => {
     try {
@@ -93,9 +96,12 @@ const Waybill = () => {
 
   const getBarcode = async (accountId: string, orderUUID: string) => {
     setLoadingBarcode(true);
+
     try {
-      const response = await GetBarcode(accountId, orderUUID, nameRecipient);
-      setCurrentRequestId(response.requestId);
+      if (!socketId) {
+        throw new Error("Нет подключения к сокету");
+      }
+      await GetBarcode(accountId, orderUUID, socketId);
     } catch (error) {
       console.error("Ошибка при получении шрихкодов:", error);
     } finally {
@@ -103,10 +109,13 @@ const Waybill = () => {
     }
   };
 
-  const getInvoice = async (id: number) => {
+  const getInvoice = async (accountId: string, orderUUID: string) => {
     setLoadingInvoice(true);
     try {
-      await GetInvoice(id, account, nameRecipient);
+      if (!socketId) {
+        throw new Error("Нет подключения к сокету");
+      }
+      await GetInvoice(accountId, orderUUID, socketId);
     } catch (error) {
       console.error("Ошибка при получении счета:", error);
     } finally {
@@ -132,7 +141,7 @@ const Waybill = () => {
                   По документу создана накладная
                   <a href="#" title="Скачать">
                     {" "}
-                    <b onClick={() => getInvoice(response.uuid)}>
+                    <b onClick={() => getInvoice(orderData.accountId, response.uuid)}>
                       {response.number}
                     </b>
                   </a>{" "}
@@ -214,7 +223,8 @@ const Waybill = () => {
                 </div>
               )}
             </div>
-          ) : (
+          ) 
+          : (
             <div className="order-check">
               <CloseIcon style={{ fontSize: 60, color: "red" }} />
               <p className="fail-message">Не удалось создать заказ</p>
