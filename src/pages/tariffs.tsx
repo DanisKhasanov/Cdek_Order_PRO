@@ -12,12 +12,13 @@ import PaymentForDelivery from "../components/tariffs/paymentForDelivery";
 import { LoadingSpinner } from "../helpers/loadingSpinner";
 import UseCdekWidget from "../components/tariffs/UseCdekWidget";
 import SelectedTariff from "../components/tariffs/tariffToDoor";
-
+import { Typography } from "@mui/material";
 const Tariffs = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const accountId = import.meta.env.VITE_ACCOUNT_ID;
   const orderData = useSelector((state: RootState) => state.orderForm);
+  const packages = useSelector((state: RootState) => state.orderForm.packages);
   const [tariff, setTariff] = useState<TariffProps[]>([]);
   const [loading, setLoading] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
@@ -54,6 +55,7 @@ const Tariffs = () => {
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
+
   const selectedTariffType =
     tariff.find((t) => t.tariff_code === selectedTariff)?.delivery_mode ===
     DELIVERY_MODE.POSTAMAT
@@ -98,7 +100,7 @@ const Tariffs = () => {
       <div className="tariffs-container">
         {loading ? (
           <LoadingSpinner />
-        ) : (
+        ) : packages.length > 0 ? (
           tariff.map((tariff) => (
             <div
               className={`tariff-option ${
@@ -188,6 +190,10 @@ const Tariffs = () => {
               </div>
             </div>
           ))
+        ) : (
+          <Typography textAlign="center" fontSize={20}>
+            Сначала добавьте грузовое место
+          </Typography>
         )}
       </div>
 
