@@ -91,7 +91,9 @@ const CreatedWaybill = ({
         </Typography>
       </Box>
 
-      <Box sx={{ mb: 3, borderBottom: "1px solid", borderColor: "divider", pb: 2 }}>
+      <Box
+        sx={{ mb: 3, borderBottom: "1px solid", borderColor: "divider", pb: 2 }}
+      >
         <Typography>
           <Link
             href={response.href}
@@ -109,27 +111,25 @@ const CreatedWaybill = ({
         </Typography>
       </Box>
 
-      <Box sx={{ mb: 3 , borderBottom: "1px solid", borderColor: "divider", pb: 2}}>
+      <Box
+        sx={{ mb: 3, borderBottom: "1px solid", borderColor: "divider", pb: 2 }}
+      >
         {orderData.toLocation?.address ? (
           <Typography>
-            Накладная в город: {orderData.toLocation.address}
+            Накладная по адрессу: {orderData.toLocation.address}
           </Typography>
         ) : (
-          <>
-            <Typography>
-              Накладная в {orderData.deliveryPointAddress?.type}:{" "}
-            </Typography>
-            <Typography>
-              <u>
-                <b>{orderData.deliveryPointAddress?.city || ""}</b>,{" "}
-                {orderData.deliveryPointAddress?.address}
-              </u>
-            </Typography>
-          </>
+          <Typography>
+            Накладная в {orderData.deliveryPointAddress?.type}:{" "}
+            {orderData.deliveryPointAddress?.city}{" "}
+            {orderData.deliveryPointAddress?.address}
+          </Typography>
         )}
       </Box>
 
-      <Box sx={{ mb: 3 , borderBottom: "1px solid", borderColor: "divider", pb: 2}}>
+      <Box
+        sx={{ mb: 3, borderBottom: "1px solid", borderColor: "divider", pb: 2 }}
+      >
         <Typography>
           Последний статус по накладной:{" "}
           <b>{requestStatus || "Статус недоступен"}</b> от{" "}
