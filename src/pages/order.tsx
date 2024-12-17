@@ -13,10 +13,12 @@ import { Box } from "@mui/material";
 import { LoadingSpinner } from "../helpers/loadingSpinner";
 import ModalSettings from "../components/order/modal";
 import FormInputs from "../components/order/formInputsOrder";
+import { useSnackbar } from "notistack";
 
 const OrderForm = () => {
   const dispatch = useDispatch();
   const orderData = useSelector((state: RootState) => state.orderForm);
+  const { enqueueSnackbar } = useSnackbar();
   const domen = import.meta.env.VITE_DOMEN;
   const [loading, setLoading] = useState(true);
   const [idOrder, setIdOrder] = useState("");
@@ -27,23 +29,16 @@ const OrderForm = () => {
     if (event.origin !== domen) return;
     const message = event.data.popupParameters;
     // const message = {
-      // id: "1fd37907-b889-11ef-0a80-0e56000ed841",
-      // contextKey: "afc7c6b229372ad89d781508d86f4898221b8a56",
+    //   id: "1cd62685-bc59-11ef-0a80-0b19000a56c8",
+    //   contextKey: "14ff2cad2efe95c7c9f29ab6c485030d364c1faf",
     // };
-
-
-
-
-
-
-
-
 
     if (message) {
       setIdOrder(message.id);
       setContextKey(message.contextKey);
     }
   };
+  
   const handleRequests = async () => {
     try {
       const accountResponse = await GetIdAccount({ contextKey });
@@ -84,8 +79,18 @@ const OrderForm = () => {
           })
         );
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Ошибка выполнения запросов:", error);
+      if (error.response.status === 400) {
+        enqueueSnackbar(
+          "Данные не получены, закройте виджет и обновите страницу",
+          {
+            anchorOrigin: { vertical: "top", horizontal: "right" },
+            autoHideDuration: 5000,
+            variant: "error",
+          }
+        );
+      }
     } finally {
       setLoading(false);
     }
