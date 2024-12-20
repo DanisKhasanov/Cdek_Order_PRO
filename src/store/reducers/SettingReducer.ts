@@ -18,7 +18,9 @@ interface SettingState {
     name: string;
     phones: [{ number: string }];
   };
-  fromLocation: string;
+  fromLocation: {
+    address: string;
+  };
   typeShipment: number;
   dateShipment: string;
   timeShipment: string;
@@ -36,7 +38,7 @@ const initialState: SettingState = {
   moyskladToken: "",
   orderType: 1,
   sender: { name: "", phones: [{ number: "" }] },
-  fromLocation: "",
+  fromLocation: { address: "" },
   typeShipment: 1,
   dateShipment: "",
   timeShipment: "",
@@ -82,7 +84,7 @@ const settingSlice = createSlice({
       state.comment = action.payload;
     },
     setCityShipment: (state, action: PayloadAction<string>) => {
-      state.fromLocation = action.payload;
+      state.fromLocation.address = action.payload;
     },
     setAddressShipment: (state, action: PayloadAction<string>) => {
       state.addressShipment = action.payload;
@@ -104,7 +106,6 @@ const settingSlice = createSlice({
     setDeclaredCost: (state, action: PayloadAction<number>) => {
       state.defaultDeclaredCost = action.payload;
     },
- 
   },
 });
 

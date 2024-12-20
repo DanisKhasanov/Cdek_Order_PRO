@@ -64,7 +64,7 @@ export default function AutocompleteAddress({ onChange, label }: AutocompletePro
         onChange={(suggestion) => {
           onChange(suggestion?.unrestricted_value || "");
         }}
-        defaultQuery={fromLocation}
+        defaultQuery={fromLocation.address}
         inputProps={{
           label: label,
           placeholder: "Введите адрес"
