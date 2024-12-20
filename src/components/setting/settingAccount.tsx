@@ -89,7 +89,7 @@ export const SettingAccount = () => {
       <Box
         sx={{
           overflowY: "auto",
-          height: "77vh",
+          height: "90vh",
           scrollbarWidth: "none",
           "&::-webkit-scrollbar": { display: "none" },
         }}
@@ -101,38 +101,46 @@ export const SettingAccount = () => {
             <DeliveryOptions />
 
             <PackagingParameters />
+
+            <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={isAgreementAccepted}
+                    onChange={agreement}
+                  />
+                }
+                label={
+                  <Typography sx={{ fontSize: 12, color: "gray" }}>
+                    Используя данное приложения, Вы принимаете условия{" "}
+                    <a href="#" target="_blank">
+                      лицензионного соглашения
+                    </a>{" "}
+                    и даете согласие на обработку персональных данных
+                  </Typography>
+                }
+                sx={{ mt: 1 }}
+              />
+              <Button
+                variant="contained"
+                sx={{
+                  mt: 1,
+                  borderRadius: 1,
+                  textTransform: "none",
+                  width: "30%",
+                }}
+                disabled={!isAgreementAccepted || !isConnected}
+                onClick={() => postSettingAccount()}
+              >
+                Подключить
+              </Button>
+            </Box>
           </>
         ) : (
           <Typography variant="h6" sx={{ mt: 2 }}>
             У вас нет прав доступа к этой странице.
           </Typography>
         )}
-      </Box>
-
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
-        <FormControlLabel
-          control={
-            <Checkbox checked={isAgreementAccepted} onChange={agreement} />
-          }
-          label={
-            <Typography sx={{ fontSize: 12, color: "gray" }}>
-              Используя данное приложения, Вы принимаете условия{" "}
-              <a href="#" target="_blank">
-                лицензионного соглашения
-              </a>{" "}
-              и даете согласие на обработку персональных данных
-            </Typography>
-          }
-          sx={{ mt: 1 }}
-        />
-        <Button
-          variant="contained"
-          sx={{ mt: 1, borderRadius: 1, textTransform: "none", width: "30%" }}
-          disabled={!isAgreementAccepted || !isConnected}
-          onClick={() => postSettingAccount()}
-        >
-          Подключить
-        </Button>
       </Box>
     </>
   );
