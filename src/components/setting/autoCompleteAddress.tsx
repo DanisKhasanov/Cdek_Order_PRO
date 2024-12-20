@@ -55,7 +55,7 @@ interface AutocompleteProps {
 }
 
 export default function AutocompleteAddress({ onChange, label }: AutocompleteProps) {
-  const { cityShipment } = useSelector((state: RootState) => state.setting);
+  const { fromLocation } = useSelector((state: RootState) => state.setting);
 
   return (
     <Box sx={{ mt: 1 }}>
@@ -64,7 +64,7 @@ export default function AutocompleteAddress({ onChange, label }: AutocompletePro
         onChange={(suggestion) => {
           onChange(suggestion?.unrestricted_value || "");
         }}
-        defaultQuery={cityShipment}
+        defaultQuery={fromLocation}
         inputProps={{
           label: label,
           placeholder: "Введите адрес"

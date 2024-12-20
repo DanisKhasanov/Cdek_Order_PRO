@@ -1,41 +1,42 @@
 import { RootState } from "../../store/store";
 export const validateForm = ({
-  typeOrder,
-  keyApi,
-  passwordApi,
-  nameSender,
+  orderType,
+  cdekClientId,
+  cdekClientSecret,
+  moyskladToken,
+  sender,
   typeShipment,
   dateShipment,
   timeShipment,
   comment,
-  cityShipment,
+  fromLocation,
   addressShipment,
-  phone,
-  boxes,
-  nameProduct,
-  declaredCost,
+  boxesTypes,
+  defaultProductName,
+  defaultDeclaredCost,
 }: RootState["setting"]) => {
   const errorMessages: string[] = [];
 
-  if (!keyApi) errorMessages.push("Введите ключ API");
-  if (!passwordApi) errorMessages.push("Введите секретный ключ");
-  if (!typeOrder) errorMessages.push("Выберите тип заказа");
-  if (!nameProduct) errorMessages.push("Введите наименование товара");
-  if (!nameSender) errorMessages.push("Введите имя отправителя");
-  if (!phone) errorMessages.push("Введите номер телефона");
-  if (!cityShipment) errorMessages.push("Введите город отправки");
+  if (!cdekClientId) errorMessages.push("Введите ключ API");
+  if (!cdekClientSecret) errorMessages.push("Введите секретный ключ");
+  if (!moyskladToken) errorMessages.push("Введите токен МойСклад");
+  if (!orderType) errorMessages.push("Выберите тип заказа");
+  if (!defaultProductName) errorMessages.push("Введите наименование товара");
+  if (!sender.name) errorMessages.push("Введите имя отправителя");
+  if (!sender.phones) errorMessages.push("Введите номер телефона");
+  if (!fromLocation) errorMessages.push("Введите город отправки");
   if (!typeShipment) errorMessages.push("Выберите тип отправки");
 
-  if (typeShipment === "door") {
-    if (!dateShipment) errorMessages.push("Введите дату отправки");
-    if (!timeShipment) errorMessages.push("Введите время отправки");
-    if (!addressShipment) errorMessages.push("Введите адрес отправки");
-    if (!comment) errorMessages.push("Введите комментарии");
-  }
+  // if (typeShipment === "door") {
+  //   if (!dateShipment) errorMessages.push("Введите дату отправки");
+  //   if (!timeShipment) errorMessages.push("Введите время отправки");
+  //   if (!addressShipment) errorMessages.push("Введите адрес отправки");
+  //   if (!comment) errorMessages.push("Введите комментарии");
+  // }
 
-  if (!boxes.some((box) => box.height && box.length && box.weight && box.width))
+  if (!boxesTypes.some((box) => box.height && box.length && box.maxWeight && box.width))
     errorMessages.push("Введите значения в коробках");
-  if (!declaredCost || declaredCost < 0)
+  if (!defaultDeclaredCost || defaultDeclaredCost < 0)
     errorMessages.push("Введите заявленную стоимость");
   
 

@@ -25,6 +25,10 @@ const FormInputs = () => {
     localStorage.getItem("settingAccount") || "{}"
   );
 
+   
+
+
+
   const onSubmit = () => {
     dispatch(setAccount(sender.company));
     dispatch(setPhoneAccount(sender.phones[0].number));
@@ -108,6 +112,9 @@ const FormInputs = () => {
 />
       </Box>
 
+<Box>
+  
+</Box>
       <Box display="flex" alignItems="center" gap={2}>
         <Typography sx={{ minWidth: 200, fontSize: "14px" }}>
           Адрес получателя:

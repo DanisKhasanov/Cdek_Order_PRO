@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { setAccountId } from "../../store/reducers/SettingReducer";
-import { login, GetIdAccount } from "../../api/api";
+import { login, GetIdAccount, PostSettingAccount } from "../../api/api";
 import { useEffect, useState } from "react";
 import { ConnectingAccount } from "./connectingAccount";
 import { DeliveryOptions } from "./deliveryOptions";
@@ -42,7 +42,10 @@ export const SettingAccount = () => {
           const response = await GetIdAccount({ contextKey });
           dispatch(setAccountId(response.accountId));
         } catch (error) {
-          console.error("Ошибка при получении данных:", error);
+          enqueueSnackbar("Ошибка подключения данных из МС", {
+            variant: "error",
+            anchorOrigin: { vertical: "top", horizontal: "left" },
+          });
         }
       }
     };
@@ -62,11 +65,19 @@ export const SettingAccount = () => {
       return false;
     }
 
-    enqueueSnackbar("Данные успешно сохранены", {
-      variant: "success",
-      anchorOrigin: { vertical: "top", horizontal: "left" },
-    });
-    return true;
+    try {
+      await PostSettingAccount(setting.accountId, setting);
+      enqueueSnackbar("Данные успешно сохранены", {
+        variant: "success",
+        anchorOrigin: { vertical: "top", horizontal: "left" },
+      });
+    } catch (error) {
+      enqueueSnackbar("Ошибка сохранения данных", {
+        variant: "error",
+        anchorOrigin: { vertical: "top", horizontal: "left" },
+      });
+      throw error;
+    }
   };
 
   const agreement = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,7 +94,7 @@ export const SettingAccount = () => {
           "&::-webkit-scrollbar": { display: "none" },
         }}
       >
-        {/* {isConnected ? ( */}
+        {isConnected ? (
           <>
             <ConnectingAccount />
 
@@ -91,11 +102,11 @@ export const SettingAccount = () => {
 
             <PackagingParameters />
           </>
-        {/* ) : ( */}
-          {/* <Typography variant="h6" sx={{ mt: 2 }}> */}
-            {/* У вас нет прав доступа к этой странице. */}
-          {/* </Typography> */}
-        {/* )} */}
+        ) : (
+          <Typography variant="h6" sx={{ mt: 2 }}>
+            У вас нет прав доступа к этой странице.
+          </Typography>
+        )}
       </Box>
 
       <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -117,7 +128,7 @@ export const SettingAccount = () => {
         <Button
           variant="contained"
           sx={{ mt: 1, borderRadius: 1, textTransform: "none", width: "30%" }}
-          disabled={!isAgreementAccepted || !isConnected}
+          disabled={!isAgreementAccepted || isConnected}
           onClick={() => postSettingAccount()}
         >
           Подключить

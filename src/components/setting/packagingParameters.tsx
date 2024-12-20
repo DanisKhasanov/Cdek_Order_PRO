@@ -26,7 +26,7 @@ import { useState } from "react";
 import { setBoxes } from "../../store/reducers/SettingReducer";
 
 export const PackagingParameters = () => {
-  const { boxes, nameProduct } = useSelector(
+  const { boxesTypes, defaultProductName } = useSelector(
     (state: RootState) => state.setting
   );
   const dispatch = useDispatch();
@@ -36,13 +36,13 @@ export const PackagingParameters = () => {
     event: React.ChangeEvent<HTMLInputElement>,
     index: number,
     field: keyof {
-      weight: string;
+      maxWeight: string;
       length: string;
       width: string;
       height: string;
     }
   ) => {
-    const updatedBoxes = [...boxes];
+    const updatedBoxes = [...boxesTypes];
     updatedBoxes[index] = {
       ...updatedBoxes[index],
       [field]: Number(event.target.value),
@@ -54,15 +54,15 @@ export const PackagingParameters = () => {
     setSave(false);
     dispatch(
       setBoxes([
-        ...boxes,
-        { id: boxes.length + 1, weight: 0, length: 0, width: 0, height: 0 },
+        ...boxesTypes,
+        { id: boxesTypes.length + 1, maxWeight: 0, length: 0, width: 0, height: 0 },
       ])
     );
   };
 
   const saveBoxes = () => {
     setSave(true);
-    dispatch(setBoxes(boxes));
+    dispatch(setBoxes(boxesTypes));
   };
 
   return (
@@ -78,7 +78,7 @@ export const PackagingParameters = () => {
         </Box>
 
         <Box sx={{ mt: 1 }}>
-          {boxes.map((box, index) => (
+          {boxesTypes.map((box, index) => (
             <Box
               key={box.id}
               sx={{
@@ -90,9 +90,9 @@ export const PackagingParameters = () => {
             >
               <CustomInputBox
                 label="вес"
-                value={box.weight || 0}
+                value={box.maxWeight || 0}
                 adorment={"кг."}
-                onChange={(e) => boxChange(e, index, "weight")}
+                onChange={(e) => boxChange(e, index, "maxWeight")}
               />
               <CustomInputBox
                 label="длина"
@@ -110,7 +110,7 @@ export const PackagingParameters = () => {
                 value={box.height || 0}
                 onChange={(e) => boxChange(e, index, "height")}
               />
-              {boxes.length > 1 && (
+              {boxesTypes.length > 1 && (
                 <IconButton
                   onClick={() => {
                     dispatch(removeBox(index));
@@ -126,7 +126,7 @@ export const PackagingParameters = () => {
             <Button
               variant="contained"
               color="success"
-              disabled={boxes.some(
+              disabled={boxesTypes.some(
                 (box) => box.length === 0 || box.width === 0 || box.height === 0
               )}
               sx={{ textTransform: "none" }}
@@ -144,9 +144,9 @@ export const PackagingParameters = () => {
             <Button
               variant="contained"
               onClick={addBox}
-              disabled={boxes.some(
+              disabled={boxesTypes.some(
                 (box) =>
-                  box.weight === 0 ||
+                  box.maxWeight === 0 ||
                   box.length === 0 ||
                   box.width === 0 ||
                   box.height === 0
@@ -166,7 +166,7 @@ export const PackagingParameters = () => {
         </Typography>
         <CustomInput
           label="Наименование товара"
-          value={nameProduct}
+          value={defaultProductName}
           onChange={(e) => dispatch(setNameProduct(e.target.value))}
         />
         <FormControl variant="outlined" sx={{ mt: 1 }}>

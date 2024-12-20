@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import {
   Box,
   Typography,
@@ -25,7 +25,7 @@ import {
 } from "../../store/reducers/SettingReducer";
 
 export const DeliveryOptions = () => {
-  const { typeShipment, nameSender, dateShipment } = useSelector(
+  const { typeShipment, sender, dateShipment } = useSelector(
     (state: RootState) => state.setting
   );
   const dispatch = useDispatch();
@@ -48,7 +48,7 @@ export const DeliveryOptions = () => {
 
       <CustomInput
         label="Название отправителя"
-        value={nameSender}
+        value={sender.name}
         onChange={(e) => dispatch(setNameSender(e.target.value))}
       />
 
@@ -63,13 +63,10 @@ export const DeliveryOptions = () => {
         select
         label="Тип отгрузки"
         value={typeShipment || ""}
-        onChange={(e) => dispatch(setTypeShipment(e.target.value))}
+        // onChange={(e) => dispatch(setTypeShipment(e.target.value))}
       >
-        <MenuItem value="warehouse" sx={{ fontSize: "14px" }}>
+        <MenuItem value="1" sx={{ fontSize: "14px" }}>
           От склада
-        </MenuItem>
-        <MenuItem value="door" sx={{ fontSize: "14px" }}>
-          От двери
         </MenuItem>
       </CustomInput>
 

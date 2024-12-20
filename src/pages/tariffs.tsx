@@ -181,7 +181,7 @@ const Tariffs = () => {
               </div>
 
               <div className="tariff-cost">
-                {accountId === orderData.accountId ? (
+                {accountId !== orderData.accountId ? (
                   <span>{(tariff.delivery_sum + 100).toFixed(2)} руб.</span>
                 ) : (
                   ""

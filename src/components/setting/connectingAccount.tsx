@@ -1,18 +1,18 @@
-import { MenuItem, Typography, Box , Tooltip } from "@mui/material";
+import { MenuItem, Typography, Box, Tooltip } from "@mui/material";
 import HelpOutlineTwoToneIcon from "@mui/icons-material/HelpOutlineTwoTone";
 import { CustomInput } from "./inputSetting";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setKeyApi,
   setPasswordApi,
-  setTypeOrder,
+  setTokenMS,
 } from "../../store/reducers/SettingReducer";
 import { textСonnection } from "../../helpers/textTooltip";
 import { RootState } from "../../store/store";
 
 export const ConnectingAccount = () => {
   const dispatch = useDispatch();
-  const { typeOrder } = useSelector((state: RootState) => state.setting);
+  const { orderType } = useSelector((state: RootState) => state.setting);
 
   return (
     <Box>
@@ -32,21 +32,12 @@ export const ConnectingAccount = () => {
         onChange={(e) => dispatch(setPasswordApi(e.target.value))}
       />
       <CustomInput
-        select
-        label="Тип заказа СДЭК"
-        value={typeOrder}
-        onChange={(e) => dispatch(setTypeOrder(e.target.value))}
-      >
-        <MenuItem value="internet-shop" sx={{ fontSize: "14px" }}>
+        label="Токен МойСклад"
+        onChange={(e) => dispatch(setTokenMS(e.target.value))}
+      />
+      <CustomInput select label="Тип заказа СДЭК" value={orderType}>
+        <MenuItem value="1" sx={{ fontSize: "14px" }}>
           Интернет-магазин
-        </MenuItem>
-        <MenuItem
-          value="delivery"
-          sx={{
-            fontSize: "14px",
-          }}
-        >
-          Доставка
         </MenuItem>
       </CustomInput>
     </Box>

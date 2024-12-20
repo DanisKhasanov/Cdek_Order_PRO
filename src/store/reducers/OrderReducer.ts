@@ -85,7 +85,7 @@ const initialState: OrderFormState = {
     value: 0,
   },
   orderCreated: false,
-  counterParty: false,
+  counterParty: true,
 };
 
 const orderFormSlice = createSlice({

@@ -222,3 +222,15 @@ export const GetSetting = async (accountId: string) => {
     throw error;
   }
 };
+
+export const PostSettingAccount = async (accountId: string, payload: any) => {
+  try {
+    const response = await api.post(
+      `/moysklad/settings?accountId=${accountId}`,
+      payload
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

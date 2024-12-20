@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface Box {
   id: number;
-  weight: number;
+  maxWeight: number;
   length: number;
   width: number;
   height: number;
@@ -10,38 +10,41 @@ interface Box {
 
 interface SettingState {
   accountId: string;
-  keyApi: string;
-  passwordApi: string;
-  nameSender: string;
-  typeOrder: string; //будет 1 или 2
-  typeShipment: string;
+  cdekClientId: string;
+  cdekClientSecret: string;
+  moyskladToken: string;
+  orderType: number;
+  sender: {
+    name: string;
+    phones: [{ number: string }];
+  };
+  fromLocation: string;
+  typeShipment: number;
   dateShipment: string;
   timeShipment: string;
   comment: string;
-  cityShipment: string;
   addressShipment: string;
-  phone: string;
-  boxes: Box[];
-  nameProduct: string;
-  declaredCost: number;
+  boxesTypes: Box[];
+  defaultProductName: string;
+  defaultDeclaredCost: number;
 }
 
 const initialState: SettingState = {
   accountId: "",
-  keyApi: "",
-  passwordApi: "",
-  typeOrder: "",
-  nameSender: "",
-  typeShipment: "",
+  cdekClientId: "",
+  cdekClientSecret: "",
+  moyskladToken: "",
+  orderType: 1,
+  sender: { name: "", phones: [{ number: "" }] },
+  fromLocation: "",
+  typeShipment: 1,
   dateShipment: "",
   timeShipment: "",
   comment: "",
-  cityShipment: "",
   addressShipment: "",
-  phone: "",
-  boxes: [{ id: 1, weight: 0, length: 0, width: 0, height: 0 }],
-  nameProduct: "",
-  declaredCost: 0,
+  boxesTypes: [{ id: 1, maxWeight: 0, length: 0, width: 0, height: 0 }],
+  defaultProductName: "",
+  defaultDeclaredCost: 0,
 };
 
 const settingSlice = createSlice({
@@ -52,18 +55,21 @@ const settingSlice = createSlice({
       state.accountId = action.payload;
     },
     setKeyApi: (state, action: PayloadAction<string>) => {
-      state.keyApi = action.payload;
+      state.cdekClientId = action.payload;
     },
     setPasswordApi: (state, action: PayloadAction<string>) => {
-      state.passwordApi = action.payload;
+      state.cdekClientSecret = action.payload;
     },
-    setTypeOrder: (state, action: PayloadAction<string>) => {
-      state.typeOrder = action.payload;
+    setTokenMS: (state, action: PayloadAction<string>) => {
+      state.moyskladToken = action.payload;
+    },
+    setTypeOrder: (state, action: PayloadAction<number>) => {
+      state.orderType = action.payload;
     },
     setNameSender: (state, action: PayloadAction<string>) => {
-      state.nameSender = action.payload;
+      state.sender.name = action.payload;
     },
-    setTypeShipment: (state, action: PayloadAction<string>) => {
+    setTypeShipment: (state, action: PayloadAction<number>) => {
       state.typeShipment = action.payload;
     },
     setDateShipment: (state, action: PayloadAction<string>) => {
@@ -76,26 +82,29 @@ const settingSlice = createSlice({
       state.comment = action.payload;
     },
     setCityShipment: (state, action: PayloadAction<string>) => {
-      state.cityShipment = action.payload;
+      state.fromLocation = action.payload;
     },
     setAddressShipment: (state, action: PayloadAction<string>) => {
       state.addressShipment = action.payload;
     },
     setPhone: (state, action: PayloadAction<string>) => {
-      state.phone = action.payload;
+      state.sender.phones[0].number = action.payload;
     },
     setBoxes: (state, action: PayloadAction<Box[]>) => {
-      state.boxes = action.payload;
+      state.boxesTypes = action.payload;
     },
     removeBox: (state, action: PayloadAction<number>) => {
-      state.boxes = state.boxes.filter((_, index) => index !== action.payload);
+      state.boxesTypes = state.boxesTypes.filter(
+        (_, index) => index !== action.payload
+      );
     },
     setNameProduct: (state, action: PayloadAction<string>) => {
-      state.nameProduct = action.payload;
+      state.defaultProductName = action.payload;
     },
     setDeclaredCost: (state, action: PayloadAction<number>) => {
-      state.declaredCost = action.payload;
+      state.defaultDeclaredCost = action.payload;
     },
+ 
   },
 });
 
@@ -103,6 +112,7 @@ export const {
   setAccountId,
   setKeyApi,
   setPasswordApi,
+  setTokenMS,
   setTypeOrder,
   setNameSender,
   setTypeShipment,
