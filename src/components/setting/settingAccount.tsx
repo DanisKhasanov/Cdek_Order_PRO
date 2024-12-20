@@ -128,7 +128,7 @@ export const SettingAccount = () => {
         <Button
           variant="contained"
           sx={{ mt: 1, borderRadius: 1, textTransform: "none", width: "30%" }}
-          disabled={!isAgreementAccepted || isConnected}
+          disabled={!isAgreementAccepted || !isConnected}
           onClick={() => postSettingAccount()}
         >
           Подключить
