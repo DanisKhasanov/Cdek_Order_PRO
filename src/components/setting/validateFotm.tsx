@@ -3,7 +3,6 @@ export const validateForm = ({
   orderType,
   cdekClientId,
   cdekClientSecret,
-  moyskladToken,
   sender,
   typeShipment,
   dateShipment,
@@ -19,7 +18,6 @@ export const validateForm = ({
 
   if (!cdekClientId) errorMessages.push("Введите ключ API");
   if (!cdekClientSecret) errorMessages.push("Введите секретный ключ");
-  if (!moyskladToken) errorMessages.push("Введите токен МойСклад");
   if (!orderType) errorMessages.push("Выберите тип заказа");
   if (!defaultProductName) errorMessages.push("Введите наименование товара");
   if (!sender.name) errorMessages.push("Введите имя отправителя");
