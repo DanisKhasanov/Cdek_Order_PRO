@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setKeyApi,
   setPasswordApi,
-  setTokenMS,
 } from "../../store/reducers/SettingReducer";
 import { textСonnection } from "../../helpers/textTooltip";
 import { RootState } from "../../store/store";
@@ -31,10 +30,7 @@ export const ConnectingAccount = () => {
         type="password"
         onChange={(e) => dispatch(setPasswordApi(e.target.value))}
       />
-      <CustomInput
-        label="Токен МойСклад"
-        onChange={(e) => dispatch(setTokenMS(e.target.value))}
-      />
+
       <CustomInput select label="Тип заказа СДЭК" value={orderType}>
         <MenuItem value="1" sx={{ fontSize: "14px" }}>
           Интернет-магазин

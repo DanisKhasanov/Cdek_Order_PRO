@@ -12,7 +12,6 @@ interface SettingState {
   accountId: string;
   cdekClientId: string;
   cdekClientSecret: string;
-  moyskladToken: string;
   orderType: number;
   sender: {
     name: string;
@@ -35,7 +34,6 @@ const initialState: SettingState = {
   accountId: "",
   cdekClientId: "",
   cdekClientSecret: "",
-  moyskladToken: "",
   orderType: 1,
   sender: { name: "", phones: [{ number: "" }] },
   fromLocation: { address: "" },
@@ -61,9 +59,6 @@ const settingSlice = createSlice({
     },
     setPasswordApi: (state, action: PayloadAction<string>) => {
       state.cdekClientSecret = action.payload;
-    },
-    setTokenMS: (state, action: PayloadAction<string>) => {
-      state.moyskladToken = action.payload;
     },
     setTypeOrder: (state, action: PayloadAction<number>) => {
       state.orderType = action.payload;
@@ -113,7 +108,6 @@ export const {
   setAccountId,
   setKeyApi,
   setPasswordApi,
-  setTokenMS,
   setTypeOrder,
   setNameSender,
   setTypeShipment,
