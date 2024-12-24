@@ -38,7 +38,7 @@ export const SettingAccount = () => {
     const accountId = async () => {
       if (contextKey) {
         try {
-          login();
+          await login();
           const response = await GetIdAccount({ contextKey });
           dispatch(setAccountId(response.accountId));
         } catch (error) {
