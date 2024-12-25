@@ -49,6 +49,7 @@ export const PackagingParameters = () => {
     };
     dispatch(setBoxes(updatedBoxes));
   };
+  
 
   const addBox = () => {
     setSave(false);
