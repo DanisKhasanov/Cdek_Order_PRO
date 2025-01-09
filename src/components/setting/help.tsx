@@ -15,14 +15,14 @@ export const Help = () => {
       </Typography>
       <Box sx={{ mt: 2 }}>
         <IconButton
-          onClick={() => window.open("https://t.me/support_app", "_blank")}
+          onClick={() => window.open("https://t.me/flakonyrf", "_blank")}
         >
           <Typography>Напишите в Telegram</Typography>
           <TelegramIcon color="primary" />
         </IconButton>
 
         <IconButton
-          onClick={() => window.open("https://wa.me/support_app", "_blank")}
+          onClick={() => window.open("https://api.whatsapp.com/send?phone=79393932577", "_blank")}
         >
           <Typography>Напишите в WhatsApp</Typography>
           <WhatsAppIcon color="success" />
