@@ -20,7 +20,6 @@ export const CustomInput = forwardRef((props: TextFieldProps, ref) => {
   return (
     <TextField
       fullWidth
-      value={props.value}
       label={props.label}
       size="small"
       margin="dense"

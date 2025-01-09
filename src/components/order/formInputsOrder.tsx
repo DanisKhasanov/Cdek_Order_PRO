@@ -47,7 +47,7 @@ const FormInputs = () => {
           Договор СДЭК:
         </Typography>
         <CustomInput
-          value={sender.name || ""}
+          value={sender.name}
           placeholder="Введите данные договора"
         />
       </Box>
