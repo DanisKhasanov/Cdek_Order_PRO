@@ -21,16 +21,10 @@ const FormInputs = () => {
   const orderData = useSelector((state: RootState) => state.orderForm);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const { sender } = JSON.parse(
-    localStorage.getItem("settingAccount") || "{}"
-  );
-
-   
-
-
+  const { sender } = JSON.parse(localStorage.getItem("settingAccount") || "{}");
 
   const onSubmit = () => {
-    dispatch(setAccount(sender.company));
+    dispatch(setAccount(sender.name));
     dispatch(setPhoneAccount(sender.phones[0].number));
     if (
       orderData.recipient.name &&
@@ -53,7 +47,7 @@ const FormInputs = () => {
           Договор СДЭК:
         </Typography>
         <CustomInput
-          value={sender.company || ""}
+          value={sender.name || ""}
           placeholder="Введите данные договора"
         />
       </Box>
@@ -109,12 +103,10 @@ const FormInputs = () => {
           rows={4}
           placeholder="Комментарий к заказу"
           value={orderData.comment}
-/>
+        />
       </Box>
 
-<Box>
-  
-</Box>
+      <Box></Box>
       <Box display="flex" alignItems="center" gap={2}>
         <Typography sx={{ minWidth: 200, fontSize: "14px" }}>
           Адрес получателя:

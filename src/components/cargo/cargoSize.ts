@@ -7,14 +7,16 @@ export const getCargoSizeOptions = () => {
   const boxes = settingAccount?.boxesTypes || [];
 
   if (!boxes.length) {
-    return [{
-      value: "",
-      label: "Нет доступных размеров"
-    }];
+    return [
+      {
+        value: "",
+        label: "Нет доступных размеров",
+      },
+    ];
   }
 
   return boxes.map((box: Box) => ({
     value: `${box.length}x${box.width}x${box.height}`,
-    label: `до ${box.maxWeight / 1000} кг ${box.length}x${box.width}x${box.height}`,
+    label: `до ${box.maxWeight} кг ${box.length}x${box.width}x${box.height}`,
   }));
 };

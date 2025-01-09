@@ -166,9 +166,9 @@ export const GetOrderData = async (id: string, account: string) => {
   }
 };
 
-export const GetDataCity = async (payment: any, accountId: string) => {
+export const GetDataCity = async (data: any, accountId: string) => {
   try {
-    const response = await api.post(`/cod?accountId=${accountId}`, payment);
+    const response = await api.post(`/cod?accountId=${accountId}`, data);
     return response.data;
   } catch (error) {
     console.error("Ошибка при отправке данных на сервер:", error);

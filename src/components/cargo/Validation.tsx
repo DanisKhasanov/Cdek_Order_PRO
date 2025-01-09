@@ -23,16 +23,16 @@ const validateWeightAndSize = (weight: number, size: string) => {
     return false;
   }
 
- const sortedBoxes = boxes.sort((a: Box, b: Box) => a.maxWeight - b.maxWeight);
- const currentBoxIndex = sortedBoxes.findIndex(
-   (box: Box) => box.maxWeight === matchingBox.maxWeight
- );
- const prevBox = currentBoxIndex > 0 ? sortedBoxes[currentBoxIndex - 1] : null;
+  const sortedBoxes = boxes.sort((a: Box, b: Box) => a.maxWeight - b.maxWeight);
+  const currentBoxIndex = sortedBoxes.findIndex(
+    (box: Box) => box.maxWeight === matchingBox.maxWeight
+  );
+  const prevBox = currentBoxIndex > 0 ? sortedBoxes[currentBoxIndex - 1] : null;
 
- const minWeight = prevBox ? prevBox.maxWeight / 1000 : 0;
- const maxWeight = matchingBox.maxWeight / 1000;
+  const minWeight = prevBox ? prevBox.maxWeight : 0;
+  const maxWeight = matchingBox.maxWeight;
 
- return weight > minWeight && weight <= maxWeight;
+  return weight > minWeight && weight <= maxWeight;
 };
 
 const getInitialValues = () => {
@@ -41,13 +41,13 @@ const getInitialValues = () => {
   if (!firstBox) {
     return {
       weight: "",
-      size: ""
+      size: "",
     };
   }
 
   return {
     weight: "",
-    size: `${firstBox?.length}x${firstBox?.width}x${firstBox?.height}`
+    size: `${firstBox?.length}x${firstBox?.width}x${firstBox?.height}`,
   };
 };
 
@@ -56,43 +56,43 @@ const initialValues = getInitialValues();
 const validationSchema = Yup.object().shape({
   weight: Yup.number()
     .required(" ")
-    .test(
-      "weight-size-validation",
-      function(value) {
-        const { size } = this.parent;
-        if (!size) {
-          return true; 
-        }
-
-        const boxes = settingAccount?.boxesTypes || [];
-        const [length, width, height] = size.split("x").map(Number);
-        const matchingBox = boxes.find(
-          (box: Box) =>
-            box.length === length && box.width === width && box.height === height
-        );
-        
-        if (matchingBox) {
-          const sortedBoxes = boxes.sort((a: Box, b: Box) => a.maxWeight - b.maxWeight);
-          const currentBoxIndex = sortedBoxes.findIndex(
-            (box: Box) => box.maxWeight === matchingBox.maxWeight
-          );
-          const prevBox = currentBoxIndex > 0 ? sortedBoxes[currentBoxIndex - 1] : null;
-          const minWeight = prevBox ? prevBox.maxWeight / 1000 : 0;
-          
-          if (value <= minWeight) {
-            return this.createError({
-              message: `Вес должен быть больше ${minWeight} кг для этой коробки`
-            });
-          }
-          if (value > matchingBox.maxWeight / 1000) {
-            return this.createError({
-              message: `Вес не должен превышать ${matchingBox.maxWeight / 1000} кг`
-            });
-          }
-        }
+    .test("weight-size-validation", function (value) {
+      const { size } = this.parent;
+      if (!size) {
         return true;
       }
-    ),
+
+      const boxes = settingAccount?.boxesTypes || [];
+      const [length, width, height] = size.split("x").map(Number);
+      const matchingBox = boxes.find(
+        (box: Box) =>
+          box.length === length && box.width === width && box.height === height
+      );
+
+      if (matchingBox) {
+        const sortedBoxes = boxes.sort(
+          (a: Box, b: Box) => a.maxWeight - b.maxWeight
+        );
+        const currentBoxIndex = sortedBoxes.findIndex(
+          (box: Box) => box.maxWeight === matchingBox.maxWeight
+        );
+        const prevBox =
+          currentBoxIndex > 0 ? sortedBoxes[currentBoxIndex - 1] : null;
+        const minWeight = prevBox ? prevBox.maxWeight : 0;
+
+        if (value <= minWeight) {
+          return this.createError({
+            message: `Вес должен быть больше ${minWeight} кг для этой коробки`,
+          });
+        }
+        if (value > matchingBox.maxWeight) {
+          return this.createError({
+            message: `Вес не должен превышать ${matchingBox.maxWeight} кг`,
+          });
+        }
+      }
+      return true;
+    }),
   size: Yup.string().required("Выберите размер коробки"),
 });
 
