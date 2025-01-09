@@ -106,7 +106,6 @@ const FormInputs = () => {
         />
       </Box>
 
-      <Box></Box>
       <Box display="flex" alignItems="center" gap={2}>
         <Typography sx={{ minWidth: 200, fontSize: "14px" }}>
           Адрес получателя:
