@@ -7,13 +7,13 @@ export const RequestTemplateWaybill = (orderData: any) => {
   const value = orderData.sum;
   const costPerPackage =
     numberOfPackages > 0 ? defaultCost / numberOfPackages : 0;
-  const { fromLocation, orderType } = JSON.parse(
+  const {  orderType } = JSON.parse(
     localStorage.getItem("settingAccount") || "{}"
   );
   return {
     type: orderType,
     fromLocation: {
-      code: fromLocation.code,
+      code: orderData.fromLocation.code,
     },
     number: orderData.number,
     account: orderData.account,

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "../components/styles/style.css";
-import { GetTariffData } from "../api/api";
+import { GetDataCity, GetTariffData } from "../api/api";
 import { updateOrderForm } from "../store/reducers/OrderReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
@@ -13,9 +13,12 @@ import { LoadingSpinner } from "../helpers/loadingSpinner";
 import UseCdekWidget from "../components/tariffs/UseCdekWidget";
 import SelectedTariff from "../components/tariffs/tariffToDoor";
 import { Typography } from "@mui/material";
+import { useSnackbar } from "notistack";
+
 const Tariffs = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
   const accountId = import.meta.env.VITE_ACCOUNT_ID;
   const orderData = useSelector((state: RootState) => state.orderForm);
   const packages = useSelector((state: RootState) => state.orderForm.packages);
@@ -23,11 +26,42 @@ const Tariffs = () => {
   const [loading, setLoading] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
   const [selectedTariff, setSelectedTariff] = useState<number | null>(null);
-  const [selectedTariffSum, setSelectedTariffSum] = useState<number | null>(
-    null
-  );
+  const [selectedTariffSum, setSelectedTariffSum] = useState<number>(0);
   const [selectedPickupPoint, setSelectedPickupPoint] =
     useState<PickupPointProps>({});
+
+  const { fromLocation } = JSON.parse(
+    localStorage.getItem("settingAccount") || "{}"
+  );
+
+
+  const getCodeCity = async () => {
+    try {
+      const response = await GetDataCity(
+        {
+          toLocation: {
+            postalCode: fromLocation.postalCode,
+            city: fromLocation.city,
+          },
+        },
+        orderData.accountId
+      );
+      if (response) {
+        dispatch(
+          updateOrderForm({
+            ...orderData,
+            fromLocation: { ...fromLocation, code: response.code },
+          })
+        );
+      }
+    } catch (error) {
+      enqueueSnackbar("Ошибка при загрузке данных города", {
+        anchorOrigin: { vertical: "top", horizontal: "right" },
+        autoHideDuration: 5000,
+        variant: "error",
+      });
+    }
+  };
 
   const getTariffData = async () => {
     try {
@@ -40,7 +74,11 @@ const Tariffs = () => {
       );
       setTariff(sortedTariffs);
     } catch (error) {
-      console.error("Ошибка при загрузке данных заказа", error);
+      enqueueSnackbar("Ошибка при загрузке данных заказа", {
+        anchorOrigin: { vertical: "top", horizontal: "right" },
+        autoHideDuration: 5000,
+        variant: "error",
+      });
     } finally {
       setLoading(false);
     }
@@ -48,12 +86,13 @@ const Tariffs = () => {
 
   useEffect(() => {
     if (orderData.counterParty) {
+      getCodeCity();
       getTariffData();
     }
   }, []);
 
   const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
+    setIsChecked((prev) => !prev);
   };
 
   const selectedTariffType =
@@ -66,8 +105,7 @@ const Tariffs = () => {
     (selected: any) => setSelectedPickupPoint(selected),
     selectedTariffType
   );
-  
-  
+
   const submit = async () => {
     if (selectedTariff) {
       const selected = tariff.find((t) => t.tariff_code === selectedTariff);

@@ -1,10 +1,10 @@
-const { fromLocation, orderType } = JSON.parse(
+const { orderType } = JSON.parse(
   localStorage.getItem("settingAccount") || "{}"
 );
 
 export const RequestTemplateTariff = (orderData: any) => ({
   fromLocation: {
-    code: fromLocation?.code,
+    code: orderData.fromLocation?.code,
   },
   type: orderType,
   toLocation: {

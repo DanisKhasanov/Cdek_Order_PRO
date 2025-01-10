@@ -56,7 +56,7 @@ export const DeliveryOptions = () => {
 
       <AutocompleteAddress
         label="Город отправления"
-        onChange={(city) => dispatch(setCityShipment(city))}
+        
       />
 
       <CustomInput

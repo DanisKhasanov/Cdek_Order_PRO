@@ -18,7 +18,8 @@ interface SettingState {
     phones: [{ number: string }];
   };
   fromLocation: {
-    address: string;
+    postalCode: string;
+    city: string;
   };
   typeShipment: number;
   dateShipment: string;
@@ -36,7 +37,7 @@ const initialState: SettingState = {
   cdekClientSecret: "",
   orderType: 1,
   sender: { name: "", phones: [{ number: "" }] },
-  fromLocation: { address: "" },
+  fromLocation: { postalCode: "", city: "" },
   typeShipment: 1,
   dateShipment: "",
   timeShipment: "",
@@ -78,8 +79,12 @@ const settingSlice = createSlice({
     setComment: (state, action: PayloadAction<string>) => {
       state.comment = action.payload;
     },
-    setCityShipment: (state, action: PayloadAction<string>) => {
-      state.fromLocation.address = action.payload;
+    setCityShipment: (
+      state,
+      action: PayloadAction<{ city: string; postalCode: string }>
+    ) => {
+      state.fromLocation.postalCode = action.payload.postalCode;
+      state.fromLocation.city = action.payload.city;
     },
     setAddressShipment: (state, action: PayloadAction<string>) => {
       state.addressShipment = action.payload;

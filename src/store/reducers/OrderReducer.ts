@@ -33,6 +33,12 @@ interface OrderFormState {
     name: string;
     phones: [{ number: string }];
   };
+  fromLocation: {
+    code: number;
+    city: string;
+    postalCode: string;
+    address: string;
+  };
   toLocation: {
     code: number;
     city: string;
@@ -65,6 +71,12 @@ const initialState: OrderFormState = {
   recipient: {
     name: "",
     phones: [{ number: "" }],
+  },
+  fromLocation: {
+    code: 0,
+    city: "",
+    postalCode: "",
+    address: "",
   },
   toLocation: {
     code: 0,

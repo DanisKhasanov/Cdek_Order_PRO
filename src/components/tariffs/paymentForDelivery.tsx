@@ -16,12 +16,12 @@ const PaymentForDelivery = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isChecked && selectedTariffSum !== null) {
-      dispatch(
-        updateOrderForm({ deliveryRecipientCost: { value: selectedTariffSum } })
-      );
-    }
-  }, [isChecked, selectedTariffSum, dispatch]); 
+    dispatch(
+      updateOrderForm({
+        deliveryRecipientCost: { value: isChecked && selectedTariffSum !== null ? selectedTariffSum : 0 },
+      })
+    );
+  }, [isChecked, selectedTariffSum, dispatch]);
 
   return (
     <>
