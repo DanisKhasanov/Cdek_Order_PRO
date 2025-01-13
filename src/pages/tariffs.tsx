@@ -34,21 +34,16 @@ const Tariffs = () => {
     localStorage.getItem("settingAccount") || "{}"
   );
   useEffect(() => {
-    const fetchData = async () => {
-      if (orderData.counterParty) {
-        try {
-          await getCodeCity();
-        } catch (error) {
-          throw error;
-        }
-      }
-    };
-    fetchData();
+    if (orderData.counterParty) {
+      getCodeCity();
+    }
   }, []);
 
   useEffect(() => {
+    if(orderData.fromLocation.code) {
     getTariffData();
-  }, [orderData.fromLocation]);
+    }
+  }, [orderData.fromLocation.code]);
 
   const getCodeCity = async () => {
     try {
