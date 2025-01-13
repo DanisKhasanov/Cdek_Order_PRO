@@ -33,14 +33,29 @@ const Tariffs = () => {
   const { fromLocation } = JSON.parse(
     localStorage.getItem("settingAccount") || "{}"
   );
+  useEffect(() => {
+    const fetchData = async () => {
+      if (orderData.counterParty) {
+        try {
+          await getCodeCity();
+        } catch (error) {
+          throw error;
+        }
+      }
+    };
+    fetchData();
+  }, []);
 
+  useEffect(() => {
+    getTariffData();
+  }, [orderData.fromLocation]);
 
   const getCodeCity = async () => {
     try {
       const response = await GetDataCity(
         {
           toLocation: {
-            postalCode: fromLocation.postalCode,
+            postalCode: fromLocation.postalCode.toString(),
             city: fromLocation.city,
           },
         },
@@ -83,13 +98,6 @@ const Tariffs = () => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (orderData.counterParty) {
-      getCodeCity();
-      getTariffData();
-    }
-  }, []);
 
   const handleCheckboxChange = () => {
     setIsChecked((prev) => !prev);
