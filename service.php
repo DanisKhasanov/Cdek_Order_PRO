@@ -16,8 +16,8 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 $service = new service(
- 'uofC0dJ97DVcjjM1p6LdfP1MCLSnSmum',
- 'g6yLzKpCZaFFaFbirKauU2hmGepryEbt');
+ 'Z50MBuWaVabmtJKECNy08iIywZDGB0yq',
+ 'Z6rJ9bKjomIAlfB6Rqn2eiEzVT11TlZh');
 $service->process($_GET, file_get_contents('php://input'));
 
 class service
