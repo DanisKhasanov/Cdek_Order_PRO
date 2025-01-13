@@ -1,8 +1,18 @@
-# React + Vite
+# FLX-CDEK Integration
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Этот проект представляет собой интеграцию с сервисом доставки СДЭК, позволяющую автоматически рассчитывать стоимость доставки, создавать и скачивать накладные прямо из заказа в МойСклад. Это помогает сократить трудозатраты менеджеров, оптимизировать процессы доставки и повысить рентабельность за счет заранее заполненных данных.
 
-Currently, two official plugins are available:
+## Основные функции
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Автоматический расчет стоимости доставки
+- Создание и скачивание накладных
+- Интеграция с личным кабинетом СДЭК
+- Поддержка различных типов доставки (склад-склад, склад-дверь, склад-постамат)
+- Валидация данных перед отправкой
+
+## Задачи на будущее
+
+- [ ] Добавить возможность редактирования созданных заказов
+- [ ] Добавить автоматическое обновление токенов доступа
+- [ ] Улучшить документацию проекта
+- [ ] Реализовать юнит-тесты для основных компонентов
