@@ -15,6 +15,8 @@ const UncreatedWaybill = ({
         borderRadius: 2,
         boxShadow: 3,
         backgroundColor: "background.paper",
+        height: "70vh",
+        overflow: "auto",
       }}
     >
       <Box sx={{ textAlign: "center", mb: 3 }}>

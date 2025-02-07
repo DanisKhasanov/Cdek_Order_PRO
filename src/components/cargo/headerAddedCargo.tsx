@@ -13,7 +13,7 @@ export const HeaderAddedCargo = ({ index, handleEdit }: { index: number, handleE
         Грузовое место №{index + 1}
       </Typography>
 
-      <EditOutlined
+      {/* <EditOutlined
         color="success"
         fontSize="medium"
         onClick={() => handleEdit(index)}
@@ -24,7 +24,7 @@ export const HeaderAddedCargo = ({ index, handleEdit }: { index: number, handleE
         fontSize="medium"
         onClick={() => dispatch(copyCargoSpace(index))}
         sx={{ cursor: "pointer" }}
-      />
+      /> */}
       <DeleteForeverOutlined
         color="error"
         fontSize="medium"

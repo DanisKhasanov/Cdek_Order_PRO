@@ -45,7 +45,7 @@ const Waybill = () => {
 
   const postOrderData = async () => {
     try {
-      const data = await PostOrderData(orderData, orderData.accountId);
+      const data = await PostOrderData(orderData);
       setResponse(data);
       setOrderCreated(true);
       dispatch(updateOrderForm({ ...orderData, orderCreated: true }));

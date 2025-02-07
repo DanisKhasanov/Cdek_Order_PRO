@@ -1,3 +1,76 @@
+@media (max-width: 768px) {
+  .AppHome {
+    width: 90%;
+    height: auto;
+  }
+}
+
+@keyframes subtleGlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(120deg, #2c2c2c 25%, #3a3a3a 50%, #1e1e1e 75%);
+  background-size: 200% 200%;
+  animation: subtleGlow 20s ease-in-out infinite;
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.15);
+}
+
+.AppHome {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.AppContainer {
+  background-color: #f1f1f1;
+  width: 100vh;
+  height: 85vh;
+  border: 2px solid #d3d3d3;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+}
+
+.nav-link {
+  padding: 10px;
+  text-decoration: none;
+  font-size: 17px;
+  display: inline-block;
+  color: #1e6a97;
+}
+
+.nav-link.active {
+  font-weight: 500;
+  color: black;
+  border-bottom: 2px solid black;
+}
+.nav-link-disabled {
+  color: grey;
+  pointer-events: none;
+  text-decoration: none;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
 .button.disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -250,7 +323,7 @@ input:checked + .slider:before {
 }
 
 .tariffs-container {
-  height: 76vh;
+  height: 65vh;
   overflow-y: auto;
   transition: background-color 0.3s;
 }
@@ -420,7 +493,6 @@ input:checked + .slider:before {
   font-weight: bold;
   color: #f44336;
 }
-
 
 .waybill-item b {
   font-weight: bold;

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { editCargoSpace } from "../../store/reducers/OrderReducer";
+// import { editCargoSpace } from "../../store/reducers/OrderReducer";
 import { EditAddedCargoProps } from "../../props/EditAddedCargoProps";
 import { RootState } from "../../store/store";
 import { validateWeightAndSize } from "./Validation";
@@ -41,24 +41,24 @@ const EditAddedACargo = ({
     const costPerPackage =
       totalPackages > 0 ? declaredCost / totalPackages : 0;
 
-    dispatch(
-      editCargoSpace({
-        index: id,
-        weight: weight,
-        size: size,
-        items: {
-          name: nameProduct,
-          wareKey: "1",
-          marking: (id + 1).toString(),
-          weight: weight,
-          amount: 1,
-          payment: {
-            value: orderData.cod === false ? 0 : orderData.sum,
-          },
-          cost: costPerPackage,
-        },
-      })
-    );
+    // dispatch(
+    //   editCargoSpace({
+    //     index: id,
+    //     weight: weight,
+    //     size: size,
+    //     items: {
+    //       name: nameProduct,
+    //       wareKey: "1",
+    //       marking: (id + 1).toString(),
+    //       weight: weight,
+    //       amount: 1,
+    //       payment: {
+    //         value: orderData.cod === false ? 0 : orderData.sum,
+    //       },
+    //       cost: costPerPackage,
+    //     },
+    //   })
+    // );
     onCancel();
   };
 

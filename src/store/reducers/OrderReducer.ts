@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { setNameProduct } from "./SettingReducer";
+// import { setNameProduct } from "./SettingReducer";
 
 interface PackageItem {
   name: string;
-  wareKey: string;
+  ware_key: string;
   marking: string;
   weight: number;
   amount: number;
@@ -22,10 +22,19 @@ interface Package {
   items: PackageItem[];
 }
 
+interface Positions {
+  quantity: number;
+  price: number;
+  vat: number;
+  name: string;
+  code: string;
+  weight: number;
+}
+
 interface OrderFormState {
   number: string;
-  account: string;
-  accountId: string;
+  // account: string;
+  // accountId: string;
   sender: {
     phones: [{ number: string }];
   };
@@ -59,12 +68,14 @@ interface OrderFormState {
   };
   orderCreated: boolean;
   counterParty: boolean;
+  positions: Positions[];
+  weight: number;
 }
 
 const initialState: OrderFormState = {
   number: "",
-  account: "",
-  accountId: "",
+  // account: "",
+  // accountId: "",
   sender: {
     phones: [{ number: "" }],
   },
@@ -98,6 +109,8 @@ const initialState: OrderFormState = {
   },
   orderCreated: false,
   counterParty: true,
+  positions: [],
+  weight: 0,
 };
 
 const orderFormSlice = createSlice({
@@ -114,9 +127,9 @@ const orderFormSlice = createSlice({
       };
     },
 
-    setAccount: (state, action: PayloadAction<string>) => {
-      state.account = action.payload;
-    },
+    // setAccount: (state, action: PayloadAction<string>) => {
+    //   state.account = action.payload;
+    // },
 
     setPhoneAccount: (state, action: PayloadAction<string>) => {
       state.sender.phones[0].number = action.payload;
@@ -143,38 +156,26 @@ const orderFormSlice = createSlice({
       state.toLocation.city = action.payload.city;
     },
 
-    addCargoSpace: (
-      state,
-      action: PayloadAction<{
-        weight: number;
-        size: string;
-        items: PackageItem;
-      }>
-    ) => {
-      const { weight, size } = action.payload;
-      const [length, width, height] = size.split("x").map(Number);
-
-      const totalPackages = state.packages.length + 1;
-
-      const items = {
-        name: action.payload.items.name,
-        wareKey: "1",
-        weight: weight,
-        marking: totalPackages.toString(),
-        amount: 1,
-        payment: {
-          value: state.cod === false ? 0 : state.sum,
-        },
-        cost: action.payload.items.cost,
-      };
-
-      state.packages.push({
-        number: totalPackages.toString(),
-        weight,
-        length,
-        width,
-        height,
-        items: [items],
+    addCargoSpace: (state, action: PayloadAction<Package[]>) => {
+      action.payload.forEach((pkg: any, index: number) => {
+        state.packages.push({
+          number: pkg.number,
+          weight: pkg.weight,
+          length: pkg.length,
+          width: pkg.width,
+          height: pkg.height,
+          items: pkg.items.map((item: any) => ({
+            name: item.name,
+            ware_key: item.ware_key,
+            marking: item.marking,
+            weight: item.weight,
+            amount: item.amount,
+            payment: {
+              value: state.cod ? item.payment.value : 0,
+            },
+            cost: item.cost,
+          })),
+        });
       });
     },
 
@@ -184,44 +185,44 @@ const orderFormSlice = createSlice({
       );
     },
 
-    editCargoSpace: (
-      state,
-      action: PayloadAction<{
-        index: number;
-        weight: number;
-        size: string;
-        items: PackageItem;
-      }>
-    ) => {
-      const { index, weight, size } = action.payload;
-      const [length, width, height] = size.split("x").map(Number);
+    // editCargoSpace: (
+    //   state,
+    //   action: PayloadAction<{
+    //     index: number;
+    //     weight: number;
+    //     size: string;
+    //     items: PackageItem;
+    //   }>
+    // ) => {
+    //   const { index, weight, size } = action.payload;
+    //   const [length, width, height] = size.split("x").map(Number);
 
-      if (state.packages[index]) {
-        // const totalPackages = state.packages.length;
-        // const costPerPackage = 100 / totalPackages;
+    //   if (state.packages[index]) {
+    //     // const totalPackages = state.packages.length;
+    //     // const costPerPackage = 100 / totalPackages;
 
-        const items = {
-          name: state.packages[index].items[0].name,
-          wareKey: "1",
-          weight: weight,
-          marking: (index + 1).toString(),
-          amount: 1,
-          payment: {
-            value: state.cod === false ? 0 : state.sum,
-          },
-          cost: action.payload.items.cost,
-        };
+    //     const items = {
+    //       name: state.packages[index].items[0].name,
+    //       wareKey: "1",
+    //       weight: weight,
+    //       marking: (index + 1).toString(),
+    //       amount: 1,
+    //       payment: {
+    //         value: state.cod === false ? 0 : state.sum,
+    //       },
+    //       cost: action.payload.items.cost,
+    //     };
 
-        state.packages[index] = {
-          number: state.packages.length.toString(),
-          weight,
-          length,
-          width,
-          height,
-          items: [items],
-        };
-      }
-    },
+    //     state.packages[index] = {
+    //       number: state.packages.length.toString(),
+    //       weight,
+    //       length,
+    //       width,
+    //       height,
+    //       items: [items],
+    //     };
+    //   }
+    // },
 
     copyCargoSpace: (state, action: PayloadAction<number>) => {
       const packageToCopy = state.packages[action.payload];
@@ -255,14 +256,14 @@ const orderFormSlice = createSlice({
 
 export const {
   updateOrderForm,
-  setAccount,
+  // setAccount,
   setPhoneAccount,
   setRecipientName,
   setRecipientPhone,
   setRecipientAddress,
   addCargoSpace,
   removeCargoSpace,
-  editCargoSpace,
+  // editCargoSpace,
   copyCargoSpace,
   updateServices,
 } = orderFormSlice.actions;

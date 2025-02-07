@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import orderFormReducer from "./reducers/OrderReducer";
-import settingReducer from "./reducers/SettingReducer";
+// import settingReducer from "./reducers/SettingReducer";
 
 const store = configureStore({
   reducer: {
     orderForm: orderFormReducer,
-    setting: settingReducer,
+    // setting: settingReducer,
   },
 });
 

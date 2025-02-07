@@ -15,13 +15,13 @@ const AddedCargo = () => {
     setEditId(id);
   };
 
-  const handleCancelEdit = () => {
-    setEditId(null);
-  };
+  // const handleCancelEdit = () => {
+  //   setEditId(null);
+  // };
 
   return (
     <Box
-      height="65vh"
+      height="58vh"
       overflow="auto"
       sx={{
         "&::-webkit-scrollbar": {
@@ -48,7 +48,7 @@ const AddedCargo = () => {
           >
             <HeaderAddedCargo index={index} handleEdit={handleEdit} />
 
-            {editId === index ? (
+            {/* {editId === index ? (
               <EditAddedACargo
                 id={index}
                 weight={cargo.weight}
@@ -57,8 +57,14 @@ const AddedCargo = () => {
               />
             ) : (
               <CashOnDelivery />
-            )}
-            <ProductInfo cargo={cargo} index={index} />
+            )} */}
+
+
+            <ProductInfo cargo={cargo}
+            //  index={index} 
+             />
+         
+         
           </Box>
         ))
       ) : (

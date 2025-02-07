@@ -1,26 +1,14 @@
 export const RequestTemplateWaybill = (orderData: any) => {
-  const { defaultDeclaredCost } = JSON.parse(
-    localStorage.getItem("settingAccount") || "{}"
-  );
-  const defaultCost = defaultDeclaredCost || 0;
-  const numberOfPackages = orderData.packages.length;
-  const value = orderData.sum;
-  const costPerPackage =
-    numberOfPackages > 0 ? defaultCost / numberOfPackages : 0;
-  const {  orderType } = JSON.parse(
-    localStorage.getItem("settingAccount") || "{}"
-  );
   return {
-    type: orderType,
+    type: 1,
     fromLocation: {
       code: orderData.fromLocation.code,
     },
     number: orderData.number,
-    account: orderData.account,
     sender: {
-      phones: orderData.sender.phones.map((phone: any) => ({
-        number: phone.number,
-      })),
+      phones: [{
+        number: "+79272441282",
+      }],
     },
     tariffCode: orderData.tariffCode,
     recipient: orderData.recipient,
@@ -36,21 +24,18 @@ export const RequestTemplateWaybill = (orderData: any) => {
 
     packages: orderData.packages.map((pkg: any, index: number) => ({
       number: pkg.number,
-      weight: pkg.weight * 1000,
+      weight: pkg.weight,
       length: pkg.length,
       width: pkg.width,
       height: pkg.height,
       items: pkg.items.map((item: any) => ({
         name: item.name,
-        wareKey: item.wareKey,
+        ware_key: item.ware_key,
         marking: item.marking,
-        weight: item.weight * 1000,
+        weight: item.weight,
         amount: item.amount,
-        payment:
-          orderData.cod === true && index === 0
-            ? { value: value }
-            : { value: 0 },
-        cost: costPerPackage,
+        payment: item.payment,
+        cost: item.cost,
       })),
     })),
     comment: orderData.commentDelivery,

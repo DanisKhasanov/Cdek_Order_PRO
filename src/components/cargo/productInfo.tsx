@@ -1,88 +1,96 @@
 import { Box, Typography, Tooltip } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store/store";
-import { useState } from "react";
-import { updateOrderForm } from "../../store/reducers/OrderReducer";
-import {
-  ExpandLessTwoTone,
-  ExpandMoreTwoTone,
-  HelpOutlineTwoTone,
-} from "@mui/icons-material";
-import { TextField, InputAdornment, OutlinedInput } from "@mui/material";
-import { textNameProductCargo } from "../../helpers/textTooltip";
+// import { useDispatch, useSelector } from "react-redux";
+// import { RootState } from "../../store/store";
+// import { useState } from "react";
+// import { updateOrderForm } from "../../store/reducers/OrderReducer";
+// import {
+//   ExpandLessTwoTone,
+//   ExpandMoreTwoTone,
+//   HelpOutlineTwoTone,
+// } from "@mui/icons-material";
+// import { TextField, InputAdornment, OutlinedInput } from "@mui/material";
+// import { textNameProductCargo } from "../../helpers/textTooltip";
 
-const rowStyle = {
-  display: "flex",
-  alignItems: "center",
-  mt: 1,
-};
+// const rowStyle = {
+//   display: "flex",
+//   alignItems: "center",
+//   mt: 1,
+// };
 
-const labelStyle = {
-  minWidth: 250,
-};
+// const labelStyle = {
+//   minWidth: 250,
+// };
 
-const inputStyle = {
-  width: "35%",
-  "& .MuiInputBase-input": {
-    fontSize: 12,
-  },
-  "& .MuiTypography-root": { fontSize: "12px" },
-  "& .MuiFormHelperText-root": {
-    fontSize: "10px",
-  },
-};
+// const inputStyle = {
+//   width: "35%",
+//   "& .MuiInputBase-input": {
+//     fontSize: 12,
+//   },
+//   "& .MuiTypography-root": { fontSize: "12px" },
+//   "& .MuiFormHelperText-root": {
+//     fontSize: "10px",
+//   },
+// };
 
 export const ProductInfo = ({
   cargo,
-  index,
+  // index,
 }: {
   cargo: any;
-  index: number;
+  // index: number;
 }) => {
-  const dispatch = useDispatch();
-  const orderData = useSelector((state: RootState) => state.orderForm);
-  const packages = useSelector((state: RootState) => state.orderForm.packages);
-  const [showItemInfoId, setShowItemInfoId] = useState<number | null>(null);
-  const [nameProduct, setNameProduct] = useState<{ [key: number]: string }>({});
+  // const dispatch = useDispatch();
+  // const orderData = useSelector((state: RootState) => state.orderForm);
+  // const packages = useSelector((state: RootState) => state.orderForm.packages);
+  // const [showItemInfoId, setShowItemInfoId] = useState<number | null>(null);
+  // const [nameProduct, setNameProduct] = useState<{ [key: number]: string }>({});
 
-  const handleToggleItemInfo = (id: number) => {
-    setShowItemInfoId(showItemInfoId === id ? null : id);
-  };
+  // const handleToggleItemInfo = (id: number) => {
+  //   setShowItemInfoId(showItemInfoId === id ? null : id);
+  // };
 
-  const changeNameProduct = (index: number, value: string) => {
-    setNameProduct((prev) => ({
-      ...prev,
-      [index]: value,
-    }));
-    dispatch(
-      updateOrderForm({
-        ...orderData,
-        packages: packages.map((pkg, i) =>
-          i === index
-            ? {
-                ...pkg,
-                items: [
-                  {
-                    ...pkg.items[0],
-                    name: value,
-                  },
-                ],
-              }
-            : pkg
-        ),
-      })
-    );
-  };
+  // const changeNameProduct = (index: number, value: string) => {
+  //   setNameProduct((prev) => ({
+  //     ...prev,
+  //     [index]: value,
+  //   }));
+  //   dispatch(
+  //     updateOrderForm({
+  //       ...orderData,
+  //       packages: packages.map((pkg, i) =>
+  //         i === index
+  //           ? {
+  //               ...pkg,
+  //               items: [
+  //                 {
+  //                   ...pkg.items[0],
+  //                   name: value,
+  //                 },
+  //               ],
+  //             }
+  //           : pkg
+  //       ),
+  //     })
+  //   );
+  // };
 
   return (
     <Box>
       <Box display="flex" gap={10} mt={1}>
-        <Typography variant="caption">Вес: {cargo.weight} кг. </Typography>
+        <Typography variant="caption">
+          Вес: {(cargo.weight)/1000} кг.
+        </Typography>
 
         <Typography variant="caption">
           Размер коробки: {cargo.length}x{cargo.width}x{cargo.height}{" "}
         </Typography>
-        <Typography
+
+        <Typography variant="caption">
+          Колличество товаров: {cargo.items.length}
+        </Typography>
+
+
+        {/* <Typography
           variant="caption"
           onClick={() => handleToggleItemInfo(index)}
           sx={{
@@ -187,8 +195,8 @@ export const ProductInfo = ({
               sx={inputStyle}
             />
           </Box>
+          */}
         </Box>
-      )}
     </Box>
   );
 };

@@ -20,14 +20,14 @@ const CreatedWaybill = ({
   const packages = useSelector((state: RootState) => state.orderForm.packages);
   const orderData = useSelector((state: RootState) => state.orderForm);
 
-  const getBarcode = async (accountId: string, orderUUID: string) => {
+  const getBarcode = async ( orderUUID: string) => {
     setLoadingBarcode(true);
 
     try {
       if (!socketId) {
         throw new Error("Нет подключения к сокету");
       }
-      await GetBarcode(accountId, orderUUID, socketId);
+      await GetBarcode( orderUUID, socketId);
     } catch (error) {
       console.error("Ошибка при получении шрихкодов:", error);
     } finally {
@@ -35,13 +35,13 @@ const CreatedWaybill = ({
     }
   };
 
-  const getInvoice = async (accountId: string, orderUUID: string) => {
+  const getInvoice = async ( orderUUID: string) => {
     setLoadingInvoice(true);
     try {
       if (!socketId) {
         throw new Error("Нет подключения к сокету");
       }
-      await GetInvoice(accountId, orderUUID, socketId);
+      await GetInvoice( orderUUID, socketId);
     } catch (error) {
       console.error("Ошибка при получении счета:", error);
     } finally {
@@ -83,7 +83,7 @@ const CreatedWaybill = ({
               color: "primary.main",
               "&:hover": { textDecoration: "underline" },
             }}
-            onClick={() => getInvoice(orderData.accountId, response.uuid)}
+            onClick={() => getInvoice( response.uuid)}
           >
             {response?.number || "Номер недоступен"}
           </Box>
@@ -143,7 +143,7 @@ const CreatedWaybill = ({
             href="#"
             onClick={(e) => {
               e.preventDefault();
-              getBarcode(orderData.accountId, response.uuid);
+              getBarcode( response.uuid);
             }}
             sx={{
               color: "primary.main",

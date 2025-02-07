@@ -30,9 +30,12 @@ const Tariffs = () => {
   const [selectedPickupPoint, setSelectedPickupPoint] =
     useState<PickupPointProps>({});
 
-  const { fromLocation } = JSON.parse(
-    localStorage.getItem("settingAccount") || "{}"
-  );
+  const fromLocation = {
+    postalCode: "420000",
+    city: "Казань",
+    address: "Казань",
+  };
+
   useEffect(() => {
     if (orderData.counterParty) {
       getCodeCity();
@@ -40,22 +43,19 @@ const Tariffs = () => {
   }, []);
 
   useEffect(() => {
-    if(orderData.fromLocation.code) {
-    getTariffData();
+    if (orderData.fromLocation.code) {
+      getTariffData();
     }
   }, [orderData.fromLocation.code]);
 
   const getCodeCity = async () => {
     try {
-      const response = await GetDataCity(
-        {
-          toLocation: {
-            postalCode: fromLocation.postalCode.toString(),
-            city: fromLocation.city,
-          },
+      const response = await GetDataCity({
+        toLocation: {
+          postalCode: fromLocation.postalCode,
+          city: fromLocation.city,
         },
-        orderData.accountId
-      );
+      });
       if (response) {
         dispatch(
           updateOrderForm({
@@ -75,7 +75,7 @@ const Tariffs = () => {
 
   const getTariffData = async () => {
     try {
-      const data = await GetTariffData(orderData, orderData.accountId);
+      const data = await GetTariffData(orderData);
       const filterTariffs = data.tariff_codes.filter((tariff: any) =>
         Object.values(DELIVERY_MODE).includes(tariff.delivery_mode)
       );
@@ -111,6 +111,8 @@ const Tariffs = () => {
 
   const submit = async () => {
     if (selectedTariff) {
+
+      
       const selected = tariff.find((t) => t.tariff_code === selectedTariff);
       if (!selectedPickupPoint) {
         return;
@@ -133,6 +135,12 @@ const Tariffs = () => {
       );
 
       navigate("/waybill");
+    } else {
+      enqueueSnackbar("Выберите тариф", {
+        anchorOrigin: { vertical: "top", horizontal: "right" },
+        autoHideDuration: 5000,
+        variant: "error",
+      });
     }
   };
 
@@ -154,11 +162,7 @@ const Tariffs = () => {
               key={tariff.tariff_code}
               onClick={() => {
                 setSelectedTariff(tariff.tariff_code);
-                if (accountId === orderData.accountId) {
-                  setSelectedTariffSum(tariff.delivery_sum + 100);
-                } else {
-                  setSelectedTariffSum(tariff.delivery_sum);
-                }
+                setSelectedTariffSum(tariff.delivery_sum + 100);
               }}
             >
               <div>
@@ -222,11 +226,7 @@ const Tariffs = () => {
               </div>
 
               <div className="tariff-cost">
-                {accountId !== orderData.accountId ? (
                   <span>{(tariff.delivery_sum + 100).toFixed(2)} руб.</span>
-                ) : (
-                  ""
-                )}
                 <p>{tariff.delivery_sum.toFixed(2)} руб.</p>
               </div>
             </div>

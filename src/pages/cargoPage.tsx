@@ -1,5 +1,5 @@
-import { updateOrderForm } from "../store/reducers/OrderReducer";
-import { GetDataCity } from "../api/api";
+import { addCargoSpace, updateOrderForm } from "../store/reducers/OrderReducer";
+import { GetCargoSpace, GetDataCity } from "../api/api";
 import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import { LoadingSpinner } from "../helpers/loadingSpinner";
@@ -21,24 +21,29 @@ const Cargo = () => {
 
   const getDataOrder = async () => {
     try {
-      const response = await GetDataCity(
-        {
+      if (orderData.toLocation.code === 0) {
+        const response = await GetDataCity({
           toLocation: {
             postalCode: orderData.toLocation.postalCode,
             city: orderData.toLocation.city,
           },
-        },
-        orderData.accountId
-      );
-      const cod = orderData.cod && response.cod ? true : false;
-      if (response) {
-        dispatch(
-          updateOrderForm({
-            ...orderData,
-            toLocation: { ...orderData.toLocation, code: response.code },
-            cod: cod,
-          })
-        );
+        });
+        const cod = orderData.cod && response.cod ? true : false;
+        if (response) {
+          dispatch(
+            updateOrderForm({
+              ...orderData,
+              toLocation: { ...orderData.toLocation, code: response.code },
+              cod: cod,
+            })
+          );
+        }
+      }
+      if (orderData.packages.length === 0) {
+        const cargoSpace = await GetCargoSpace(orderData);
+        if (cargoSpace) {
+          dispatch(addCargoSpace(cargoSpace));
+        }
       }
     } catch (error) {
       throw error;

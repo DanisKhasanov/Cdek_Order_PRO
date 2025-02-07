@@ -1,19 +1,14 @@
-import { socket } from "./socket";
 import axios from "axios";
 import { RequestTemplateTariff } from "./requestTemplate/RequestTemplateTariff";
 import { RequestTemplateWaybill } from "./requestTemplate/RequestTemplateWaybill";
-
 const URL_API = import.meta.env.VITE_API_URL;
+
+let isRefreshing = false;
+let refreshSubscribers: Array<(token: string) => void> = [];
 
 const api = axios.create({
   baseURL: URL_API,
 });
-
-const username = "danis_widget";
-const password = "FLX_cdekWidget5";
-
-let isRefreshing = false;
-let refreshSubscribers: Array<(token: string) => void> = [];
 
 const subscribeTokenRefresh = (callback: (token: string) => void) => {
   refreshSubscribers.push(callback);
@@ -22,19 +17,6 @@ const subscribeTokenRefresh = (callback: (token: string) => void) => {
 const onRefreshed = (token: string) => {
   refreshSubscribers.forEach((callback) => callback(token));
   refreshSubscribers = [];
-};
-
-export const login = async () => {
-  const response = await api.post("/auth/login/", {
-    username,
-    password,
-  });
-  const { accessToken, refreshToken } = response.data;
-
-  localStorage.setItem("accessToken", accessToken);
-  localStorage.setItem("refreshToken", refreshToken);
-
-  return accessToken;
 };
 
 const refreshAccessToken = async () => {
@@ -76,7 +58,7 @@ api.interceptors.response.use(
 
     if (
       error.response &&
-      error.response.status === 401 &&
+      (error.response.status === 401 || error.response.status === 403) &&
       !originalRequest._retry
     ) {
       originalRequest._retry = true;
@@ -87,9 +69,11 @@ api.interceptors.response.use(
           const newToken = await refreshAccessToken();
           isRefreshing = false;
           onRefreshed(newToken);
+          return api(originalRequest);
         } catch (refreshError) {
           isRefreshing = false;
           console.error("Не удалось обновить токен:", refreshError);
+          window.location.href = "/login";
           return Promise.reject(refreshError);
         }
       }
@@ -106,13 +90,27 @@ api.interceptors.response.use(
   }
 );
 
-export const PostOrderData = async (payload: any, accountId: string) => {
+export const login = async (username: string, password: string) => {
+  try {
+    const response = await api.post("/auth/login/", {
+      username,
+      password,
+    });
+    const { accessToken, refreshToken } = response.data;
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("refreshToken", refreshToken);
+
+    return response;
+  } catch (error) {
+    console.error("Ошибка при отправке логина или пароля на сервер:", error);
+    throw error;
+  }
+};
+
+export const PostOrderData = async (payload: any) => {
   const requestTemplate = RequestTemplateWaybill(payload);
   try {
-    const response = await api.post(
-      `/order?accountId=${accountId}`,
-      requestTemplate
-    );
+    const response = await api.post(`/order`, requestTemplate);
     return response.data;
   } catch (error) {
     console.error("Ошибка при отправке данных на сервер:", error);
@@ -121,12 +119,11 @@ export const PostOrderData = async (payload: any, accountId: string) => {
 };
 
 export const GetBarcode = async (
-  accountId: string,
   orderUUID: string,
   socketId: string
 ) => {
   try {
-    const response = await api.post(`/barcode?accountId=${accountId}`, {
+    const response = await api.post(`/barcode`, {
       orderUUID,
       socketId,
     });
@@ -138,12 +135,11 @@ export const GetBarcode = async (
 };
 
 export const GetInvoice = async (
-  accountId: string,
   orderUUID: string,
   socketId: string
 ) => {
   try {
-    const response = await api.post(`/waybill/?accountId=${accountId}`, {
+    const response = await api.post(`/waybill/`, {
       orderUUID,
       socketId,
     });
@@ -154,11 +150,9 @@ export const GetInvoice = async (
   }
 };
 
-export const GetOrderData = async (id: string, account: string) => {
+export const GetOrderData = async (orderNumber: string) => {
   try {
-    const response = await api.get(
-      `/moysklad/order/${id}?accountId=${account}`
-    );
+    const response = await api.get(`/moysklad/order/${orderNumber}`);
     return response.data;
   } catch (error) {
     console.error("Ошибка при отправке данных на сервер:", error);
@@ -166,9 +160,9 @@ export const GetOrderData = async (id: string, account: string) => {
   }
 };
 
-export const GetDataCity = async (data: any, accountId: string) => {
+export const GetDataCity = async (data: any) => {
   try {
-    const response = await api.post(`/cod?accountId=${accountId}`, data);
+    const response = await api.post(`/cod`, data);
     return response.data;
   } catch (error) {
     console.error("Ошибка при отправке данных на сервер:", error);
@@ -176,13 +170,10 @@ export const GetDataCity = async (data: any, accountId: string) => {
   }
 };
 
-export const GetTariffData = async (payload: any, accountId: string) => {
+export const GetTariffData = async (payload: any) => {
   const requestTemplate = RequestTemplateTariff(payload);
   try {
-    const response = await api.post(
-      `/tarifflist?accountId=${accountId}`,
-      requestTemplate
-    );
+    const response = await api.post(`/tarifflist`, requestTemplate);
 
     return response.data;
   } catch (error) {
@@ -191,44 +182,22 @@ export const GetTariffData = async (payload: any, accountId: string) => {
   }
 };
 
-export const GetIdAccount = async (payload: any) => {
+export const GetCargoSpace = async (payload: any) => {
+  const data = {
+    order: {
+      weight: payload.weight,
+      cod: payload.cod,
+      positions: payload.positions.map((position: any) => ({
+        code: position.code,
+        name: position.name,
+        price: position.price,
+        weight: position.weight,
+        quantity: position.quantity,
+      })),
+    },
+  };
   try {
-    const response = await api.get(`/moysklad/context/${payload.contextKey}`);
-    return response.data;
-  } catch (error) {
-    // console.error("Ошибка при отправке данных на сервер:", error);
-    throw error;
-  }
-};
-
-export const GetSettingAccount = async (payload: string) => {
-  try {
-    const response = await api.get(
-      `/moysklad/vendor/1.0/apps/fe8d0f25-3e10-446b-be98-95fda422ef6f/${payload}`
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Ошибка при отправке данных на сервер:", error);
-    throw error;
-  }
-};
-
-export const GetSetting = async (accountId: string) => {
-  try {
-    const response = await api.get(`/moysklad/settings?accountId=${accountId}`);
-    return response.data;
-  } catch (error) {
-    console.error("Ошибка при отправке данных на сервер:", error);
-    throw error;
-  }
-};
-
-export const PostSettingAccount = async (accountId: string, payload: any) => {
-  try {
-    const response = await api.post(
-      `/moysklad/settings?accountId=${accountId}`,
-      payload
-    );
+    const response = await api.post(`/calculatepackages`, data);
     return response.data;
   } catch (error) {
     throw error;

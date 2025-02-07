@@ -9,57 +9,44 @@ import { useDispatch } from "react-redux";
 import { addCargoSpace } from "../../store/reducers/OrderReducer";
 import { useSnackbar } from "notistack";
 import { getCargoSizeOptions } from "./cargoSize";
+import { Alert } from "@mui/material";
 
 const FormInputsCargo = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
-  const cargoSizeOptions = getCargoSizeOptions();
+  // const dispatch = useDispatch();
+  // const { enqueueSnackbar } = useSnackbar();
+  // const cargoSizeOptions = getCargoSizeOptions();
   const packages =
     useSelector((state: RootState) => state.orderForm.packages) || [];
-  const orderData = useSelector((state: RootState) => state.orderForm);
-  const settingAccount = JSON.parse(
-    localStorage.getItem("settingAccount") || "{}"
-  );
-  const defaultProductName = settingAccount?.defaultProductName || "";
-  const defaultDeclaredCost = settingAccount?.defaultDeclaredCost || 0;
-
-  const emptyNames =
-    packages.length > 0 &&
-    packages.some((pkg) => {
-      if (!pkg?.items?.[0]?.name) return true;
-      return pkg.items[0].name.trim() === "";
-    });
+  // const orderData = useSelector((state: RootState) => state.orderForm);
+  // const settingAccount = JSON.parse(
+    // localStorage.getItem("settingAccount") || "{}"
+  // );
+  // const defaultProductName = settingAccount?.defaultProductName || "";
+  // const defaultDeclaredCost = settingAccount?.defaultDeclaredCost || 0;
 
   const addCargo = (values: any) => {
-    dispatch(
-      addCargoSpace({
-        weight: values.weight,
-        size: values.size,
-        items: {
-          name: defaultProductName,
-          wareKey: "1",
-          weight: values.weight,
-          marking: (packages.length + 1).toString(),
-          amount: 1,
-          payment: {
-            value: orderData.cod === false ? 0 : orderData.sum,
-          },
-          cost: defaultDeclaredCost,
-        },
-      })
-    );
+    // dispatch(
+    //   addCargoSpace({
+    //     weight: values.weight,
+    //     size: values.size,
+    //     items: {
+    //       name: defaultProductName,
+    //       wareKey: "1",
+    //       weight: values.weight,
+    //       marking: (packages.length + 1).toString(),
+    //       amount: 1,
+    //       payment: {
+    //         value: orderData.cod === false ? 0 : orderData.sum,
+    //       },
+    //       cost: defaultDeclaredCost,
+    //     },
+    //   })
+    // );
   };
 
   const nextPage = () => {
-    if (emptyNames) {
-      enqueueSnackbar("Заполните наименование товара", {
-        anchorOrigin: { vertical: "top", horizontal: "right" },
-        variant: "error",
-      });
-    } else {
-      navigate("/tariffs");
-    }
+    navigate("/tariffs");
   };
 
   return (
@@ -77,7 +64,7 @@ const FormInputsCargo = () => {
               marginTop: 16,
             }}
           >
-            <div className="form-group cargo">
+            {/* <div className="form-group cargo">
               {errors.weight && touched.weight && (
                 <div className="error-message-top">{errors.weight}</div>
               )}
@@ -107,7 +94,6 @@ const FormInputsCargo = () => {
                 className={`form-control ${
                   errors.size && touched.size ? "error" : ""
                 }`}
-                
               >
                 {cargoSizeOptions.map((option: any) => (
                   <option key={option.value} value={option.value}>
@@ -115,13 +101,20 @@ const FormInputsCargo = () => {
                   </option>
                 ))}
               </Field>
-            </div>
+            </div> */}
+        
           </div>
 
           <div className="buttons">
-            <ButtonCustom type="submit" className="btn">
+            
+            {/* <ButtonCustom type="submit" className="btn">
               Добавить
-            </ButtonCustom>
+            </ButtonCustom> */}
+
+            <Alert severity="warning" sx={{width:"24vw", mr: 2}}>
+            В настоящее время редактирование грузового места и товаров в нём невозможно. Для этой цели рекомендуем воспользоваться личным кабинетом на сайте СДЭКа.
+            </Alert>
+            
             <ButtonCustom
               type="button"
               className="next"

@@ -1,19 +1,17 @@
 import { useLocation } from "react-router-dom";
-import Popups from "./popup";
-import SettingPage from "./setting";
+import { SendingPage } from "./sendingPage";
 import Navigation from "../components/navigation/navigation";
+import LoginPage from "./loginPage";
 
 const Home = () => {
-  // TODO: Сделать так, чтобы кнопки были неактивны если нет counterKey
-
   const location = useLocation();
 
   return (
-    <div>
+    <div className="App">
       {location.pathname === "/" ? (
-        <Popups />
-      ) : location.pathname === "/setting" ? (
-        <SettingPage />
+        <SendingPage />
+      ) : location.pathname === "/login" ? (
+        <LoginPage />
       ) : (
         <Navigation />
       )}
