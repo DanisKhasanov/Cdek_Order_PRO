@@ -7,8 +7,8 @@ import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../store/store";
 import {
-  setAccount,
-  setPhoneAccount,
+  // setAccount,
+  // setPhoneAccount,
   setRecipientName,
   setRecipientPhone,
   setRecipientAddress,
