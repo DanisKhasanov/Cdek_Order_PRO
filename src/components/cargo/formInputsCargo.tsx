@@ -111,7 +111,7 @@ const FormInputsCargo = () => {
               Добавить
             </ButtonCustom> */}
 
-            <Alert severity="warning" sx={{width:"24vw", mr: 2}}>
+            <Alert severity="warning" sx={{ mr: 2}}>
             В настоящее время редактирование грузового места и товаров в нём невозможно. Для этой цели рекомендуем воспользоваться личным кабинетом на сайте СДЭКа.
             </Alert>
             
