@@ -1,5 +1,4 @@
 export const RequestTemplateWaybill = (orderData: any) => {
-  const COD = orderData.cod;
   return {
     type: 1,
     fromLocation: {
@@ -7,11 +6,9 @@ export const RequestTemplateWaybill = (orderData: any) => {
     },
     number: orderData.number,
     sender: {
-      phones: [
-        {
-          number: "+79272441282",
-        },
-      ],
+      phones: [{
+        number: "+79272441282",
+      }],
     },
     tariffCode: orderData.tariffCode,
     recipient: orderData.recipient,
@@ -34,17 +31,10 @@ export const RequestTemplateWaybill = (orderData: any) => {
       items: pkg.items.map((item: any) => ({
         name: item.name,
         ware_key: item.ware_key,
+        marking: item.marking,
         weight: item.weight,
         amount: item.amount,
-        payment:
-          COD === true
-            ? {
-                value: item.payment.value,
-                vat_rate: 5.0,
-              }
-            : {
-                value: 0,
-              },
+        payment: item.payment,
         cost: item.cost,
       })),
     })),
