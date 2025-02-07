@@ -200,6 +200,7 @@ export const GetCargoSpace = async (payload: any) => {
     const response = await api.post(`/calculatepackages`, data);
     return response.data;
   } catch (error) {
+    console.error("Ошибка при получении грузового места:", error);
     throw error;
   }
 };
