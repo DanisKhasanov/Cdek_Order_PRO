@@ -40,7 +40,7 @@ export const RequestTemplateWaybill = (orderData: any) => {
           COD === true
             ? {
                 value: item.payment.value,
-                vat_sum: 5.0,
+                vat_rate: 5.0,
               }
             : {
                 value: 0,
