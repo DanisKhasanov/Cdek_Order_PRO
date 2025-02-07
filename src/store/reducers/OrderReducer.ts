@@ -4,7 +4,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface PackageItem {
   name: string;
   ware_key: string;
-  marking: string;
   weight: number;
   amount: number;
   payment: {
