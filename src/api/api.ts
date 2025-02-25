@@ -118,10 +118,7 @@ export const PostOrderData = async (payload: any) => {
   }
 };
 
-export const GetBarcode = async (
-  orderUUID: string,
-  socketId: string
-) => {
+export const GetBarcode = async (orderUUID: string, socketId: string) => {
   try {
     const response = await api.post(`/barcode`, {
       orderUUID,
@@ -134,10 +131,7 @@ export const GetBarcode = async (
   }
 };
 
-export const GetInvoice = async (
-  orderUUID: string,
-  socketId: string
-) => {
+export const GetInvoice = async (orderUUID: string, socketId: string) => {
   try {
     const response = await api.post(`/waybill/`, {
       orderUUID,
@@ -187,13 +181,7 @@ export const GetCargoSpace = async (payload: any) => {
     order: {
       weight: payload.weight,
       cod: payload.cod,
-      positions: payload.positions.map((position: any) => ({
-        code: position.code,
-        name: position.name,
-        price: position.price,
-        weight: position.weight,
-        quantity: position.quantity,
-      })),
+      positions: payload.positions,
     },
   };
   try {
