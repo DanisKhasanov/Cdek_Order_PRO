@@ -1,6 +1,6 @@
 import axios from "axios";
-import { RequestTemplateTariff } from "./requestTemplate/RequestTemplateTariff";
-import { RequestTemplateWaybill } from "./requestTemplate/RequestTemplateWaybill";
+import { RequestTemplateTariff } from "../helpers/requestTemplate/RequestTemplateTariff";
+import { RequestTemplateWaybill } from "../helpers/requestTemplate/RequestTemplateWaybill";
 const URL_API = import.meta.env.VITE_API_URL;
 
 let isRefreshing = false;
@@ -25,15 +25,14 @@ const refreshAccessToken = async () => {
   if (!refreshToken) {
     throw new Error("Refresh токен отсутствует");
   }
-
-  const response = await api.post("/auth/token", {
-    refreshToken,
-  });
-
-  const { accessToken } = response.data;
-
-  localStorage.setItem("accessToken", accessToken);
-  return accessToken;
+  try {
+    const response = await api.post("/auth/token", { refreshToken });
+    const { accessToken } = response.data;
+    localStorage.setItem("accessToken", accessToken);
+    return accessToken;
+  } catch (error) {
+    throw new Error("Не удалось обновить токен");
+  }
 };
 
 api.interceptors.request.use(
@@ -56,9 +55,17 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
+    if (error.response && error.response.status === 401) {
+      console.error("Access токен отсутствует");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      window.location.href = "/login";
+      return Promise.reject(error);
+    }
+
     if (
       error.response &&
-      (error.response.status === 401 || error.response.status === 403) &&
+      error.response.status === 403 &&
       !originalRequest._retry
     ) {
       originalRequest._retry = true;
