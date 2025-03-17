@@ -15,9 +15,9 @@ const AddedCargo = () => {
     setEditId(id);
   };
 
-  // const handleCancelEdit = () => {
-  //   setEditId(null);
-  // };
+  const handleCancelEdit = () => {
+    setEditId(null);
+  };
 
   return (
     <Box
@@ -61,7 +61,7 @@ const AddedCargo = () => {
 
 
             <ProductInfo cargo={cargo}
-            //  index={index} 
+              index={index} 
              />
          
          

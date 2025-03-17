@@ -25,12 +25,12 @@ export const HeaderAddedCargo = ({ index, handleEdit }: { index: number, handleE
         onClick={() => dispatch(copyCargoSpace(index))}
         sx={{ cursor: "pointer" }}
       /> */}
-      {/* <DeleteForeverOutlined
+      <DeleteForeverOutlined
         color="error"
         fontSize="medium"
         onClick={() => dispatch(removeCargoSpace(index))}
         sx={{ cursor: "pointer" }}
-      /> */}
+      />
     </Box>
   );
 };

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
-import "../components/styles/style.css";
+// import "../components/styles/style.css";
 import { useEffect, useState } from "react";
 import { LoadingSpinner } from "../helpers/loadingSpinner";
 import { connectSocket, disconnectSocket, socket } from "../api/socket";

@@ -14,10 +14,10 @@ interface PackageItem {
 
 interface Package {
   number: string;
-  height: number;
+  weight: number;
   length: number;
   width: number;
-  weight: number;
+  height: number;
   items: PackageItem[];
 }
 
@@ -126,9 +126,6 @@ const orderFormSlice = createSlice({
       };
     },
 
-    // setAccount: (state, action: PayloadAction<string>) => {
-    //   state.account = action.payload;
-    // },
 
     setPhoneAccount: (state, action: PayloadAction<string>) => {
       state.sender.phones[0].number = action.payload;
@@ -156,9 +153,9 @@ const orderFormSlice = createSlice({
     },
 
     addCargoSpace: (state, action: PayloadAction<Package[]>) => {
-      action.payload.forEach((pkg: any, index: number) => {
+      action.payload.forEach((pkg: any) => {
         state.packages.push({
-          number: pkg.number,
+          number: pkg.number, 
           weight: pkg.weight,
           length: pkg.length,
           width: pkg.width,
@@ -184,45 +181,22 @@ const orderFormSlice = createSlice({
       );
     },
 
-    // editCargoSpace: (
-    //   state,
-    //   action: PayloadAction<{
-    //     index: number;
-    //     weight: number;
-    //     size: string;
-    //     items: PackageItem;
-    //   }>
-    // ) => {
-    //   const { index, weight, size } = action.payload;
-    //   const [length, width, height] = size.split("x").map(Number);
-
-    //   if (state.packages[index]) {
-    //     // const totalPackages = state.packages.length;
-    //     // const costPerPackage = 100 / totalPackages;
-
-    //     const items = {
-    //       name: state.packages[index].items[0].name,
-    //       wareKey: "1",
-    //       weight: weight,
-    //       marking: (index + 1).toString(),
-    //       amount: 1,
-    //       payment: {
-    //         value: state.cod === false ? 0 : state.sum,
-    //       },
-    //       cost: action.payload.items.cost,
-    //     };
-
-    //     state.packages[index] = {
-    //       number: state.packages.length.toString(),
-    //       weight,
-    //       length,
-    //       width,
-    //       height,
-    //       items: [items],
-    //     };
-    //   }
-    // },
-
+    updateCargoSpaces: (state, action: PayloadAction<{
+      fromPackage: Package;
+      toPackage: Package;
+    }>) => {
+      const { fromPackage, toPackage } = action.payload;
+    
+      // Обновляем исходное грузовое место
+      state.packages = state.packages.map((pkg) =>
+        pkg.number === fromPackage.number ? fromPackage : pkg
+      );
+    
+      // Обновляем целевое грузовое место
+      state.packages = state.packages.map((pkg) =>
+        pkg.number === toPackage.number ? toPackage : pkg
+      );
+    },
     copyCargoSpace: (state, action: PayloadAction<number>) => {
       const packageToCopy = state.packages[action.payload];
       if (packageToCopy) {
@@ -255,12 +229,12 @@ const orderFormSlice = createSlice({
 
 export const {
   updateOrderForm,
-  // setAccount,
   setPhoneAccount,
   setRecipientName,
   setRecipientPhone,
   setRecipientAddress,
   addCargoSpace,
+  updateCargoSpaces,
   removeCargoSpace,
   // editCargoSpace,
   copyCargoSpace,

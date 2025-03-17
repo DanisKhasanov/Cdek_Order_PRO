@@ -11,8 +11,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { login } from "../api/api";
 
-//  username = "danis_widget";
-//  password = "FLX_cdekWidget5";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");

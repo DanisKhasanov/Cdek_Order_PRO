@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Alert, Box } from "@mui/material";
 import { LoadingSpinner } from "../helpers/loadingSpinner";
 import AddedCargo from "../components/cargo/addedCargo";
-import FormInputsCargo from "../components/cargo/formInputsCargo";
+import {FormInputsCargo} from "../components/cargo/formInputsCargo";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store/store";
 import { useSnackbar } from "notistack";
