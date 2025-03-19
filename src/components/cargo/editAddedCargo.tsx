@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 // import { editCargoSpace } from "../../store/reducers/OrderReducer";
 import { EditAddedCargoProps } from "../../props/EditAddedCargoProps";
 import { RootState } from "../../store/store";
-import { validateWeightAndSize } from "./Validation";
+// import { validateWeightAndSize } from "./Validation";
 import { getCargoSizeOptions } from "./cargoSize";
 import { useSnackbar } from "notistack";
 
@@ -28,7 +28,7 @@ const EditAddedACargo = ({
   const save = () => {
     const { weight, size } = editValues;
 
-    const isValid = validateWeightAndSize(weight, size);
+    // const isValid = validateWeightAndSize(weight, size);
     if (!isValid) {
       enqueueSnackbar("Вес не соответствует размеру коробки", {
         anchorOrigin: { vertical: "top", horizontal: "right" },
@@ -65,7 +65,7 @@ const EditAddedACargo = ({
   return (
     <>
       <div className="cargo-edit">
-        <input
+        {/* <input
           type="number"
           min={0}
           step={0.01}
@@ -73,7 +73,7 @@ const EditAddedACargo = ({
           onChange={(e) =>
             setEditValues({ ...editValues, weight: parseFloat(e.target.value) })
           }
-        />
+        /> */}
         <select
           value={editValues.size}
           onChange={(e) =>

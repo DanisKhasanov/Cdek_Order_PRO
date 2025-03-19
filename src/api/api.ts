@@ -192,9 +192,212 @@ export const GetCargoSpace = async (payload: any) => {
     },
   };
   try {
-    const response = await api.post(`/calculatepackages`, data);
-
-    return response.data;
+    // const response = await api.post(`/calculatepackages`, data);
+    const test = [
+      {
+        number: "1",
+        weight: 1609,
+        length: 20,
+        width: 20,
+        height: 10,
+        items: [
+          {
+            name: "Атомайзер-помадка 10мл, однотонный глянцевый (золотой)",
+            ware_key: "P001-10:AA GOLD",
+            weight: 29,
+            payment: {
+              value: 0,
+              vat_sum: 0,
+              vat_rate: 5,
+            },
+            amount: 5,
+            cost: 20,
+          },
+          {
+            name: "Атомайзер-помадка 10мл, однотонный глянцевый (красный)",
+            ware_key: "P001-10:AA RED",
+            weight: 29,
+            payment: {
+              value: 0,
+              vat_sum: 0,
+              vat_rate: 5,
+            },
+            amount: 7,
+            cost: 0,
+          },
+          {
+            name: "Атомайзер-помадка 10мл, однотонный глянцевый (синий)",
+            ware_key: "P001-10:AA BLUE",
+            weight: 29,
+            payment: {
+              value: 0,
+              vat_sum: 0,
+              vat_rate: 5,
+            },
+            amount: 2,
+            cost: 0,
+          },
+          {
+            name: "Атомайзер-помадка 10мл, однотонный глянцевый (пудрово-розовый)",
+            ware_key: "P001-10:AA POWDERY PINK",
+            weight: 29,
+            payment: {
+              value: 0,
+              vat_sum: 0,
+              vat_rate: 5,
+            },
+            amount: 5,
+            cost: 0,
+          },
+          {
+            name: "Атомайзер-помадка 10мл, однотонный (черный)",
+            ware_key: "P001-10:AI BLACK",
+            weight: 29,
+            payment: {
+              value: 0,
+              vat_sum: 0,
+              vat_rate: 5,
+            },
+            amount: 5,
+            cost: 0,
+          },
+          {
+            name: "Атомайзер-карандаш, 20мл (кратно 5) (золото)",
+            ware_key: "S128-20:AA GOLD",
+            weight: 21,
+            payment: {
+              value: 0,
+              vat_sum: 0,
+              vat_rate: 5,
+            },
+            amount: 5,
+            cost: 0,
+          },
+          {
+            name: "Атомайзер-помадка 5мл, однотонный (золотой)",
+            ware_key: "P001-5:AA GOLD",
+            weight: 16,
+            payment: {
+              value: 0,
+              vat_sum: 0,
+              vat_rate: 5,
+            },
+            amount: 4,
+            cost: 0,
+          },
+          {
+            name: "Атомайзер-помадка 5мл, однотонный (красный)",
+            ware_key: "P001-5:AA RED",
+            weight: 16,
+            payment: {
+              value: 0,
+              vat_sum: 0,
+              vat_rate: 5,
+            },
+            amount: 5,
+            cost: 0,
+          },
+          {
+            name: "Атомайзер-помадка 5мл, однотонный (розовый)",
+            ware_key: "P001-5:AA PINK",
+            weight: 16,
+            payment: {
+              value: 0,
+              vat_sum: 0,
+              vat_rate: 5,
+            },
+            amount: 4,
+            cost: 0,
+          },
+          {
+            name: "Атомайзер-помадка 5мл, однотонный (серебристый)",
+            ware_key: "P001-5:AA SILVER",
+            weight: 16,
+            payment: {
+              value: 0,
+              vat_sum: 0,
+              vat_rate: 5,
+            },
+            amount: 3,
+            cost: 0,
+          },
+          {
+            name: "Атомайзер-помадка 5мл, однотонный (черный)",
+            ware_key: "P001-5:AA BLACK",
+            weight: 16,
+            payment: {
+              value: 0,
+              vat_sum: 0,
+              vat_rate: 5,
+            },
+            amount: 6,
+            cost: 0,
+          },
+          {
+            name: "Атомайзер-карандаш 10мл, прозрачное стекло, металлическая крышка (кратно 5) (золотой)",
+            ware_key: "S004-10:AA GOLD",
+            weight: 11,
+            payment: {
+              value: 0,
+              vat_sum: 0,
+              vat_rate: 5,
+            },
+            amount: 10,
+            cost: 0,
+          },
+          {
+            name: "Атомайзер-карандаш 5.5мл, прозрачное стекло, крышка металл (кратно 5) (золотой)",
+            ware_key: "S009-5.5:AA (5) GOLD",
+            weight: 11,
+            payment: {
+              value: 0,
+              vat_sum: 0,
+              vat_rate: 5,
+            },
+            amount: 25,
+            cost: 0,
+          },
+          {
+            name: "Атомайзер-карандаш 5мл, прозрачное стекло, металлическая крышка (кратно 5) (серебристый)",
+            ware_key: "S004-5:AA SILVER",
+            weight: 8,
+            payment: {
+              value: 0,
+              vat_sum: 0,
+              vat_rate: 5,
+            },
+            amount: 10,
+            cost: 0,
+          },
+          {
+            name: "Насадка для шприца (кратно 20)",
+            ware_key: "E200:AA",
+            weight: 0,
+            payment: {
+              value: 0,
+              vat_sum: 0,
+              vat_rate: 5,
+            },
+            amount: 20,
+            cost: 0,
+          },
+          {
+            name: "Доставка",
+            ware_key: "dlv001",
+            weight: 0,
+            payment: {
+              value: 0,
+              vat_sum: 0,
+              vat_rate: 5,
+            },
+            amount: 1,
+            cost: 0,
+          },
+        ],
+      },
+    ];
+    // return response.data;
+    return test;
   } catch (error) {
     console.error("Ошибка при получении грузового места:", error);
     throw error;

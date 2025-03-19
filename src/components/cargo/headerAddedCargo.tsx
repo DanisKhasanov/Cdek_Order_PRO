@@ -1,10 +1,16 @@
 import { Box, Typography } from "@mui/material";
-import { EditOutlined, ContentCopy, DeleteForeverOutlined } from "@mui/icons-material";
+import { EditOutlined, DeleteForeverOutlined } from "@mui/icons-material";
 import BoxIcon from "@mui/icons-material/ArchiveTwoTone";
 import { useDispatch } from "react-redux";
-import { copyCargoSpace, removeCargoSpace } from "../../store/reducers/OrderReducer";
+import { removeCargoSpace } from "../../store/reducers/OrderReducer";
 
-export const HeaderAddedCargo = ({ index, handleEdit }: { index: number, handleEdit: (index: number) => void }) => {
+export const HeaderAddedCargo = ({
+  index,
+  handleEdit,
+}: {
+  index: number;
+  handleEdit: (index: number) => void;
+}) => {
   const dispatch = useDispatch();
   return (
     <Box display="flex" alignItems="center" gap={2}>
@@ -17,12 +23,6 @@ export const HeaderAddedCargo = ({ index, handleEdit }: { index: number, handleE
         color="success"
         fontSize="medium"
         onClick={() => handleEdit(index)}
-        sx={{ cursor: "pointer" }}
-      />
-      <ContentCopy
-        color="success"
-        fontSize="medium"
-        onClick={() => dispatch(copyCargoSpace(index))}
         sx={{ cursor: "pointer" }}
       /> */}
       <DeleteForeverOutlined

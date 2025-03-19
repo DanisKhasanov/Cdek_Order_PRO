@@ -9,14 +9,14 @@ import CashOnDelivery from "./cashOnDelivery";
 
 const AddedCargo = () => {
   const packages = useSelector((state: RootState) => state.orderForm.packages);
-  const [editId, setEditId] = useState<number | null>(null);
+  const [editId, setEditId] = useState(false);
 
-  const handleEdit = (id: number) => {
-    setEditId(id);
+  const handleEdit = () => {
+    setEditId();
   };
 
   const handleCancelEdit = () => {
-    setEditId(null);
+    setEditId((prevState) => prevState - 1);
   };
 
   return (
@@ -47,24 +47,15 @@ const AddedCargo = () => {
             bgcolor="#fff"
           >
             <HeaderAddedCargo index={index} handleEdit={handleEdit} />
-
-            {/* {editId === index ? (
+            {editId  && (
               <EditAddedACargo
                 id={index}
                 weight={cargo.weight}
                 size={`${cargo.length}x${cargo.width}x${cargo.height}`}
                 onCancel={handleCancelEdit}
               />
-            ) : (
-              <CashOnDelivery />
-            )} */}
-
-
-            <ProductInfo cargo={cargo}
-              index={index} 
-             />
-         
-         
+            )}
+            <ProductInfo cargo={cargo} index={index} />
           </Box>
         ))
       ) : (

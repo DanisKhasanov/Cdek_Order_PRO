@@ -7,8 +7,6 @@ import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../store/store";
 import {
-  // setAccount,
-  // setPhoneAccount,
   setRecipientName,
   setRecipientPhone,
   setRecipientAddress,
@@ -23,8 +21,6 @@ const FormInputs = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const onSubmit = () => {
-    // dispatch(setAccount(orderData.name));
-    // dispatch(setPhoneAccount(orderData.phones[0].number));
     if (
       orderData.recipient.name &&
       orderData.recipient.phones[0].number &&

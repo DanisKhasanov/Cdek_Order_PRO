@@ -1,15 +1,20 @@
 import { useNavigate } from "react-router-dom";
 import {
-  Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  TextField,
+  FormControl,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
-import { DndContext, closestCorners } from "@dnd-kit/core";
+import { DndContext, closestCorners, DragEndEvent } from "@dnd-kit/core";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store/store";
 import ButtonCustom from "./ButtonCustom";
@@ -18,18 +23,28 @@ import { Item } from "./Item";
 import {
   addCargoSpace,
   updateCargoSpaces,
+  removeCargoSpace,
 } from "../../store/reducers/OrderReducer";
-import { Formik, Form, Field } from "formik";
-import { initialValues, validationSchema } from "./Validation";
 import { getCargoSizeOptions } from "./cargoSize";
+import { useSnackbar } from "notistack";
 
 export const FormInputsCargo = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const packages = useSelector((state: RootState) => state.orderForm.packages);
   const [openDialog, setOpenDialog] = useState(false);
+  const [cargoSize, setCargoSize] = useState<{
+    value: string;
+    label: string;
+    length: number;
+    width: number;
+    height: number;
+  } | null>(null);
+  const [error, setError] = useState(false);
+  const [newCargoIndex, setNewCargoIndex] = useState<number | null>(null);
 
-  const handleDragEnd = (event) => {
+  const handleDragEnd = (event:DragEndEvent) => {
     const { active, over } = event;
 
     if (!over) return;
@@ -65,25 +80,45 @@ export const FormInputsCargo = () => {
       }
     }
   };
-  const addCargo = (value: any) => {
 
-    const [length, width, height] = value.size.split("x").map(Number);
+  const handleCargoSizeChange = (event: SelectChangeEvent) => {
+    const selectedSize = getCargoSizeOptions().find(
+      (option) => option.value === event.target.value
+    );
+    setCargoSize(selectedSize || null);
+    setError(false);
+  };
+
+  const addCargo = () => {
+    if (!cargoSize) {
+      setError(true);
+      enqueueSnackbar("Выберите размер коробки", {
+        anchorOrigin: { vertical: "top", horizontal: "right" },
+        variant: "error",
+      });
+      return;
+    }
 
     const newCargoSpace = {
       number: (packages.length + 1).toString(),
-      weight: value.weight*1000,
-      length,
-      width,
-      height,
+      weight: 0,
+      length: cargoSize.length,
+      width: cargoSize.width,
+      height: cargoSize.height,
       items: [],
     };
 
     dispatch(addCargoSpace([newCargoSpace]));
+    setNewCargoIndex(packages.length); // Устанавливаем индекс нового грузового места
     setOpenDialog(true);
   };
 
   const closeDialog = () => {
+    if (newCargoIndex !== null && packages[newCargoIndex]?.items.length === 0) {
+      dispatch(removeCargoSpace(newCargoIndex)); // Удаляем пустое грузовое место
+    }
     setOpenDialog(false);
+    setNewCargoIndex(null);
   };
 
   const nextPage = () => {
@@ -92,81 +127,59 @@ export const FormInputsCargo = () => {
 
   return (
     <>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={addCargo}
+      <FormControl
+        sx={{ mt: 1, width: "35%", backgroundColor: "#fff" }}
+        size="small"
+        error={error}
       >
-        {({ errors, touched }) => (
-          <Form>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginTop: 16,
-              }}
-            >
-              <div className="form-group cargo">
-                {errors.weight && touched.weight && (
-                  <div className="error-message-top">{errors.weight}</div>
-                )}
-                <label htmlFor="weight">Вес (кг):</label>
-                <Field
-                  type="number"
-                  min={0}
-                  step={0.01}
-                  id="weight"
-                  name="weight"
-                  className={`form-control ${
-                    errors.weight && touched.weight ? "error" : ""
-                  }`}
-                  placeholder="Введите вес"
-                />
-              </div>
+        <InputLabel id="select-label">Размер коробки</InputLabel>
+        <Select
+          labelId="select-label"
+          id="select"
+          label="Размер коробки"
+          onChange={handleCargoSizeChange}
+          value={cargoSize ? cargoSize.value : ""}
+        >
+          {getCargoSizeOptions().map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
 
-              <div className="form-group cargo">
-                {errors.size && touched.size && (
-                  <div className="error-message-top">{errors.size}</div>
-                )}
-                <label htmlFor="size">Размеры коробки:</label>
-                <Field
-                  as="select"
-                  id="size"
-                  name="size"
-                  className={`form-control ${
-                    errors.size && touched.size ? "error" : ""
-                  }`}
-                >
-                  {getCargoSizeOptions().map((option: any) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </Field>
-              </div>
-            </div>
+      <div className="buttons">
+        <ButtonCustom onClick={addCargo} className="btn">
+          Добавить
+        </ButtonCustom>
 
-            <div className="buttons">
-              <ButtonCustom type="submit" className="btn">
-                Добавить
-              </ButtonCustom>
-
-              <ButtonCustom
-                type="button"
-                className="next"
-                onClick={nextPage}
-                disabled={packages.length === 0}
-              >
-                Далее
-              </ButtonCustom>
-            </div>
-          </Form>
-        )}
-      </Formik>
+        <ButtonCustom
+          type="button"
+          className="next"
+          onClick={nextPage}
+          disabled={packages.length === 0}
+        >
+          Далее
+        </ButtonCustom>
+      </div>
 
       {/* Диалоговое окно */}
       <Dialog open={openDialog} onClose={closeDialog} maxWidth="xl">
-        <DialogTitle>Управление товарами в грузовых местах</DialogTitle>
+        <DialogTitle>
+          Управление товарами в грузовых местах
+          <IconButton
+            color="inherit"
+            onClick={closeDialog}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: "gray",
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
         <DialogContent>
           <DndContext
             collisionDetection={closestCorners}
@@ -185,6 +198,7 @@ export const FormInputsCargo = () => {
                       key={item.ware_key}
                       name={item.name}
                       amount={item.amount}
+                      weight={item.weight}
                     />
                   ))}
                 </Column>
@@ -193,7 +207,14 @@ export const FormInputsCargo = () => {
           </DndContext>
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeDialog}>Закрыть</Button>
+          <Button
+            color="success"
+            variant="contained"
+            onClick={() => setOpenDialog(false)}
+            sx={{ textTransform: "none" }}
+          >
+            Сохранить
+          </Button>
         </DialogActions>
       </Dialog>
     </>

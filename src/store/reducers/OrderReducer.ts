@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-// import { setNameProduct } from "./SettingReducer";
 
 interface PackageItem {
   name: string;
@@ -32,8 +31,6 @@ interface Positions {
 
 interface OrderFormState {
   number: string;
-  // account: string;
-  // accountId: string;
   sender: {
     phones: [{ number: string }];
   };
@@ -73,8 +70,6 @@ interface OrderFormState {
 
 const initialState: OrderFormState = {
   number: "",
-  // account: "",
-  // accountId: "",
   sender: {
     phones: [{ number: "" }],
   },
@@ -126,11 +121,6 @@ const orderFormSlice = createSlice({
       };
     },
 
-
-    setPhoneAccount: (state, action: PayloadAction<string>) => {
-      state.sender.phones[0].number = action.payload;
-    },
-
     setRecipientName: (state, action: PayloadAction<string>) => {
       state.recipient.name = action.payload;
     },
@@ -155,7 +145,7 @@ const orderFormSlice = createSlice({
     addCargoSpace: (state, action: PayloadAction<Package[]>) => {
       action.payload.forEach((pkg: any) => {
         state.packages.push({
-          number: pkg.number, 
+          number: pkg.number,
           weight: pkg.weight,
           length: pkg.length,
           width: pkg.width,
@@ -176,41 +166,65 @@ const orderFormSlice = createSlice({
     },
 
     removeCargoSpace: (state, action: PayloadAction<number>) => {
+      const removedIndex = action.payload;
+
+      if (state.packages.length === 1) {
+        state.packages = [];
+        state.weight = 0; 
+        return;
+      }
+
+      const removedPackage = state.packages[removedIndex];
+
+      const targetIndex = removedIndex === 0 ? 1 : removedIndex - 1;
+      state.packages[targetIndex].items.push(...removedPackage.items);
+
+      state.packages[targetIndex].weight = state.packages[
+        targetIndex
+      ].items.reduce((total, item) => total + item.weight * item.amount, 0);
+
       state.packages = state.packages.filter(
-        (_, index) => index !== action.payload
+        (_, index) => index !== removedIndex
+      );
+
+      state.weight = state.packages.reduce(
+        (total, pkg) =>
+          total +
+          pkg.items.reduce(
+            (itemTotal, item) => itemTotal + item.weight * item.amount,
+            0
+          ),
+        0
       );
     },
 
-    updateCargoSpaces: (state, action: PayloadAction<{
-      fromPackage: Package;
-      toPackage: Package;
-    }>) => {
+    updateCargoSpaces: (
+      state,
+      action: PayloadAction<{
+        fromPackage: Package;
+        toPackage: Package;
+      }>
+    ) => {
       const { fromPackage, toPackage } = action.payload;
-    
-      // Обновляем исходное грузовое место
+
+      const recalculateWeight = (pkg: Package) => ({
+        ...pkg,
+        weight: pkg.items.reduce(
+          (total, item) => total + item.weight * item.amount,
+          0
+        ),
+      });
+
+      const updatedFromPackage = recalculateWeight(fromPackage);
+      const updatedToPackage = recalculateWeight(toPackage);
+
       state.packages = state.packages.map((pkg) =>
-        pkg.number === fromPackage.number ? fromPackage : pkg
+        pkg.number === updatedFromPackage.number ? updatedFromPackage : pkg
       );
-    
-      // Обновляем целевое грузовое место
+
       state.packages = state.packages.map((pkg) =>
-        pkg.number === toPackage.number ? toPackage : pkg
+        pkg.number === updatedToPackage.number ? updatedToPackage : pkg
       );
-    },
-    copyCargoSpace: (state, action: PayloadAction<number>) => {
-      const packageToCopy = state.packages[action.payload];
-      if (packageToCopy) {
-        const totalPackages = state.packages.length;
-        const newNumber = (totalPackages + 1).toString();
-        state.packages.push({
-          ...packageToCopy,
-          number: newNumber,
-          items: packageToCopy.items.map((item) => ({
-            ...item,
-            marking: `${newNumber}`,
-          })),
-        });
-      }
     },
 
     updateServices: (
@@ -229,7 +243,6 @@ const orderFormSlice = createSlice({
 
 export const {
   updateOrderForm,
-  setPhoneAccount,
   setRecipientName,
   setRecipientPhone,
   setRecipientAddress,
@@ -237,7 +250,6 @@ export const {
   updateCargoSpaces,
   removeCargoSpace,
   // editCargoSpace,
-  copyCargoSpace,
   updateServices,
 } = orderFormSlice.actions;
 export default orderFormSlice.reducer;
