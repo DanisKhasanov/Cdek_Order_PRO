@@ -24,7 +24,7 @@ export const RequestTemplateWaybill = (orderData: any) => {
 
     packages: orderData.packages.map((pkg: any, index: number) => ({
       number: pkg.number,
-      weight: pkg.weight,
+      weight: pkg.weight.toFixed(3) * 1000,
       length: pkg.length,
       width: pkg.width,
       height: pkg.height,
@@ -32,7 +32,7 @@ export const RequestTemplateWaybill = (orderData: any) => {
         name: item.name,
         ware_key: item.ware_key,
         marking: item.marking,
-        weight: item.weight,
+        weight: item.weight.toFixed(3) * 1000,
         amount: item.amount,
         payment: item.payment,
         cost: item.cost,

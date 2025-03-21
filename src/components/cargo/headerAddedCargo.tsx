@@ -19,12 +19,12 @@ export const HeaderAddedCargo = ({
         Грузовое место №{index + 1}
       </Typography>
 
-      {/* <EditOutlined
+      <EditOutlined
         color="success"
         fontSize="medium"
         onClick={() => handleEdit(index)}
         sx={{ cursor: "pointer" }}
-      /> */}
+      />
       <DeleteForeverOutlined
         color="error"
         fontSize="medium"

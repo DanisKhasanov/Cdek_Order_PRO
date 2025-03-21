@@ -16,9 +16,23 @@ const Navigation = () => {
     window.location.href = "/";
   };
   return (
+    <>
+      <div className="shape square"></div>
+      <div className="shape circle"></div>
+      <div className="shape triangle"></div>
+      <div className="shape square"></div>
+      <div className="shape circle"></div>
+      <div className="shape triangle"></div>
+      <div className="shape square"></div>
+      <div className="shape circle"></div>
+      <div className="shape triangle"></div>
+      <div className="shape square"></div>
+      <div className="shape circle"></div>
+      <div className="shape triangle"></div>
+
     <div className="AppHome">
       <Button
-        variant="outlined"
+        variant="text"
         startIcon={<ArrowBackIcon />}
         onClick={handleClick}
         sx={{
@@ -29,7 +43,7 @@ const Navigation = () => {
           cursor: "pointer",
           textTransform: "none",
           width: "300px",
-          backgroundColor: "#e0e0e0",
+          color: "#e0e0e0",
           
         }}
       >
@@ -78,6 +92,7 @@ const Navigation = () => {
         </Routes>
       </div>
     </div>
+    </>
   );
 };
 

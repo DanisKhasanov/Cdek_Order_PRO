@@ -5,27 +5,119 @@
   }
 }
 
-@keyframes subtleGlow {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
+/* Основные стили для фона */
 .App {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background: linear-gradient(120deg, #2c2c2c 25%, #3a3a3a 50%, #1e1e1e 75%);
-  background-size: 300% 300%;
-  animation: subtleGlow 20s ease-in-out infinite;
+  background: linear-gradient(0deg, #2c2c2c 25%, #3a3a3a 50%, #1e1e1e 75%);
+  background-size: 220% 200%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Стили для анимированных форм */
+.shape {
+  position: absolute;
+  bottom: -100px; /* Начальная позиция за пределами экрана */
+  animation: moveUp 5s linear infinite; /* Уменьшено время анимации для более быстрого движения */
+}
+
+/* Квадрат */
+.square {
+  width: 50px;
+  height: 50px;
+  background-color: rgba(255, 255, 255, 0.1);
+  animation-delay: 0s;
+}
+
+/* Круг */
+.circle {
+  width: 50px;
+  height: 50px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  animation-delay: 1s; /* Уменьшена задержка */
+}
+
+/* Треугольник */
+.triangle {
+  width: 0;
+  height: 0;
+  border-left: 25px solid transparent;
+  border-right: 25px solid transparent;
+  border-bottom: 50px solid rgba(255, 255, 255, 0.1);
+  animation-delay: 2s; /* Уменьшена задержка */
+}
+
+/* Анимация движения форм снизу вверх */
+@keyframes moveUp {
+  0% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateY(-700px) rotate(600deg);
+    transform: translateY(-100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Добавление большего количества форм для разнообразия */
+.shape:nth-child(1) {
+  left: 5%;
+  animation-duration: 8s; /* Уменьшено время анимации */
+}
+
+.shape:nth-child(2) {
+  left: 15%;
+  animation-duration: 10s;
+}
+
+.shape:nth-child(3) {
+  left: 25%;
+  animation-duration: 12s;
+}
+
+.shape:nth-child(4) {
+  left: 35%;
+  animation-duration: 9s;
+}
+
+.shape:nth-child(5) {
+  left: 45%;
+  animation-duration: 7s;
+}
+
+.shape:nth-child(6) {
+  left: 55%;
+  animation-duration: 11s;
+}
+
+.shape:nth-child(7) {
+  left: 65%;
+  animation-duration: 8s;
+}
+
+.shape:nth-child(8) {
+  left: 75%;
+  animation-duration: 10s;
+}
+
+.shape:nth-child(9) {
+  left: 85%;
+  animation-duration: 6s;
+}
+
+.shape:nth-child(10) {
+  left: 95%;
+  animation-duration: 9s;
 }
 
 .AppHome {
@@ -33,8 +125,12 @@
   align-items: center;
   justify-content: center;
   height: 100%;
+  z-index: 2; /* Убедитесь, что контент поверх форм */
+  position: relative;
 }
+
 .AppContainer {
+  opacity: 90%;
   background-color: #f1f1f1;
   width: 100vh;
   height: 85vh;
@@ -43,6 +139,7 @@
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
 }
 
+/* Остальные стили остаются без изменений */
 .nav-link {
   padding: 10px;
   text-decoration: none;

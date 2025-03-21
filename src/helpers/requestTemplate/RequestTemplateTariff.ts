@@ -8,7 +8,7 @@ export const RequestTemplateTariff = (orderData: any) => ({
     code: orderData.toLocation?.code,
   },
   packages: orderData.packages.map((packageItem: any) => ({
-    weight: packageItem.weight,
+    weight: packageItem.weight.toFixed(3) * 1000,
     length: packageItem.length,
     width: packageItem.width,
     height: packageItem.height,

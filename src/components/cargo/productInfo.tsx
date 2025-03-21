@@ -27,7 +27,7 @@ export const ProductInfo = ({
     <Box>
       <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
         <Typography variant="caption">
-          Вес: {cargo.weight / 1000} кг.
+          Вес: {parseFloat(cargo.weight).toFixed(4)} кг.
         </Typography>
 
         <Typography variant="caption">
@@ -107,7 +107,7 @@ export const ProductInfo = ({
                   align="right"
                   sx={{ fontSize: "0.75rem", p: "2px 5px 0px 5px" }}
                 >
-                  {(item.weight * item.amount) / 1000} кг
+                  {(item.weight * item.amount).toFixed(3)} кг
                 </TableCell>
               </TableRow>
             ))}

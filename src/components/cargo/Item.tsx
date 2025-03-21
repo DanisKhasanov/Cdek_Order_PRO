@@ -32,7 +32,7 @@ export function Item({
     <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
       <span style={{ width: "300px" }}>{name}</span>
       <span>{amount}</span>
-      <span>{(weight * amount) / 1000} кг</span>
+      <span>{(weight * amount).toFixed(3)} кг</span>
     </div>
   );
 }

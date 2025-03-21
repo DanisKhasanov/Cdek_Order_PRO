@@ -109,7 +109,7 @@ export const FormInputsCargo = () => {
     };
 
     dispatch(addCargoSpace([newCargoSpace]));
-    setNewCargoIndex(packages.length); // Устанавливаем индекс нового грузового места
+    setNewCargoIndex(packages.length); 
     setOpenDialog(true);
   };
 

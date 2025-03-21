@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "../components/styles/style.css";
+import "../styles/style.css";
 import { GetDataCity, GetTariffData } from "../api/api";
 import { updateOrderForm } from "../store/reducers/OrderReducer";
 import { useDispatch, useSelector } from "react-redux";

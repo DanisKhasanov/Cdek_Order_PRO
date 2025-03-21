@@ -78,7 +78,22 @@ export const Sending = ({
           <TextField
             placeholder={`Например: ${placeholderText}`}
             type="number"
-            sx={{ mb: 2, width: "100%", backgroundColor: "#fff" }}
+            sx={{
+              mb: 2,
+              width: "100%",
+              backgroundColor: "#fff",
+              "& input[type=number]": {
+                "-moz-appearance": "textfield",
+              },
+              "& input[type=number]::-webkit-outer-spin-button": {
+                "-webkit-appearance": "none",
+                margin: 0,
+              },
+              "& input[type=number]::-webkit-inner-spin-button": {
+                "-webkit-appearance": "none",
+                margin: 0,
+              },
+            }}
             value={orderNumber}
             onChange={(e) => setOrderNumber(e.target.value)}
           />

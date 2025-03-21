@@ -165,12 +165,29 @@ const orderFormSlice = createSlice({
       });
     },
 
+    editCargoSpace: (
+      state,
+      action: PayloadAction<{
+        index: number;
+        size: string;
+      }>
+    ) => {
+      const { index, size } = action.payload;
+      const [length, width, height] = size.split("x").map(Number);
+
+      state.packages[index] = {
+        ...state.packages[index],
+        length: length,
+        width: width,
+        height: height,
+      };
+    },
     removeCargoSpace: (state, action: PayloadAction<number>) => {
       const removedIndex = action.payload;
 
       if (state.packages.length === 1) {
         state.packages = [];
-        state.weight = 0; 
+        state.weight = 0;
         return;
       }
 
@@ -247,9 +264,10 @@ export const {
   setRecipientPhone,
   setRecipientAddress,
   addCargoSpace,
+  editCargoSpace,
+
   updateCargoSpaces,
   removeCargoSpace,
-  // editCargoSpace,
   updateServices,
 } = orderFormSlice.actions;
 export default orderFormSlice.reducer;
