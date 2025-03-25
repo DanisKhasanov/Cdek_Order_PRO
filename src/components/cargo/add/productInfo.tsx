@@ -77,7 +77,7 @@ export const ProductInfo = ({
                   p: "2px 5px 0px 5px",
                 }}
               >
-                Количество
+                Кол-во
               </TableCell>
               <TableCell
                 align="right"
@@ -98,7 +98,7 @@ export const ProductInfo = ({
                   {item.name}
                 </TableCell>
                 <TableCell
-                  align="center"
+                  align="right"
                   sx={{ fontSize: "0.75rem", p: "2px 5px 0px 5px" }}
                 >
                   {item.amount}

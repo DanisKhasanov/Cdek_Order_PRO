@@ -1,32 +1,24 @@
 import { useNavigate } from "react-router-dom";
 import {
   Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   FormControl,
-  IconButton,
   InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
-import { DndContext, closestCorners, DragEndEvent } from "@dnd-kit/core";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store/store";
-import ButtonCustom from "./ButtonCustom";
-import { Column } from "./Column";
-import { Item } from "./Item";
+import ButtonCustom from "../../helpers/ButtonCustom";
 import {
   addCargoSpace,
-  updateCargoSpaces,
   removeCargoSpace,
 } from "../../store/reducers/OrderReducer";
-import { getCargoSizeOptions } from "./cargoSize";
+import { getCargoSizeOptions } from "../../helpers/cargoSize";
 import { useSnackbar } from "notistack";
+import { DragAndDrop } from "./dnd/dnd";
+import { CustomDialog } from "./modal/customDialog";
 
 export const FormInputsCargo = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -43,43 +35,10 @@ export const FormInputsCargo = () => {
   } | null>(null);
   const [error, setError] = useState(false);
   const [newCargoIndex, setNewCargoIndex] = useState<number | null>(null);
-
-  const handleDragEnd = (event:DragEndEvent) => {
-    const { active, over } = event;
-
-    if (!over) return;
-
-    const fromPackage = packages.find((pkg) =>
-      pkg.items.some((item) => item.name === active.id)
-    );
-
-    const toPackage = packages.find((pkg) => pkg.number === over.id);
-
-    if (fromPackage && toPackage && fromPackage.number !== toPackage.number) {
-      const draggedItem = fromPackage.items.find(
-        (item) => item.name === active.id
-      );
-
-      if (draggedItem) {
-        const updatedFromPackage = {
-          ...fromPackage,
-          items: fromPackage.items.filter((item) => item.name !== active.id),
-        };
-
-        const updatedToPackage = {
-          ...toPackage,
-          items: [...toPackage.items, draggedItem],
-        };
-
-        dispatch(
-          updateCargoSpaces({
-            fromPackage: updatedFromPackage,
-            toPackage: updatedToPackage,
-          })
-        );
-      }
-    }
-  };
+  const [confirmDialog, setConfirmDialog] = useState(false);
+  const [initialSizes, setInitialSizes] = useState<{
+    [key: string]: { length: number; width: number; height: number };
+  }>({});
 
   const handleCargoSizeChange = (event: SelectChangeEvent) => {
     const selectedSize = getCargoSizeOptions().find(
@@ -108,8 +67,21 @@ export const FormInputsCargo = () => {
       items: [],
     };
 
+    // Сохраняем исходные размеры предыдущего грузового места
+    if (packages.length > 0) {
+      const previousPackage = packages[packages.length - 1];
+      setInitialSizes((prev) => ({
+        ...prev,
+        [previousPackage.number]: {
+          length: previousPackage.length,
+          width: previousPackage.width,
+          height: previousPackage.height,
+        },
+      }));
+    }
+
     dispatch(addCargoSpace([newCargoSpace]));
-    setNewCargoIndex(packages.length); 
+    setNewCargoIndex(packages.length);
     setOpenDialog(true);
   };
 
@@ -118,11 +90,33 @@ export const FormInputsCargo = () => {
       dispatch(removeCargoSpace(newCargoIndex)); // Удаляем пустое грузовое место
     }
     setOpenDialog(false);
-    setNewCargoIndex(null);
   };
 
   const nextPage = () => {
+    if (newCargoIndex !== null && packages.length > 1) {
+      const previousPackage = packages[newCargoIndex - 1];
+      const initialSize = initialSizes[previousPackage.number];
+
+      if (
+        initialSize &&
+        previousPackage.length === initialSize.length &&
+        previousPackage.width === initialSize.width &&
+        previousPackage.height === initialSize.height
+      ) {
+        setConfirmDialog(true);
+        return;
+      }
+    }
     navigate("/tariffs");
+  };
+
+  const closeConfirmDialog = () => {
+    setConfirmDialog(false);
+    navigate("/tariffs");
+  };
+
+  const handleEdit = () => {
+    setConfirmDialog(false);
   };
 
   return (
@@ -163,60 +157,36 @@ export const FormInputsCargo = () => {
         </ButtonCustom>
       </div>
 
-      {/* Диалоговое окно */}
-      <Dialog open={openDialog} onClose={closeDialog} maxWidth="xl">
-        <DialogTitle>
-          Управление товарами в грузовых местах
-          <IconButton
-            color="inherit"
-            onClick={closeDialog}
-            sx={{
-              position: "absolute",
-              right: 8,
-              top: 8,
-              color: "gray",
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent>
-          <DndContext
-            collisionDetection={closestCorners}
-            onDragEnd={handleDragEnd}
-          >
-            <div
-              style={{
-                display: "flex",
-                gap: 10,
-              }}
+      {/* Перетаскивани товаров */}
+      <DragAndDrop openDialog={openDialog} closeDialog={closeDialog} />
+
+      {/* Подтверждение информации */}
+      <CustomDialog
+        open={confirmDialog}
+        onClose={handleEdit}
+        title="Подтверждение"
+        content="Размеры Грузового места №1 не были изменены. Подтвердите информацию перед переходом далее."
+        showWarningIcon
+        actions={
+          <>
+            <Button
+              onClick={handleEdit}
+              variant="outlined"
+              sx={{ textTransform: "none", mr: 2 }}
             >
-              {packages.map((pkg) => (
-                <Column key={pkg.number} id={pkg.number}>
-                  {pkg.items.map((item) => (
-                    <Item
-                      key={item.ware_key}
-                      name={item.name}
-                      amount={item.amount}
-                      weight={item.weight}
-                    />
-                  ))}
-                </Column>
-              ))}
-            </div>
-          </DndContext>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            color="success"
-            variant="contained"
-            onClick={() => setOpenDialog(false)}
-            sx={{ textTransform: "none" }}
-          >
-            Сохранить
-          </Button>
-        </DialogActions>
-      </Dialog>
+              Изменить
+            </Button>
+            <Button
+              onClick={closeConfirmDialog}
+              color="success"
+              variant="contained"
+              sx={{ textTransform: "none" }}
+            >
+              Подтвердить
+            </Button>
+          </>
+        }
+      />
     </>
   );
 };

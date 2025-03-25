@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 import { EditOutlined, DeleteForeverOutlined } from "@mui/icons-material";
 import BoxIcon from "@mui/icons-material/ArchiveTwoTone";
 import { useDispatch } from "react-redux";
-import { removeCargoSpace } from "../../store/reducers/OrderReducer";
+import { removeCargoSpace } from "../../../store/reducers/OrderReducer";
 
 export const HeaderAddedCargo = ({
   index,

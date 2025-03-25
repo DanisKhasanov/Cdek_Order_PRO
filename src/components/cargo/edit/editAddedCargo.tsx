@@ -1,17 +1,14 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { editCargoSpace } from "../../store/reducers/OrderReducer"; // Импортируем редьюсер
-import { EditAddedCargoProps } from "../../props/EditAddedCargoProps";
-import { getCargoSizeOptions } from "./cargoSize";
-import { useSnackbar } from "notistack";
+import { editCargoSpace } from "../../../store/reducers/OrderReducer"; // Импортируем редьюсер
+import { EditAddedCargoProps } from "../../../props/EditAddedCargoProps";
 
-const EditAddedACargo = ({
-  id,
-  size, 
-  onCancel,
-}: EditAddedCargoProps) => {
+import { useSnackbar } from "notistack";
+import { getCargoSizeOptions } from "../../../helpers/cargoSize";
+
+const EditAddedACargo = ({ id, size, onCancel }: EditAddedCargoProps) => {
   const dispatch = useDispatch();
-  const [selectedSize, setSelectedSize] = useState(size); 
+  const [selectedSize, setSelectedSize] = useState(size);
   const { enqueueSnackbar } = useSnackbar();
   const cargoSizeOptions = getCargoSizeOptions();
 

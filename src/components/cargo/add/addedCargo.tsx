@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
-import EditAddedACargo from "./editAddedCargo";
+import { RootState } from "../../../store/store";
+import EditAddedACargo from "../edit/editAddedCargo";
 import { Box, Typography } from "@mui/material";
 import { ProductInfo } from "./productInfo";
 import { HeaderAddedCargo } from "./headerAddedCargo";
-import CashOnDelivery from "./cashOnDelivery";
 
 const AddedCargo = () => {
   const packages = useSelector((state: RootState) => state.orderForm.packages);

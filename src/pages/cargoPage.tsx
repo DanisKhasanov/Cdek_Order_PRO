@@ -3,7 +3,7 @@ import { GetCargoSpace, GetDataCity } from "../api/api";
 import { useEffect, useState } from "react";
 import { Alert, Box } from "@mui/material";
 import { LoadingSpinner } from "../helpers/loadingSpinner";
-import AddedCargo from "../components/cargo/addedCargo";
+import AddedCargo from "../components/cargo/add/addedCargo";
 import {FormInputsCargo} from "../components/cargo/formInputsCargo";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store/store";

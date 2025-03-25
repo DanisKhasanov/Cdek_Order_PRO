@@ -5,7 +5,6 @@
   }
 }
 
-/* Основные стили для фона */
 .App {
   display: flex;
   flex-direction: column;
@@ -18,44 +17,26 @@
   overflow: hidden;
 }
 
-/* Стили для анимированных форм */
 .shape {
   position: absolute;
-  bottom: -100px; /* Начальная позиция за пределами экрана */
-  animation: moveUp 5s linear infinite; /* Уменьшено время анимации для более быстрого движения */
+  bottom: -100px;
+  animation: moveUp 5s linear infinite;
 }
 
-/* Квадрат */
-.square {
-  width: 50px;
-  height: 50px;
-  background-color: rgba(255, 255, 255, 0.1);
-  animation-delay: 0s;
+.letter-f,
+.letter-l,
+.letter-x {
+  position: absolute;
+  bottom: -100px;
+  animation: moveUp 5s linear infinite;
+  font-size: 40px;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.1);
+  user-select: none;
 }
 
-/* Круг */
-.circle {
-  width: 50px;
-  height: 50px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  animation-delay: 1s; /* Уменьшена задержка */
-}
-
-/* Треугольник */
-.triangle {
-  width: 0;
-  height: 0;
-  border-left: 25px solid transparent;
-  border-right: 25px solid transparent;
-  border-bottom: 50px solid rgba(255, 255, 255, 0.1);
-  animation-delay: 2s; /* Уменьшена задержка */
-}
-
-/* Анимация движения форм снизу вверх */
 @keyframes moveUp {
   0% {
-    -webkit-transform: translateY(0);
     transform: translateY(0);
     opacity: 0;
   }
@@ -63,59 +44,57 @@
     opacity: 1;
   }
   100% {
-    -webkit-transform: translateY(-700px) rotate(600deg);
     transform: translateY(-100vh) rotate(360deg);
     opacity: 0;
   }
 }
 
-/* Добавление большего количества форм для разнообразия */
-.shape:nth-child(1) {
+.letter-f:nth-child(1) {
   left: 5%;
-  animation-duration: 8s; /* Уменьшено время анимации */
+  animation-duration: 8s;
 }
 
-.shape:nth-child(2) {
+.letter-l:nth-child(2) {
   left: 15%;
   animation-duration: 10s;
 }
 
-.shape:nth-child(3) {
+.letter-x:nth-child(3) {
   left: 25%;
   animation-duration: 12s;
 }
 
-.shape:nth-child(4) {
+.letter-f:nth-child(4) {
   left: 35%;
   animation-duration: 9s;
 }
 
-.shape:nth-child(5) {
+.letter-l:nth-child(5) {
   left: 45%;
   animation-duration: 7s;
 }
 
-.shape:nth-child(6) {
+.letter-x:nth-child(6) {
   left: 55%;
   animation-duration: 11s;
 }
 
-.shape:nth-child(7) {
+.letter-f:nth-child(7) {
   left: 65%;
   animation-duration: 8s;
 }
 
-.shape:nth-child(8) {
+.letter-l:nth-child(8) {
   left: 75%;
   animation-duration: 10s;
 }
 
-.shape:nth-child(9) {
+.letter-x:nth-child(9) {
   left: 85%;
   animation-duration: 6s;
 }
 
-.shape:nth-child(10) {
+.letter-f:nth-child(10) {
   left: 95%;
   animation-duration: 9s;
 }
@@ -125,7 +104,7 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  z-index: 2; /* Убедитесь, что контент поверх форм */
+  z-index: 2;
   position: relative;
 }
 
@@ -139,7 +118,6 @@
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Остальные стили остаются без изменений */
 .nav-link {
   padding: 10px;
   text-decoration: none;
@@ -340,38 +318,6 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-/* .add-cargo {
-  height: 72vh;
-  overflow-y: auto;
-} */
-
-/* .cargo-info {
-  margin-top: 13px;
-  margin-bottom: 1px;
-  font-size: 14px;
-  color: rgb(129, 128, 128);
-  font-weight: 500;
-} */
-
-/* .cargo-info.item {
-  margin-top: 1px;
-  display: flex;
-}
-.cargo-info.item p {
-  margin-top: 10px;
-  margin-bottom: 1px;
-} */
-
-/* .item-info {
-  margin: 0 5px 5px 5px;
-}
-.item-info p {
-  margin: 2px;
-  font-size: 13px;
-  color: rgb(59, 59, 59);
-  font-weight: 500;
-} */
-
 .cargo-edit {
   display: flex;
   gap: 20px;
@@ -558,20 +504,6 @@ input:checked + .slider:before {
 .waybill-item span:first-child {
   color: #333;
 }
-
-/* .loading-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 84vh;
-}
-
-.loading-container p {
-  margin-top: 20px;
-  font-size: 18px;
-  color: #333;
-} */
 
 .order-check {
   display: flex;

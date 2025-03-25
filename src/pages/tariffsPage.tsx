@@ -7,7 +7,7 @@ import { RootState } from "../store/store";
 import { useNavigate } from "react-router-dom";
 import { TariffProps, PickupPointProps } from "../props/TariffsProps";
 import { DELIVERY_MODE } from "../enum/DeliveryMode";
-import ButtonCustom from "../components/cargo/ButtonCustom";
+import ButtonCustom from "../helpers/ButtonCustom";
 import PaymentForDelivery from "../components/tariffs/paymentForDelivery";
 import { LoadingSpinner } from "../helpers/loadingSpinner";
 import UseCdekWidget from "../components/tariffs/UseCdekWidget";
