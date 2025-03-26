@@ -4,13 +4,15 @@ export function Item({
   name,
   amount,
   weight,
+  id,
 }: {
   name: string;
   amount: number;
   weight: number;
+  id: string;
 }) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: name,
+    id: id,
   });
 
   const style = {

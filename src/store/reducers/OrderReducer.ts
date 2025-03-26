@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface PackageItem {
+  id: string;
   name: string;
   ware_key: string;
   weight: number;
@@ -151,9 +152,9 @@ const orderFormSlice = createSlice({
           width: pkg.width,
           height: pkg.height,
           items: pkg.items.map((item: any) => ({
+            id: `${pkg.number}_${item.ware_key}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`, // Уникальный ID
             name: item.name,
             ware_key: item.ware_key,
-            marking: item.marking,
             weight: item.weight,
             amount: item.amount,
             payment: {
@@ -182,35 +183,64 @@ const orderFormSlice = createSlice({
         height: height,
       };
     },
+
     removeCargoSpace: (state, action: PayloadAction<number>) => {
       const removedIndex = action.payload;
-
+    
       if (state.packages.length === 1) {
         state.packages = [];
         state.weight = 0;
         return;
       }
-
+    
       const removedPackage = state.packages[removedIndex];
-
       const targetIndex = removedIndex === 0 ? 1 : removedIndex - 1;
-      state.packages[targetIndex].items.push(...removedPackage.items);
-
-      state.packages[targetIndex].weight = state.packages[
-        targetIndex
-      ].items.reduce((total, item) => total + item.weight * item.amount, 0);
-
-      state.packages = state.packages.filter(
-        (_, index) => index !== removedIndex
-      );
-
+      const targetPackage = state.packages[targetIndex];
+    
+      // Создаем временный объект для объединения товаров по ware_key
+      const mergedItems: Record<string, PackageItem> = {};
+    
+      // Сначала добавляем все товары из целевого ГМ
+      targetPackage.items.forEach(item => {
+        mergedItems[item.ware_key] = {
+          ...item,
+          id: `${targetPackage.number}_${item.ware_key}_${Date.now()}` // Новый ID
+        };
+      });
+    
+      // Затем добавляем/объединяем товары из удаляемого ГМ
+      removedPackage.items.forEach(item => {
+        if (mergedItems[item.ware_key]) {
+          // Если товар уже есть - увеличиваем количество
+          mergedItems[item.ware_key] = {
+            ...mergedItems[item.ware_key],
+            amount: mergedItems[item.ware_key].amount + item.amount
+          };
+        } else {
+          // Если товара нет - добавляем новый
+          mergedItems[item.ware_key] = {
+            ...item,
+            id: `${targetPackage.number}_${item.ware_key}_${Date.now()}` // Новый ID
+          };
+        }
+      });
+    
+      // Обновляем целевой ГМ
+      state.packages[targetIndex] = {
+        ...targetPackage,
+        items: Object.values(mergedItems),
+        weight: Object.values(mergedItems).reduce(
+          (total, item) => total + item.weight * item.amount,
+          0
+        )
+      };
+    
+      // Удаляем ГМ
+      state.packages = state.packages.filter((_, index) => index !== removedIndex);
+    
+      // Пересчитываем общий вес
       state.weight = state.packages.reduce(
-        (total, pkg) =>
-          total +
-          pkg.items.reduce(
-            (itemTotal, item) => itemTotal + item.weight * item.amount,
-            0
-          ),
+        (total, pkg) => total + pkg.weight,
         0
       );
     },
@@ -220,9 +250,11 @@ const orderFormSlice = createSlice({
       action: PayloadAction<{
         fromPackage: Package;
         toPackage: Package;
+        movedItemId: string; 
+        quantity: number;
       }>
     ) => {
-      const { fromPackage, toPackage } = action.payload;
+      const { fromPackage, toPackage, movedItemId, quantity } = action.payload;
 
       const recalculateWeight = (pkg: Package) => ({
         ...pkg,
@@ -232,14 +264,58 @@ const orderFormSlice = createSlice({
         ),
       });
 
-      const updatedFromPackage = recalculateWeight(fromPackage);
-      const updatedToPackage = recalculateWeight(toPackage);
+      // Находим и обрабатываем исходный товар
+      const fromItems = fromPackage.items.map(item => {
+        if (item.id === movedItemId) {
+          return {
+            ...item,
+            amount: item.amount - quantity
+          };
+        }
+        return item;
+      }).filter(item => item.amount > 0);
 
-      state.packages = state.packages.map((pkg) =>
+      // Находим оригинальный товар для копирования данных
+      const originalItem = fromPackage.items.find(item => item.id === movedItemId);
+      if (!originalItem) return;
+
+      // Создаем новую копию товара с новым уникальным ID
+      const newItem = {
+        ...originalItem,
+        id: `${toPackage.number}_${originalItem.ware_key}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        amount: quantity
+      };
+
+      // Добавляем в целевое место
+      const toItems = [...toPackage.items];
+      const existingItemIndex = toItems.findIndex(
+        it => it.ware_key === originalItem.ware_key
+      );
+
+      if (existingItemIndex >= 0) {
+        toItems[existingItemIndex] = {
+          ...toItems[existingItemIndex],
+          amount: toItems[existingItemIndex].amount + quantity
+        };
+      } else {
+        toItems.push(newItem);
+      }
+
+      const updatedFromPackage = recalculateWeight({
+        ...fromPackage,
+        items: fromItems
+      });
+
+      const updatedToPackage = recalculateWeight({
+        ...toPackage,
+        items: toItems
+      });
+
+      state.packages = state.packages.map(pkg =>
         pkg.number === updatedFromPackage.number ? updatedFromPackage : pkg
       );
 
-      state.packages = state.packages.map((pkg) =>
+      state.packages = state.packages.map(pkg =>
         pkg.number === updatedToPackage.number ? updatedToPackage : pkg
       );
     },
@@ -255,6 +331,46 @@ const orderFormSlice = createSlice({
         state.services = [{ code, parameter }];
       }
     },
+    
+    resetOrderForm: (state) => {
+      state.number = "";
+      state.sender = {
+        phones: [{ number: "" }],
+      };
+      state.recipient = {
+        name: "",
+        phones: [{ number: "" }],
+      };
+      state.fromLocation = {
+        code: 0,
+        city: "",
+        postalCode: "",
+        address: "",
+      };
+      state.toLocation = {
+        code: 0,
+        city: "",
+        postalCode: "",
+        address: "",
+      };
+      state.packages = [];
+      state.comment = "";
+      state.commentDelivery = "";
+      state.deliveryPoint = "";
+      state.deliveryPointAddress = {};
+      state.tariffCode = 0;
+      state.services = [];
+      state.cod = false;
+      state.sum = 0;
+      state.deliveryRecipientCost = {
+        value: 0,
+      };
+      state.orderCreated = false;
+      state.counterParty = true;
+      state.positions = [];
+      state.weight = 0;
+    },
+
   },
 });
 
@@ -265,7 +381,7 @@ export const {
   setRecipientAddress,
   addCargoSpace,
   editCargoSpace,
-
+  resetOrderForm,
   updateCargoSpaces,
   removeCargoSpace,
   updateServices,

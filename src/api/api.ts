@@ -191,9 +191,21 @@ export const GetCargoSpace = async (payload: any) => {
       positions: payload.positions,
     },
   };
+
   try {
     const response = await api.post(`/calculatepackages`, data);
-    return response.data;
+
+    const packagesWithIds = response.data.map((pkg: any) => ({
+      ...pkg,
+      items: pkg.items.map((item: any) => ({
+        ...item,
+        id: `${item.ware_key}_${Date.now()}_${Math.random()
+          .toString(36)
+          .substr(2, 5)}`,
+      })),
+    }));
+
+    return packagesWithIds;
   } catch (error) {
     console.error("Ошибка при получении грузового места:", error);
     throw error;

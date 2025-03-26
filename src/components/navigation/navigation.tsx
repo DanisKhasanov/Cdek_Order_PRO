@@ -1,5 +1,5 @@
 import { NavLink, Routes, Route, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import OrderForm from "../../pages/orderPage";
 import Cargo from "../../pages/cargoPage";
@@ -7,14 +7,18 @@ import Tariffs from "../../pages/tariffsPage";
 import Waybill from "../../pages/waybillPage";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Button from "@mui/material/Button";
+import { resetOrderForm } from "../../store/reducers/OrderReducer";
 
 const Navigation = () => {
+  const dispatch = useDispatch();
+
   const orderCreated = useSelector(
     (state: RootState) => state.orderForm.orderCreated
   );
   const navigate = useNavigate();
 
   const handleClick = () => {
+    dispatch(resetOrderForm());
     navigate("/");
   };
   return (
