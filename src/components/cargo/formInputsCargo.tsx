@@ -94,7 +94,7 @@ export const FormInputsCargo = () => {
 
   const nextPage = () => {
     if (newCargoIndex !== null && packages.length > 1) {
-      const previousPackage = packages[newCargoIndex - 1];
+      const previousPackage = packages[0];
       const initialSize = initialSizes[previousPackage.number];
 
       if (
